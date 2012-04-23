@@ -14,6 +14,9 @@ class Logger:
         self.log = logging.getLogger(log_name)
         self.log.setLevel(log_mode)
 
+    def set_log_level(self, level="DEBUG"):
+        self.log.setLevel(level)
+
     def message(self, message):
         if self.mode == "DEBUG":
             self.log.debug(message)
