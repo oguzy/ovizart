@@ -5,3 +5,4 @@
 tests/*
 summary.txt
 .name
+.idea/*
