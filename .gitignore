@@ -1,3 +1,7 @@
 # Compiled source #
 ###################
 *.pyc
+*.pcap
+tests/*
+summary.txt
+.name
