@@ -19,13 +19,16 @@ class Handler:
     def open_file(self, pcap_file, mode="r"):
         try:
             self._file_pointer = file(pcap_file, mode)
+            self._logger.set_log_level("DEBUG")
             self._logger.message(("%s is opened at %s mode") % (pcap_file, mode))
         except:
+            self._logger.set_log_level("ERROR")
             self._logger.message("Error at opening pcap file")
 
     def open_pcap(self, mode="r"):
         if mode == "r":
             self._pcap = dpkt.pcap.Reader(self._file_pointer)
+            self._logger.set_log_level("DEBUG")
             self._logger.message("pcap reader is created")
         if mode == "w":
             self._pcap = dpkt.pcap.Writer(self._file_pointer)
@@ -41,30 +44,30 @@ class Handler:
 
     def set_filter_type(self, t):
         self._filter_type = t
+        self._logger.set_log_level("DEBUG")
         self._logger.message(("Filter type is set %s") % (t))
 
     def get_filter_type(self):
         return self._filter_type
 
     def get_pcap(self):
-        #self._logger.message(("Pcap returned %s") % (self._pcap))
         return self._pcap
 
     def get_eth(self, buf):
         eth = dpkt.ethernet.Ethernet(buf)
         if eth.type == dpkt.ethernet.ETH_TYPE_IP:
-            #self._logger.message(("Eth is returned %s") % (eth))
             return eth
         else:
+            self._logger.set_log_level("ERROR")
             self._logger.message("No Eth is returned")
             return False
 
     def get_ip(self, eth):
         ip = eth.data
         if ip.p == dpkt.ip.IP_PROTO_TCP:
-            #self._logger.message(("IP is returned %s") % (ip))
             return ip
         else:
+            self._logger.set_log_level("ERROR")
             self._logger.message("No IP is returned")
             return False
 
