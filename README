@@ -1,0 +1,11 @@
+Installation
+
+* Install zc.buildout:
+At Ubuntu this is done via the command below
+
+$ sudo apt-get install python-zc.build
+
+* Run the buildout command to initialize and install the requirements
+
+$ buildout2.7
+
