@@ -6,3 +6,7 @@ tests/*
 summary.txt
 .name
 .idea/*
+bin/
+eggs/
+develop-eggs/
+parts/
