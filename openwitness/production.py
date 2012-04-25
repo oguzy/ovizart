@@ -1,0 +1,2 @@
+
+from openwitness.settings import *
