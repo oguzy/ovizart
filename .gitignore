@@ -11,3 +11,4 @@ bin/
 eggs/
 develop-eggs/
 parts/
+requirements/
