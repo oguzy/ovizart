@@ -11,3 +11,18 @@ $ cp buildout.cfg.org buildout.cfg
 $ python bootstrap.py
 $ buildout2.7
 
+
+Requirements for Bro installation
+
+$ sudo apt-get install libmagic-dev libgeoip-dev libpcap-dev libssl-dev libncurses5-dev g++ bison flex cmake swig2.0 make gcc g++ python-dev swig zlib1g-dev
+$ ./configure --enable-debug
+$ make
+$ sudo make install
+$ cd /usr/local/bro/bin
+$ sudo broctl
+$ install
+$ start
+$ stop
+$ check
+$ exit
+$ /usr/local/bro/bin/bro -C -r pcap_fille.name should be working
