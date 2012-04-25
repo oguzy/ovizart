@@ -5,6 +5,7 @@
 tests/*
 summary.txt
 .name
+.installed.cfg
 .idea/*
 bin/
 eggs/
