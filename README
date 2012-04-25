@@ -7,7 +7,7 @@ $ sudo apt-get install python-zc.build
 
 * Run the buildout command to initialize and install the requirements
 
-$ python bootstrap.py
 $ cp buildout.cfg.org buildout.cfg
+$ python bootstrap.py
 $ buildout2.7
 
