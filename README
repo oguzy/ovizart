@@ -11,7 +11,6 @@ $ cp buildout.cfg.org buildout.cfg
 $ python bootstrap.py
 $ buildout2.7
 
-
 Requirements for Bro installation
 
 $ sudo apt-get install libmagic-dev libgeoip-dev libpcap-dev libssl-dev libncurses5-dev g++ bison flex cmake swig2.0 make gcc g++ python-dev swig zlib1g-dev
