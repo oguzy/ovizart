@@ -1,11 +1,18 @@
+#!/usr/bin/env python
+#-*- coding: UTF-8 -*-
 
 # Django settings for openwitness project.
 
 import os
+# development settings, debugs are set to True
+from development import *
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Oğuz Yarımtepe', 'oguzyarimtepe@gmail.com'),
 )
+
+PROJECT_NAME = 'Network Analyzer'
+PROJECT_ROOT = os.path.dirname(__file__)
 
 MANAGERS = ADMINS
 
@@ -45,12 +52,12 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = 'http://127.0.0.1:8000/site_media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -106,7 +113,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), "templates"),
+    os.path.join(PROJECT_NAME, "templates"),
 )
 
 INSTALLED_APPS = (
@@ -119,6 +126,8 @@ INSTALLED_APPS = (
     'djangotoolbox',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'openwitness.pcap',
+    'openwitness.main',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
