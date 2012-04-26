@@ -1,0 +1,40 @@
+{% extends "base/base.html" %}
+
+{% block navigation %}
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="{% url home_page %}">Network Analyzer</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">PCAP<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url upload_pcap %}">Upload</a></li>
+                            <li><a href="#">General View</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="span8 ">
+            {% block left %} {% endblock %}
+        </div>
+        <div class="span4">
+            {% block right %} {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
