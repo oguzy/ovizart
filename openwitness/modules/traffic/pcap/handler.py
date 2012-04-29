@@ -5,7 +5,7 @@ import sys
 sys.path.append("../")
 
 import dpkt
-from log.logger import Logger
+from openwitness.modules.traffic.log.logger import Logger
 
 class Handler:
 
