@@ -14,6 +14,9 @@ ADMINS = (
 PROJECT_NAME = 'Network Analyzer'
 PROJECT_ROOT = os.path.dirname(__file__)
 
+BRO_CMD = "/usr/local/bro/bin/bro"
+BRO_CUT_CMD = "/usr/local/bro/bin/bro-cut"
+
 MANAGERS = ADMINS
 
 DATABASES = {
