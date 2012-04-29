@@ -1,4 +1,4 @@
 from django import forms
 
 class UploadPcapForm(forms.Form):
-    file = forms.FileInput()
+    pcap_file = forms.FileField(label="pcap file")
