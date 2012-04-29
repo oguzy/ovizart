@@ -1,7 +1,21 @@
 {% extends "base/layout.html" %}
 
+
 {% block left %}
 
+{% if upload_status %}
+<div class="alert alert-success">
+  Upload done succefully
+</div>
+{% endif %}
+
+<form action="{% url upload_pcap %}" method="post" class="well" enctype="multipart/form-data">{% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+    
+  <p><input type="submit" value="Submit" class="btn btn-primary" /></p>
+</form>
 
 {% endblock %}
 
