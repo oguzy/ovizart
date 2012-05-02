@@ -9,6 +9,7 @@ from openwitness.modules.traffic.log.logger import Logger
 class Handler:
     def __init__(self):
         self.file_path = None
+        self.file_name = None
         log = Logger("File Handler", "DEBUG")
         now = datetime.datetime.now()
         log.message("Now is: %s:" % now)
@@ -22,7 +23,8 @@ class Handler:
         self.upload_dir = directory_path
 
     def save_file(self, f):
-        self.file_path = "/".join([self.upload_dir, f.name])
+        self.file_name = f.name
+        self.file_path = "/".join([self.upload_dir, self.file_name])
         destination = open(self.file_path, 'wb+')
         for chunk in f.chunks():
             destination.write(chunk)
