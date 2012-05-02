@@ -64,14 +64,20 @@ class Handler:
 
     def save_flow(self, flow, pcap_handler, save_path=""):
         random_key = self.generate_random_name(10)
+        files = dict()
         for key, values in flow.iteritems():
             file_name = ".".join([random_key, str(key), "pcap"])
             full_file_path = "/".join([save_path, file_name])
+            if files.has_key(save_path):
+                files[save_path].append(file_name)
+            else:
+                files[save_path] = file_name
             pcap_handler.open_file(full_file_path, "w")
             pcap_handler.open_pcap("w")
             for value in values:
                 pcap_handler.write_pcap(value[0], value[1])
             pcap_handler.close_file()
-            pcap_handler.close_pcap()
+        pcap_handler.close_pcap()
+        return files
 
 
