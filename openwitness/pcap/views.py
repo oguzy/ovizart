@@ -1,14 +1,13 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.conf import settings
 from openwitness.pcap.forms import UploadPcapForm
 from openwitness.modules.file.handler import Handler as FileHandler
 from openwitness.modules.traffic.pcap.handler import Handler as PcapHandler
 from openwitness.modules.traffic.flow.handler import Handler as FlowHandler
 
 from openwitness.pcap.models import Pcap, PacketDetails
-
-from openwitness.modules.traffic.detector.bro.handler import Handler as BroHandler
 
 from openwitness.modules.traffic.log.logger import Logger
 
@@ -32,9 +31,14 @@ def upload(request):
             pcap_name = mem_file
             upload_path = file_handler.upload_dir
             pcap = Pcap(name=pcap_name, path=upload_path)
-            # send the file to bro so that decide whether it has tcp or udp
-            bro_handler = BroHandler()
-            output = bro_handler.detect(file_handler.file_path, upload_path)
+            # send the file to the defined protocol handler so that it can detect
+            protocol_handler = settings.PROTOCOL_HANDLER
+            package = "openwitness.modules.traffic.detector"
+            module_name = ".".join([package, protocol_handler])
+            # from openwitness.modules.traffic.detector.x import handler as imported_module
+            imported_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+            imported_handler = imported_module.Handler()
+            output = imported_handler.detect(file_handler.file_path, upload_path)
             log.message("protocol detected: %s" % output)
             if "tcp" in output:
                 # run tcp flow extractor
@@ -47,8 +51,8 @@ def upload(request):
 
                 p_write_handler = PcapHandler()
                 f_handler.save_flow(flow, p_write_handler, save_path=upload_path)
-            #send them to bro
-            # get the tcp/udp flows
+
+                # save them to the mongo db
 
             #save the returned information at the db also
             pcap.save()
