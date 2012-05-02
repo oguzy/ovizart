@@ -7,7 +7,7 @@ from openwitness.modules.file.handler import Handler as FileHandler
 from openwitness.modules.traffic.pcap.handler import Handler as PcapHandler
 from openwitness.modules.traffic.flow.handler import Handler as FlowHandler
 
-from openwitness.pcap.models import Pcap, PacketDetails
+from openwitness.pcap.models import Flow, Pcap, PacketDetails
 
 from openwitness.modules.traffic.log.logger import Logger
 
@@ -30,7 +30,8 @@ def upload(request):
             #save the file name to the db
             pcap_name = mem_file
             upload_path = file_handler.upload_dir
-            pcap = Pcap(name=pcap_name, path=upload_path)
+            # evey pcap file is saved as a flow container, there may or may not be flows, the pcaps colon will give the flow pcaps
+            flow_file = Flow.objects.create(file_name=pcap_name, path=upload_path)
             # send the file to the defined protocol handler so that it can detect
             protocol_handler = settings.PROTOCOL_HANDLER
             package = "openwitness.modules.traffic.detector"
@@ -41,6 +42,8 @@ def upload(request):
             output = imported_handler.detect(file_handler.file_path, upload_path)
             log.message("protocol detected: %s" % output)
             if "tcp" in output:
+                # lets save the flow file name to the db first
+
                 # run tcp flow extractor
                 p_read_handler = PcapHandler()
                 p_read_handler.open_file(file_handler.file_path)
@@ -50,12 +53,18 @@ def upload(request):
                 flow, direction = f_handler.get_tcp_flows()
 
                 p_write_handler = PcapHandler()
-                f_handler.save_flow(flow, p_write_handler, save_path=upload_path)
+                files = f_handler.save_flow(flow, p_write_handler, save_path=upload_path)
 
-                # save them to the mongo db
+                # save the flow pcap names to the mongo db
+                pcap_list = map(lambda x: Pcap.objects.create(file_name=x, path=upload_path), files.values())
+                flow_file.pcaps = pcap_list
+                flow_file.save()
+
+                # now i should hook a protocol detector
+                # before that i should detect the application level protocol
+
 
             #save the returned information at the db also
-            pcap.save()
     else:
         form = UploadPcapForm()
         context['form'] = form
