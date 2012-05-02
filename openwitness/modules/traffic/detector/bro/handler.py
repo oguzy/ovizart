@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 #-*- coding: UTF-8 -*-
 
-from openwitness.modules.traffic.log.logger import Logger
-from django.conf import settings
+from openwitness.modules.traffic.detector.base.handler import Handler as BaseHandler
 
 import subprocess
-import os
 
-class Handler:
+BRO_CMD = "/usr/local/bro/bin/bro"
+BRO_CUT_CMD = "/usr/local/bro/bin/bro-cut"
+
+class Handler(BaseHandler):
     def __init__(self):
-        self.log = Logger("Bro Handler", "DEBUG")
-        self.log.message("bro handler called")
-        self.bro_cmd = settings.BRO_CMD
-        self.bro_cut_cmd = settings.BRO_CUT_CMD
+        super(Handler, self).__init__()
+        self.bro_cmd = BRO_CMD
+        self.bro_cut_cmd = BRO_CUT_CMD
 
     def detect(self, file_path, file_dir):
         self.log.message("file_path: %s file_dir: %s" % (file_path, file_dir))
