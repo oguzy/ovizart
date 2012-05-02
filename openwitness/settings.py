@@ -14,8 +14,11 @@ ADMINS = (
 PROJECT_NAME = 'Network Analyzer'
 PROJECT_ROOT = os.path.dirname(__file__)
 
-BRO_CMD = "/usr/local/bro/bin/bro"
-BRO_CUT_CMD = "/usr/local/bro/bin/bro-cut"
+# define the protocol detecter directory name
+# it should be under the modules/traffic/detector directory
+# it should have a handler.py, including a Handler class derived from the base/handler
+# the detect method is the thing what you want to do
+PROTOCOL_HANDLER = "bro"
 
 MANAGERS = ADMINS
 
