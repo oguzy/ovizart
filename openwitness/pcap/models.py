@@ -2,13 +2,18 @@ from django.db import models
 from djangotoolbox.fields import EmbeddedModelField, ListField
 
 # Create your models here.
+class Flow(models.Model):
+    file_name = models.CharField(max_length=100)
+    path = models.FilePathField()
+    pcaps = ListField(EmbeddedModelField('Pcap', null=True, blank=True))
 
 class Pcap(models.Model):
-    name = models.FileField(upload_to="uploads", null=True, blank=True)
+    file_name = models.FileField(upload_to="uploads", null=True, blank=True)
     path = models.FilePathField()
-    information = EmbeddedModelField('PacketDetails', null=True, blank=True)
+    packets = EmbeddedModelField('PacketDetails', null=True, blank=True)
 
 class PacketDetails(models.Model):
+    timestamp = models.DateTimeField()
     protocol = models.CharField(max_length=10)
     source_ip = models.IPAddressField()
     destionation_ip = models.IPAddressField()
