@@ -14,12 +14,22 @@ class Handler(BaseHandler):
         self.bro_cmd = BRO_CMD
         self.bro_cut_cmd = BRO_CUT_CMD
 
-    def detect(self, file_path, file_dir):
+    def detect_proto(self, file_path, file_dir):
         self.log.message("file_path: %s file_dir: %s" % (file_path, file_dir))
         cmd = " ".join([self.bro_cmd, "-C -r", file_path])
         self.log.message("Bro command: %s" % cmd)
         output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
         cmd = " ".join(["cat conn.log", "|", self.bro_cut_cmd, "proto"])
+        self.log.message("Bro-cut command: %s" % cmd)
+        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+        return output
+
+    def detect_appproto(self, file_path, file_dir):
+        self.log.message("file_path: %s file_dir: %s" % (file_path, file_dir))
+        cmd = " ".join([self.bro_cmd, "-C -r", file_path])
+        self.log.message("Bro command: %s" % cmd)
+        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+        cmd = " ".join(["cat conn.log", "|", self.bro_cut_cmd, "service"])
         self.log.message("Bro-cut command: %s" % cmd)
         output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
         return output
