@@ -39,7 +39,7 @@ def upload(request):
             # from openwitness.modules.traffic.detector.x import handler as imported_module
             imported_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
             imported_handler = imported_module.Handler()
-            output = imported_handler.detect(file_handler.file_path, upload_path)
+            output = imported_handler.detect_proto(file_handler.file_path, upload_path)
             log.message("protocol detected: %s" % output)
             if "tcp" in output:
                 # lets save the flow file name to the db first
@@ -63,6 +63,17 @@ def upload(request):
                 # now i should hook a protocol detector
                 # before that i should detect the application level protocol
 
+                for f in files.values():
+                    output = imported_handler.detect_appproto(f, upload_path)
+                    log.message("protocol detected: %s" % output)
+                    if output.lower() == "http":
+                        # by looking at the output http hook the parser related with it
+                        #modules/traffic/parser/http
+                        package = "openwitness.modules.traffic.parser"
+                        module_name = ".".join([package, "http"])
+                        # from openwitness.modules.traffic.parser.http import handler as imported_module
+                        imported_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+                        imported_handler = imported_module.Handler()
 
             #save the returned information at the db also
     else:
