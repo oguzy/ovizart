@@ -11,6 +11,9 @@ class Handler(object):
         self.log = Logger("Base Protocol Handler", "DEBUG")
         self.log.message("base protocol handler called")
 
-    def detect(self,**params):
+    def detect_proto(self,**params):
+        pass
+
+    def detect_appproto(self,**params):
         pass
 
