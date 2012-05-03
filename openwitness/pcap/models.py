@@ -13,12 +13,28 @@ class Pcap(models.Model):
     packets = EmbeddedModelField('PacketDetails', null=True, blank=True)
 
 class PacketDetails(models.Model):
+    #datetime.datetime.fromtimestamp(float("1286715787.71")).strftime('%Y-%m-%d %H:%M:%S')
     timestamp = models.DateTimeField()
     protocol = models.CharField(max_length=10)
     source_ip = models.IPAddressField()
     destionation_ip = models.IPAddressField()
     source_port = models.IntegerField()
     destionation_port = models.IntegerField()
+    http = EmbeddedModelField('HttpDetails', null=True, blank=True)
+
+class HttpDetails(models.Model):
+    # request or response
+    http_type = models.CharField(max_length=10)
+    # request fields
+    method = models.CharField(max_length=5)
+    uri = models.URLField()
+    headers = models.TextField()
+    version = models.IntegerField()
+    # request part ends
+    # responde fields
+    # header and version is here also
+    reason = models.CharField(max_length="5")
+    status = models.IntegerField()
+    body = models.TextField()
+    # response ends
     files = ListField(null=True, blank=True)
-    headers = models.TextField(null=True, blank=True)
-    body = models.TextField(null=True, blank=True)
