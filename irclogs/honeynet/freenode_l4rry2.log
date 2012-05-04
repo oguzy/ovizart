@@ -1,0 +1,232 @@
+
+*** Logfile started
+*** on Fri Apr 6 11:01:48 2012
+
+[Friday, April 06, 2012] [11:01:48 AM] <l4rry>	yes
+[Friday, April 06, 2012] [11:02:00 AM] <ogzy>	ok
+[Friday, April 06, 2012] [11:02:09 AM] <ogzy>	let me tell what i study last night
+[Friday, April 06, 2012] [11:02:15 AM] <l4rry>	sure
+[Friday, April 06, 2012] [11:02:18 AM] <ogzy>	i made a plan i my mind
+[Friday, April 06, 2012] [11:02:25 AM] <ogzy>	e general design indeed
+[Friday, April 06, 2012] [11:02:32 AM] <ogzy>	you mentioned me about the timeline issue
+[Friday, April 06, 2012] [11:02:41 AM] <ogzy>	http://www.simile-widgets.org/timeline/
+[Friday, April 06, 2012] [11:02:43 AM] <ogzy>	i checked it
+[Friday, April 06, 2012] [11:03:05 AM] <ogzy>	at stackoverflow, some people mentioned it as a problomatic library
+[Friday, April 06, 2012] [11:03:13 AM] <ogzy>	consuming so much resource
+[Friday, April 06, 2012] [11:03:20 AM] <ogzy>	hard to handle errors
+[Friday, April 06, 2012] [11:03:39 AM] <l4rry>	ok, no pb, i was not recommending any specific anyway
+[Friday, April 06, 2012] [11:03:42 AM] <ogzy>	i checked the bugtracker and it seems they still maintain it
+[Friday, April 06, 2012] [11:03:46 AM] <ogzy>	i found a nother library
+[Friday, April 06, 2012] [11:03:53 AM] <ogzy>	http://timeglider.com/jquery/
+[Friday, April 06, 2012] [11:04:34 AM] <ogzy>	lets check the example at the page and image it is written SMTP, HTTP, FTP what ever 
+[Friday, April 06, 2012] [11:04:49 AM] <ogzy>	with icons red or green
+[Friday, April 06, 2012] [11:04:50 AM] <l4rry>	interesting
+[Friday, April 06, 2012] [11:04:57 AM] <ogzy>	green is = ok this is a normal HTTP
+[Friday, April 06, 2012] [11:05:05 AM] <ogzy>	red is = http but not at standart port
+[Friday, April 06, 2012] [11:05:20 AM] <ogzy>	and there may be blue marks for unknown traffic
+[Friday, April 06, 2012] [11:05:30 AM] <l4rry>	i don't see smtp, http, ftp ...
+[Friday, April 06, 2012] [11:05:41 AM] <ogzy>	i said imagine :)
+[Friday, April 06, 2012] [11:05:51 AM] <l4rry>	:) i imagine
+[Friday, April 06, 2012] [11:06:06 AM] <l4rry>	i like the idea
+[Friday, April 06, 2012] [11:06:24 AM] <ogzy>	after reading the pcap and analyzing it the main visualization will be this timeline
+[Friday, April 06, 2012] [11:06:36 AM] <ogzy>	i will see the traffic 
+[Friday, April 06, 2012] [11:06:40 AM] <ogzy>	i click on one of them
+[Friday, April 06, 2012] [11:06:48 AM] <ogzy>	it will open me a page with details
+[Friday, April 06, 2012] [11:06:52 AM] <ogzy>	like malware results
+[Friday, April 06, 2012] [11:06:58 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:07:19 AM] <ogzy>	i am planning to use treemap at this page with scatterplost also
+[Friday, April 06, 2012] [11:07:30 AM] <ogzy>	treemaps will display, byte size per protocol
+[Friday, April 06, 2012] [11:07:38 AM] <l4rry>	any example?
+[Friday, April 06, 2012] [11:07:38 AM] <ogzy>	not scatter sorry
+[Friday, April 06, 2012] [11:07:49 AM] <ogzy>	http://mbostock.github.com/d3/ex/treemap.html
+[Friday, April 06, 2012] [11:07:50 AM] <ogzy>	treemap
+[Friday, April 06, 2012] [11:08:01 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:08:38 AM] <ogzy>	and not scatter sorry parallelcoordinate
+[Friday, April 06, 2012] [11:08:46 AM] <ogzy>	it will give me the port based communication
+[Friday, April 06, 2012] [11:08:56 AM] <ogzy>	http://exposedata.com/parallel/veggie/
+[Friday, April 06, 2012] [11:09:02 AM] <ogzy>	or http://bl.ocks.org/1341281
+[Friday, April 06, 2012] [11:09:06 AM] <ogzy>	lets check the last one
+[Friday, April 06, 2012] [11:09:19 AM] <ogzy>	imagine it is written the IP numbers
+[Friday, April 06, 2012] [11:09:32 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:09:35 AM] <ogzy>	instead of economy, cylinders, ...
+[Friday, April 06, 2012] [11:09:46 AM] <ogzy>	and the numbers on the lines will ports
+[Friday, April 06, 2012] [11:09:48 AM] <l4rry>	the 1st one, exposedata looks pretty good
+[Friday, April 06, 2012] [11:10:01 AM] <ogzy>	yes i can make something like that too
+[Friday, April 06, 2012] [11:10:02 AM] <l4rry>	yep
+[Friday, April 06, 2012] [11:10:18 AM] <ogzy>	the idea will be, ok i have http on 8080, ftp on 21
+[Friday, April 06, 2012] [11:10:30 AM] <ogzy>	or there is a port scanning
+[Friday, April 06, 2012] [11:10:32 AM] <ogzy>	:)
+[Friday, April 06, 2012] [11:10:39 AM] <l4rry>	yes
+[Friday, April 06, 2012] [11:10:43 AM] <ogzy>	parallel coordinates are nice to visualizae thme
+[Friday, April 06, 2012] [11:11:07 AM] <ogzy>	and at treemaps, oh there is huge communication occured at port 21, ok it is ftp, for ex
+[Friday, April 06, 2012] [11:11:35 AM] <ogzy>	these will be my first aim till the midterm :)
+[Friday, April 06, 2012] [11:11:47 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:11:49 AM] <ogzy>	at least i plan to make them work for some protocols
+[Friday, April 06, 2012] [11:11:59 AM] <ogzy>	and there will be a scatterplot part
+[Friday, April 06, 2012] [11:12:06 AM] <ogzy>	http://mbostock.github.com/protovis/ex/dot.html
+[Friday, April 06, 2012] [11:12:19 AM] <ogzy>	it will display the overall protocols
+[Friday, April 06, 2012] [11:12:40 AM] <l4rry>	like what? what is x and y and size?
+[Friday, April 06, 2012] [11:12:45 AM] <ogzy>	x will be port number, y will be the count
+[Friday, April 06, 2012] [11:12:47 AM] <l4rry>	and color
+[Friday, April 06, 2012] [11:12:52 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:12:56 AM] <ogzy>	the circles will be tcp udp ftp
+[Friday, April 06, 2012] [11:13:11 AM] <ogzy>	their size will be propotional to count
+[Friday, April 06, 2012] [11:13:27 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:14:01 AM] <ogzy>	if there is traffic at a port that is not general
+[Friday, April 06, 2012] [11:14:06 AM] <l4rry>	so for all that to work, most importantly would be to disect the pcap and extract the relevant info
+[Friday, April 06, 2012] [11:14:14 AM] <ogzy>	yes exatly
+[Friday, April 06, 2012] [11:14:36 AM] <ogzy>	if the port and protocol are not matching, like 8888 at htttp the color will be red for x
+[Friday, April 06, 2012] [11:14:44 AM] <ogzy>	for x = for ex
+[Friday, April 06, 2012] [11:14:57 AM] <ogzy>	this will be second issue after midterm
+[Friday, April 06, 2012] [11:15:30 AM] <ogzy>	and we will be looking at the web interface and saying ok lets add this feature, most probably
+[Friday, April 06, 2012] [11:15:45 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:15:59 AM] <ogzy>	any questions?
+[Friday, April 06, 2012] [11:17:16 AM] <l4rry>	not for the moment
+[Friday, April 06, 2012] [11:17:41 AM] <ogzy>	i will start with writing parsers, keeping the information
+[Friday, April 06, 2012] [11:17:57 AM] <ogzy>	will take into consideration some protocols at the first sight
+[Friday, April 06, 2012] [11:18:00 AM] <ogzy>	visualizae them
+[Friday, April 06, 2012] [11:18:07 AM] <ogzy>	also a malware plugin
+[Friday, April 06, 2012] [11:18:17 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:18:38 AM] <ogzy>	if i can set this work out, cuckoo plugin will be also possible
+[Friday, April 06, 2012] [11:18:40 AM] <l4rry>	what's your background / strenght?
+[Friday, April 06, 2012] [11:18:49 AM] <ogzy>	what do you mean?
+[Friday, April 06, 2012] [11:18:52 AM] <ogzy>	my education?
+[Friday, April 06, 2012] [11:19:00 AM] <l4rry>	education and interest
+[Friday, April 06, 2012] [11:19:08 AM] <ogzy>	i am a ph.d student
+[Friday, April 06, 2012] [11:19:23 AM] <l4rry>	what's your thesis about?
+[Friday, April 06, 2012] [11:19:39 AM] <ogzy>	network anomaly detection using security visualization
+[Friday, April 06, 2012] [11:19:51 AM] <ogzy>	made my master on anomaly detection also
+[Friday, April 06, 2012] [11:19:56 AM] <ogzy>	did you read my proposal? :)
+[Friday, April 06, 2012] [11:20:10 AM] <l4rry>	not yet actually, will do now
+[Friday, April 06, 2012] [11:20:18 AM] <ogzy>	all are written there
+[Friday, April 06, 2012] [11:20:30 AM] <l4rry>	ok :) 
+[Friday, April 06, 2012] [11:20:45 AM] <ogzy>	what else
+[Friday, April 06, 2012] [11:26:12 AM] <l4rry>	not familiar with melange, could you please tell me where is your proposal?
+[Friday, April 06, 2012] [11:26:42 AM] <l4rry>	i guess I also need to sign-up as mentor, don't i?
+[Friday, April 06, 2012] [11:28:02 AM] <ogzy>	https://google-melange.appspot.com/gsoc/proposal/review/google/gsoc2012/oguzy/38004
+[Friday, April 06, 2012] [11:28:13 AM] <ogzy>	lucas knows my proposal also
+[Friday, April 06, 2012] [11:28:24 AM] <ogzy>	he already made a comment when i submited
+[Friday, April 06, 2012] [11:28:36 AM] <ogzy>	lukas_honeynet is the nick
+[Friday, April 06, 2012] [11:28:48 AM] <l4rry>	yes, know him well
+[Friday, April 06, 2012] [11:29:02 AM] <ogzy>	you may ask him the mentoring  part of melange
+[Friday, April 06, 2012] [11:29:06 AM] <ogzy>	i don't know that part
+[Friday, April 06, 2012] [11:29:31 AM] <l4rry>	where do sign in as student?
+[Friday, April 06, 2012] [11:29:35 AM] <ogzy>	yes
+[Friday, April 06, 2012] [11:29:42 AM] <ogzy>	any problem?
+[Friday, April 06, 2012] [11:29:59 AM] <l4rry>	can't see your proposal as i am not yet a mentor
+[Friday, April 06, 2012] [11:30:04 AM] <ogzy>	:)
+[Friday, April 06, 2012] [11:30:12 AM] <l4rry>	i need to register
+[Friday, April 06, 2012] [11:30:15 AM] <ogzy>	wait
+[Friday, April 06, 2012] [11:30:29 AM] <ogzy>	i can make my proposal public
+[Friday, April 06, 2012] [11:30:50 AM] <ogzy>	try again
+[Friday, April 06, 2012] [11:30:50 AM] <l4rry>	no, pb, found it
+[Friday, April 06, 2012] [11:30:54 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:31:10 AM] <ogzy>	i need to go now for lunch
+[Friday, April 06, 2012] [11:31:15 AM] <ogzy>	will return in 1 hour
+[Friday, April 06, 2012] [11:31:25 AM] <ogzy>	message / mail me if any questions
+[Friday, April 06, 2012] [11:31:44 AM] <l4rry>	ok, sure, enjoy your lunch
+[Friday, April 06, 2012] [11:31:49 AM] <ogzy>	see you
+[Friday, April 06, 2012] [11:44:14 AM] Quit	l4rry has left this server (Ping timeout: 246 seconds).
+[Friday, April 06, 2012] [11:47:17 AM] Quit	l4rry has left this server (Remote host closed the connection).
+
+*** Logfile started
+*** on Fri Apr 6 12:30:19 2012
+
+[Friday, April 06, 2012] [12:30:19 PM] <l4rry>	i think you should probably replace that the project is to replace netwitness (though it's true)
+[Friday, April 06, 2012] [12:30:52 PM] <l4rry>	i was trying to play with it now but it does not work (can't import - size = 0)
+[Friday, April 06, 2012] [12:32:27 PM] <l4rry>	btw, i applied as mentor, pending approval
+[Friday, April 06, 2012] [12:34:45 PM] <l4rry>	did you see http://netwitness.com/resources/videos/investigator-tutorial-1-overview-navigation ?
+[Friday, April 06, 2012] [12:45:07 PM] <ogzy>	checking now
+[Friday, April 06, 2012] [12:49:53 PM] <ogzy>	so you suggest me to update the proposal?
+[Friday, April 06, 2012] [12:51:33 PM] <l4rry>	at least to remove the "For the long term, the aim will be the open alternative for http://netwitness.com/products-services/investigator" 
+[Friday, April 06, 2012] [12:52:02 PM] <l4rry>	though it's indeed the aim
+[Friday, April 06, 2012] [12:52:44 PM] <ogzy>	ok i am updating
+[Friday, April 06, 2012] [12:52:56 PM] <l4rry>	thx
+[Friday, April 06, 2012] [12:53:58 PM] <ogzy>	also adding comments what we talked so far
+[Friday, April 06, 2012] [12:54:07 PM] <ogzy>	like visualization parts, dpkt usage
+[Friday, April 06, 2012] [12:54:41 PM] <l4rry>	ok
+[Friday, April 06, 2012] [12:55:30 PM] <l4rry>	one question, for you, it it a one-off or you plan to continue working on it even after gsoc?
+[Friday, April 06, 2012] [12:59:49 PM] <ogzy>	as i said at my proposal, i would like to continue developing it
+[Friday, April 06, 2012] [01:01:23 PM] <l4rry>	good :)
+[Friday, April 06, 2012] [01:02:16 PM] <ogzy>	there can be many improvements at the project
+[Friday, April 06, 2012] [01:02:28 PM] <ogzy>	I even think becoming a mentor of it at the following years :)
+[Friday, April 06, 2012] [01:02:30 PM] <l4rry>	yes, exactly
+[Friday, April 06, 2012] [01:05:10 PM] <l4rry>	if you look in the options of netwitness, in the process section, you can find what they capture/store by default
+[Friday, April 06, 2012] [01:06:20 PM] <ogzy>	they keep the header information :)
+[Friday, April 06, 2012] [01:06:33 PM] <ogzy>	which you dont want :)
+[Friday, April 06, 2012] [01:07:36 PM] <ogzy>	basic information about the traffic like IP (geo location also), port, file information carried are mentioned
+[Friday, April 06, 2012] [01:07:54 PM] <l4rry>	well, it's not I don't want and you said in proposal:
+[Friday, April 06, 2012] [01:07:56 PM] <l4rry>	I am planning to use Scapy/Dpkt to handle pcap files and get the header information. I plan to save as much information as possible to the database. The payload will be saved also for malware analysis. 
+[Friday, April 06, 2012] [01:08:18 PM] <ogzy>	ok, i mean the displaying information part
+[Friday, April 06, 2012] [01:08:55 PM] <ogzy>	not yet another pcapr but i better display every usefull information for the packets
+[Friday, April 06, 2012] [01:09:16 PM] <ogzy>	netwitness have search
+[Friday, April 06, 2012] [01:09:29 PM] <l4rry>	yes, exactly, useful info
+[Friday, April 06, 2012] [01:17:32 PM] <ogzy>	updated
+[Friday, April 06, 2012] [01:17:43 PM] <ogzy>	also added a comment what we talked
+[Friday, April 06, 2012] [01:18:01 PM] <l4rry>	good
+[Friday, April 06, 2012] [01:58:43 PM] <l4rry>	http://gutterchurl.blogspot.com/ <-- some more tools to compete with (and get good ideas from them) ;)
+[Friday, April 06, 2012] [02:10:27 PM] <ogzy>	checking
+[Friday, April 06, 2012] [02:11:07 PM] <l4rry>	and besides pcapr, here is another repository to test our tools later https://www.openpacket.org/capture/by_category?category=Malicious
+[Friday, April 06, 2012] [02:18:47 PM] <l4rry>	for each decoded/parsed content, we could have a summary table like: http://www.xplico.org/wp-content/uploads/2008/11/xwi_emails_list.png (for collected emails)
+[Friday, April 06, 2012] [02:19:06 PM] <l4rry>	or http://www.xplico.org/wp-content/uploads/2008/11/xwi_http_list.png
+[Friday, April 06, 2012] [02:22:22 PM] <l4rry>	and by command line, some ideas: http://www.netresec.com/?page=Blog&month=2011-03&post=Command-line-Network-Forensics-with-NetworkMinerCLI
+[Friday, April 06, 2012] [02:32:27 PM] <l4rry>	http://www.netresec.com/?page=SplitCap --> http://sourceforge.net/projects/spid/ --> SPID Statistical Protocol IDentification
+[Friday, April 06, 2012] [02:32:29 PM] <l4rry>	A proof-of-concept application of the Statistical Protocol IDentification (SPID) algorithm. SPID can detect the application layer protocol (layer 7) by analysing flow (packet sizes etc.) and payload statistics (byte values etc.) from pcap files.
+[Friday, April 06, 2012] [02:38:16 PM] <l4rry>	ok, ogzy i need to go
+[Friday, April 06, 2012] [02:38:35 PM] <l4rry>	if you have any question/comment, feel free to send me emails
+[Friday, April 06, 2012] [02:42:28 PM] <ogzy>	ok was checking what you sent
+[Friday, April 06, 2012] [02:42:37 PM] <ogzy>	ok please reply me when i sent mails
+[Friday, April 06, 2012] [02:42:47 PM] <l4rry>	ok :)
+[Friday, April 06, 2012] [02:42:50 PM] <ogzy>	writing i read it will return is even fine :)
+[Friday, April 06, 2012] [02:42:57 PM] <ogzy>	what is your email by the way :)
+[Friday, April 06, 2012] [02:43:05 PM] <ogzy>	aa david has sent us emails
+[Friday, April 06, 2012] [02:43:10 PM] <ogzy>	ok i know it
+[Friday, April 06, 2012] [02:43:11 PM] <l4rry>	nicolas.collery@gmail.com
+[Friday, April 06, 2012] [02:43:16 PM] <ogzy>	ok
+[Friday, April 06, 2012] [02:43:39 PM] <l4rry>	or ncollery@honeynet.sg
+[Friday, April 06, 2012] [02:43:44 PM] <ogzy>	ok
+[Friday, April 06, 2012] [02:44:03 PM] <l4rry>	i am very excited abt this project
+[Friday, April 06, 2012] [02:44:07 PM] <ogzy>	me too
+[Friday, April 06, 2012] [02:44:28 PM] <l4rry>	I just hope to have enough time to spare for you
+[Friday, April 06, 2012] [02:44:38 PM] <ogzy>	ok i can go alone
+[Friday, April 06, 2012] [02:44:45 PM] <ogzy>	but there will be times we should talk about it
+[Friday, April 06, 2012] [02:44:54 PM] <ogzy>	my idea is to use a issue tracker
+[Friday, April 06, 2012] [02:44:57 PM] <ogzy>	git
+[Friday, April 06, 2012] [02:44:57 PM] <l4rry>	shall we have a place to collect links
+[Friday, April 06, 2012] [02:45:03 PM] <l4rry>	exactly
+[Friday, April 06, 2012] [02:45:06 PM] <ogzy>	what links?
+[Friday, April 06, 2012] [02:45:37 PM] <ogzy>	the links that you sent here?
+[Friday, April 06, 2012] [02:45:40 PM] <l4rry>	i mean anything we find along the way, ideas, links to other websites, to do,  ...
+[Friday, April 06, 2012] [02:45:44 PM] <ogzy>	i see
+[Friday, April 06, 2012] [02:45:49 PM] <ogzy>	i saev them at delicious
+[Friday, April 06, 2012] [02:45:54 PM] <l4rry>	ok
+[Friday, April 06, 2012] [02:45:56 PM] <ogzy>	and i save the the logs also :)
+[Friday, April 06, 2012] [02:46:01 PM] <ogzy>	at my github account
+[Friday, April 06, 2012] [02:46:07 PM] <l4rry>	ok
+[Friday, April 06, 2012] [02:46:10 PM] <ogzy>	so i have irc logs
+[Friday, April 06, 2012] [02:46:25 PM] <l4rry>	all good then
+[Friday, April 06, 2012] [02:46:41 PM] <ogzy>	after honeynet gave me the git account and redmine
+[Friday, April 06, 2012] [02:46:48 PM] <ogzy>	we will be adding what we had
+[Friday, April 06, 2012] [02:46:55 PM] <ogzy>	or i have github micro student account :)
+[Friday, April 06, 2012] [02:46:56 PM] <l4rry>	good
+[Friday, April 06, 2012] [02:47:02 PM] <ogzy>	a private repo we will be working
+[Friday, April 06, 2012] [02:47:05 PM] <ogzy>	adding issues
+[Friday, April 06, 2012] [02:47:14 PM] <ogzy>	so you dont need to follow everything
+[Friday, April 06, 2012] [02:47:24 PM] <ogzy>	but at least we should be having meetings with you
+[Friday, April 06, 2012] [02:47:28 PM] <ogzy>	waht will done 
+[Friday, April 06, 2012] [02:47:41 PM] <ogzy>	a kind os agile development
+[Friday, April 06, 2012] [02:47:44 PM] <ogzy>	os = of
+[Friday, April 06, 2012] [02:47:52 PM] <l4rry>	sounds  good to me
+[Friday, April 06, 2012] [02:48:03 PM] <ogzy>	so no worry about your business
+[Friday, April 06, 2012] [02:48:09 PM] <l4rry>	:)
+[Friday, April 06, 2012] [02:48:17 PM] <ogzy>	we will be working so that you will be monitoring me easily
+[Friday, April 06, 2012] [02:48:21 PM] <ogzy>	what i want is
+[Friday, April 06, 2012] [02:48:26 PM] <ogzy>	return me when necessary
+[Friday, April 06, 2012] [02:48:32 PM] <ogzy>	when you want to say something
+[Friday, April 06, 2012] [02:48:33 PM] <l4rry>	sure, will do
+[Friday, April 06, 2012] [02:48:48 PM] <ogzy>	writing even ok i read the mail, will return you asap is even something
+[Friday, April 06, 2012] [02:49:04 PM] <l4rry>	definitely, I'll do that
+[Friday, April 06, 2012] [02:49:08 PM] <ogzy>	you better go if you want
+[Friday, April 06, 2012] [02:49:33 PM] <l4rry>	hehe, ok, have a good day
+[Friday, April 06, 2012] [02:49:45 PM] <ogzy>	see you
+[Friday, April 06, 2012] [02:49:46 PM] <l4rry>	thanks for your detailed proposal

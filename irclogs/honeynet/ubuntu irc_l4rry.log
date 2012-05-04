@@ -1,0 +1,396 @@
+
+*** Logfile started
+*** on Thu Apr 5 11:34:43 2012
+
+[Thursday, April 05, 2012] [11:34:43 AM] <l4rry>	hey ogzy 
+[Thursday, April 05, 2012] [12:36:14 PM] <ogzy>	hi 
+[Thursday, April 05, 2012] [12:36:19 PM] <ogzy>	i was out for lunch
+[Thursday, April 05, 2012] [12:36:36 PM] <ogzy>	what can i do for you :)
+[Thursday, April 05, 2012] [12:38:16 PM] <l4rry>	pong ogzy 
+[Thursday, April 05, 2012] [12:38:34 PM] <l4rry>	just to chat about the gsoc 5
+[Thursday, April 05, 2012] [12:38:47 PM] <l4rry>	read your email, it's interesting
+[Thursday, April 05, 2012] [12:38:58 PM] <ogzy>	ok we can chat
+[Thursday, April 05, 2012] [12:39:37 PM] <ogzy>	i checked the na source code
+[Thursday, April 05, 2012] [12:39:58 PM] <ogzy>	the uptime robot, it is almost same as the site status project
+[Thursday, April 05, 2012] [12:40:34 PM] <l4rry>	what's na?
+[Thursday, April 05, 2012] [12:41:03 PM] <ogzy>	network administrator
+[Thursday, April 05, 2012] [12:41:42 PM] <l4rry>	oh, ok
+[Thursday, April 05, 2012] [12:42:00 PM] <ogzy>	so any comment?
+[Thursday, April 05, 2012] [12:42:02 PM] <ogzy>	suggestion?
+[Thursday, April 05, 2012] [12:42:15 PM] <l4rry>	for the viz i was thinking about a timeline like in ida pro
+[Thursday, April 05, 2012] [12:42:28 PM] <ogzy>	what is ida pro?
+[Thursday, April 05, 2012] [12:42:30 PM] <l4rry>	http://kienmanowar.files.wordpress.com/2008/09/ida1.png?w=614
+[Thursday, April 05, 2012] [12:42:40 PM] <l4rry>	it's a reverse engineering tool
+[Thursday, April 05, 2012] [12:42:51 PM] <l4rry>	on top of the image, there is a colored bar
+[Thursday, April 05, 2012] [12:43:02 PM] <ogzy>	aa i see
+[Thursday, April 05, 2012] [12:43:07 PM] <l4rry>	color could be 1 protocol
+[Thursday, April 05, 2012] [12:43:13 PM] <ogzy>	ok i see what you mean
+[Thursday, April 05, 2012] [12:43:15 PM] <l4rry>	and lenght the duration
+[Thursday, April 05, 2012] [12:43:20 PM] <ogzy>	let me find a better example
+[Thursday, April 05, 2012] [12:43:23 PM] <ogzy>	:)
+[Thursday, April 05, 2012] [12:43:34 PM] <l4rry>	i also found http://www.simile-widgets.org/timeline/
+[Thursday, April 05, 2012] [12:43:47 PM] <l4rry>	or http://cominganarchy.com/wordpress/wp-content/uploads/2009/07/timeline-of-world-religion3.jpg
+[Thursday, April 05, 2012] [12:44:03 PM] <l4rry>	or even http://docs.splunk.com/images/0/01/Select_range_in_timeline.png
+[Thursday, April 05, 2012] [12:45:02 PM] <ogzy>	i liked http://www.simile-widgets.org/timeline/
+[Thursday, April 05, 2012] [12:46:27 PM] <ogzy>	there may be more visualizations also indeed
+[Thursday, April 05, 2012] [12:47:36 PM] <ogzy>	a node link representation for ex
+[Thursday, April 05, 2012] [12:47:52 PM] <ogzy>	http://mbostock.github.com/d3/ex/force.html
+[Thursday, April 05, 2012] [12:47:56 PM] <l4rry>	where do you see na? 
+[Thursday, April 05, 2012] [12:48:09 PM] <l4rry>	yes, very good
+[Thursday, April 05, 2012] [12:48:11 PM] <ogzy>	sorry na is not related what we are talking now
+[Thursday, April 05, 2012] [12:48:18 PM] <l4rry>	haha, ok
+[Thursday, April 05, 2012] [12:49:03 PM] <ogzy>	i thought we are talking about an umit project :)
+[Thursday, April 05, 2012] [12:49:14 PM] <ogzy>	i was not expecting you on irc
+[Thursday, April 05, 2012] [12:49:23 PM] <ogzy>	sorry for misunderstanding
+[Thursday, April 05, 2012] [12:49:27 PM] <ogzy>	i liked the visualizations
+[Thursday, April 05, 2012] [12:49:32 PM] <l4rry>	in fact the project i had in mind is to replace netwitness investigator, in an opensource and platform independant fashion
+[Thursday, April 05, 2012] [12:49:41 PM] <ogzy>	i get your aim
+[Thursday, April 05, 2012] [12:49:50 PM] <l4rry>	:)
+[Thursday, April 05, 2012] [12:49:53 PM] <ogzy>	thats why it impressed me
+[Thursday, April 05, 2012] [12:49:58 PM] <l4rry>	great
+[Thursday, April 05, 2012] [12:50:03 PM] <ogzy>	can we go over the problems i have
+[Thursday, April 05, 2012] [12:50:09 PM] <l4rry>	sure
+[Thursday, April 05, 2012] [12:50:18 PM] <ogzy>	one question is: how will i detect the application level proto
+[Thursday, April 05, 2012] [12:50:42 PM] <ogzy>	did you mention a solution at your mail, i didn't see it
+[Thursday, April 05, 2012] [12:51:12 PM] <ogzy>	lets talk about it first :)
+[Thursday, April 05, 2012] [12:54:37 PM] <ogzy>	i have some more questions also :)
+[Thursday, April 05, 2012] [12:54:51 PM] <ogzy>	so better to go over them step by step
+[Thursday, April 05, 2012] [12:55:17 PM] <l4rry>	ok, for detection, I am thinking of few steps
+[Thursday, April 05, 2012] [12:55:33 PM] <l4rry>	1/ on a std port, is it the expected proto
+[Thursday, April 05, 2012] [12:55:43 PM] <l4rry>	with try/except for example
+[Thursday, April 05, 2012] [12:56:03 PM] <l4rry>	2/ if not, is it another known proto?
+[Thursday, April 05, 2012] [12:56:15 PM] <l4rry>	3/ if not, then mark as unknown
+[Thursday, April 05, 2012] [12:56:33 PM] <l4rry>	for the known proto, we should have dissectors or parsers
+[Thursday, April 05, 2012] [12:57:09 PM] <ogzy>	ok lets go over it one by one,
+[Thursday, April 05, 2012] [12:57:11 PM] <l4rry>	at first we can focus on some easy ones but the solution should allow devellopemt of customs parser
+[Thursday, April 05, 2012] [12:57:31 PM] <ogzy>	 1/ on a std port, is it the expected proto: so lets say i have an http traffic on port 8881
+[Thursday, April 05, 2012] [12:57:36 PM] <ogzy>	i checked the port
+[Thursday, April 05, 2012] [12:57:43 PM] <ogzy>	it is 8881, what then :)
+[Thursday, April 05, 2012] [12:58:16 PM] <l4rry>	8881, is it known? probably not (at least at the beginning until we write a parser for it)
+[Thursday, April 05, 2012] [12:58:22 PM] <ogzy>	ok no
+[Thursday, April 05, 2012] [12:58:27 PM] <l4rry>	so is it dns? yes/no
+[Thursday, April 05, 2012] [12:58:34 PM] <l4rry>	ist it http? yes/no
+[Thursday, April 05, 2012] [12:58:35 PM] <ogzy>	how will i understand it is dns?
+[Thursday, April 05, 2012] [12:58:36 PM] <l4rry>	and so on
+[Thursday, April 05, 2012] [12:58:40 PM] <ogzy>	this is the question :)
+[Thursday, April 05, 2012] [12:58:57 PM] <ogzy>	let me be more specific 
+[Thursday, April 05, 2012] [12:59:06 PM] <l4rry>	2 possibilities, either relying on existing libs, like libpcap/dpkt/pcapy or scapy
+[Thursday, April 05, 2012] [12:59:14 PM] <l4rry>	or by checking the RFC
+[Thursday, April 05, 2012] [12:59:28 PM] <ogzy>	the libraries are only for header reading
+[Thursday, April 05, 2012] [12:59:32 PM] <ogzy>	payload getting
+[Thursday, April 05, 2012] [12:59:37 PM] <ogzy>	ok RFC is a solution
+[Thursday, April 05, 2012] [12:59:57 PM] <l4rry>	    def check_eth(self):
+[Thursday, April 05, 2012] [12:59:57 PM] <l4rry>	        return self.eth.type != dpkt.ethernet.ETH_TYPE_IP
+[Thursday, April 05, 2012] [12:59:57 PM] <l4rry>	    def check_ip(self):
+[Thursday, April 05, 2012] [12:59:58 PM] <ogzy>	i can check the headers, communication, flags, payload and may say ok it looks like MSN :)
+[Thursday, April 05, 2012] [12:59:58 PM] <l4rry>	        return self.ip.p != dpkt.ip.IP_PROTO_TCP
+[Thursday, April 05, 2012] [01:00:33 PM] <ogzy>	return self.ip.p != dpkt.ip.IP_PROTO_TCP the returning thing is number 
+[Thursday, April 05, 2012] [01:01:00 PM] <ogzy>	looking at the port and decidig the protocol is not a good idea 
+[Thursday, April 05, 2012] [01:01:07 PM] <l4rry>	yes, it might look like MSN, now, if you apply the MSN parser, is it compliant? if yes, good parse and display, if not, then either throw an exception and mark as "probably MSN, but with anomaly"
+[Thursday, April 05, 2012] [01:01:09 PM] <ogzy>	lets say i have ssh on port 80
+[Thursday, April 05, 2012] [01:01:38 PM] <l4rry>	or display what you know about the MSN info (headers ok? data ok? ...)
+[Thursday, April 05, 2012] [01:01:44 PM] <l4rry>	ok, for port 80
+[Thursday, April 05, 2012] [01:02:19 PM] <ogzy>	so what you mean by parser is reading the headers and comparing with RFC
+[Thursday, April 05, 2012] [01:02:28 PM] <ogzy>	it is a fingerprinting indeed right
+[Thursday, April 05, 2012] [01:02:32 PM] <ogzy>	i can do it
+[Thursday, April 05, 2012] [01:02:36 PM] <ogzy>	there is no problem with it
+[Thursday, April 05, 2012] [01:02:47 PM] <ogzy>	but i don't want to invent the wheel again :)
+[Thursday, April 05, 2012] [01:02:51 PM] <l4rry>	let me find something I wrote
+[Thursday, April 05, 2012] [01:02:53 PM] <ogzy>	if there is a tool already doing it
+[Thursday, April 05, 2012] [01:03:07 PM] <ogzy>	ok i am waiting
+[Thursday, April 05, 2012] [01:03:32 PM] <l4rry>	http://honeynet.org/challenges/2010_2_browsers_under_attack
+[Thursday, April 05, 2012] [01:03:42 PM] <l4rry>	http://honeynet.org/files/Forensic%20Challenge%202010_-_Challenge_2_-_Solution.doc
+[Thursday, April 05, 2012] [01:04:28 PM] <l4rry>	p38
+[Thursday, April 05, 2012] [01:04:45 PM] <l4rry>	pcap2httpflow.py
+[Thursday, April 05, 2012] [01:05:54 PM] <l4rry>	basically i looked for ip, if ok, then tcp, if ok, for http, if ok then javascript
+[Thursday, April 05, 2012] [01:07:27 PM] <ogzy>	and for http you check whether it includes content-encoding 
+[Thursday, April 05, 2012] [01:07:44 PM] <ogzy>	at the headers
+[Thursday, April 05, 2012] [01:07:56 PM] <l4rry>	                stream = self.conn[tupl]
+[Thursday, April 05, 2012] [01:07:56 PM] <l4rry>	                if stream[:4] == 'HTTP':
+[Thursday, April 05, 2012] [01:07:57 PM] <l4rry>	                    http = dpkt.http.Response(stream)
+[Thursday, April 05, 2012] [01:08:20 PM] <l4rry>	then, yes, look at the content-encoding
+[Thursday, April 05, 2012] [01:08:49 PM] <l4rry>	if gzip, then gunzip, it text/html, no pb and so on
+[Thursday, April 05, 2012] [01:09:14 PM] <l4rry>	the script was just a PoC to solve the problem (extracting shellcode from javascript)
+[Thursday, April 05, 2012] [01:09:37 PM] <l4rry>	we could work on pcap like a tree
+[Thursday, April 05, 2012] [01:10:15 PM] <l4rry>	and maybe even on the representation level, like directories in windows explorer
+[Thursday, April 05, 2012] [01:10:29 PM] <ogzy>	ok then dport is what you look for 
+[Thursday, April 05, 2012] [01:10:45 PM] <l4rry>	initially yes, to see if on 80 it's http
+[Thursday, April 05, 2012] [01:11:08 PM] <l4rry>	so, for ex, what about 8080 or 1080, often use as http
+[Thursday, April 05, 2012] [01:11:52 PM] <ogzy>	ok how do you understand it is really http on 8881 according to your code?
+[Thursday, April 05, 2012] [01:12:29 PM] <l4rry>	            try:
+[Thursday, April 05, 2012] [01:12:30 PM] <l4rry>	                stream = self.conn[tupl]
+[Thursday, April 05, 2012] [01:12:30 PM] <l4rry>	                if stream[:4] == 'HTTP':
+[Thursday, April 05, 2012] [01:12:30 PM] <l4rry>	                    http = dpkt.http.Response(stream)
+[Thursday, April 05, 2012] [01:12:47 PM] <l4rry>	except: "try another parser"
+[Thursday, April 05, 2012] [01:13:10 PM] <l4rry>	ot we could use yara, to make signatures
+[Thursday, April 05, 2012] [01:13:52 PM] <ogzy>	just to make clearer
+[Thursday, April 05, 2012] [01:14:13 PM] <ogzy>	[13:12] <l4rry>             try:
+[Thursday, April 05, 2012] [01:14:13 PM] <ogzy>	[13:12] <l4rry>                 stream = self.conn[tupl]
+[Thursday, April 05, 2012] [01:14:13 PM] <ogzy>	[13:12] <l4rry>                 if stream[:4] == 'HTTP':
+[Thursday, April 05, 2012] [01:14:13 PM] <ogzy>	[13:12] <l4rry>                     http = dpkt.http.Response(stream)
+[Thursday, April 05, 2012] [01:14:55 PM] <ogzy>	the stream tupl wont have HTTP inside according to 8881 example 
+[Thursday, April 05, 2012] [01:15:08 PM] <ogzy>	am i right?
+[Thursday, April 05, 2012] [01:15:46 PM] <l4rry>	if it is http traffic on unknown port, it should contain 'HTTP'
+[Thursday, April 05, 2012] [01:15:51 PM] <l4rry>	http://jon.oberheide.org/blog/2008/12/20/dpkt-tutorial-3-dns-spoofing/
+[Thursday, April 05, 2012] [01:16:07 PM] <l4rry>	or http://mishou.org/2010/04/13/passive-dns-mining-from-pcap-with-dpkt-python/
+[Thursday, April 05, 2012] [01:17:22 PM] <l4rry>	if udp.sport != 53 and udp.dport != 53: continue
+[Thursday, April 05, 2012] [01:17:22 PM] <l4rry>	try: dns = dpkt.dns.DNS(udp.data)
+[Thursday, April 05, 2012] [01:17:22 PM] <l4rry>	except: continue
+[Thursday, April 05, 2012] [01:17:22 PM] <l4rry>	...
+[Thursday, April 05, 2012] [01:17:51 PM] <l4rry>	it should work if the list of possible known proto are not super long
+[Thursday, April 05, 2012] [01:18:07 PM] <l4rry>	but i am expecting to 'know' most traffic
+[Thursday, April 05, 2012] [01:18:42 PM] <l4rry>	the 'brute force' part should be minimum, particularly when the database grows
+[Thursday, April 05, 2012] [01:18:53 PM] <l4rry>	am i making sense?
+[Thursday, April 05, 2012] [01:19:31 PM] <ogzy>	i am a bit confused
+[Thursday, April 05, 2012] [01:19:51 PM] <ogzy>	how dpkt understand a protocol?
+[Thursday, April 05, 2012] [01:19:59 PM] <l4rry>	rfc
+[Thursday, April 05, 2012] [01:20:18 PM] <ogzy>	ok not just by looking at proto then :)
+[Thursday, April 05, 2012] [01:20:22 PM] <ogzy>	that makes sense now
+[Thursday, April 05, 2012] [01:20:41 PM] <l4rry>	example of dns: http://code.google.com/p/dpkt/source/browse/trunk/dpkt/dns.py
+[Thursday, April 05, 2012] [01:20:42 PM] <ogzy>	proto = port
+[Thursday, April 05, 2012] [01:20:56 PM] <l4rry>	known proto: http://code.google.com/p/dpkt/source/browse/trunk/dpkt/
+[Thursday, April 05, 2012] [01:21:28 PM] <l4rry>	but we could rely on it first and possibly contribute by extending the dpkt lib later ...
+[Thursday, April 05, 2012] [01:21:38 PM] <ogzy>	o i see now
+[Thursday, April 05, 2012] [01:21:49 PM] <ogzy>	i will play with dpkt a bit
+[Thursday, April 05, 2012] [01:21:51 PM] <ogzy>	i got this part
+[Thursday, April 05, 2012] [01:21:56 PM] <l4rry>	great
+[Thursday, April 05, 2012] [01:22:05 PM] <ogzy>	lets continue another issue
+[Thursday, April 05, 2012] [01:22:18 PM] <ogzy>	pcapr-local displays many information
+[Thursday, April 05, 2012] [01:22:21 PM] <ogzy>	it works at local machine
+[Thursday, April 05, 2012] [01:22:47 PM] <ogzy>	when it is required for showing the flow information, pcapr.net site is opened
+[Thursday, April 05, 2012] [01:23:15 PM] <l4rry>	to be honest, I did'nt play much with it
+[Thursday, April 05, 2012] [01:23:27 PM] <ogzy>	no need to play with it
+[Thursday, April 05, 2012] [01:23:28 PM] <l4rry>	isn't xtractr supposed to parse the packets?
+[Thursday, April 05, 2012] [01:23:34 PM] <ogzy>	you know the pcapr interface
+[Thursday, April 05, 2012] [01:23:37 PM] <l4rry>	yes
+[Thursday, April 05, 2012] [01:24:03 PM] <ogzy>	it is a local working one of pcapr
+[Thursday, April 05, 2012] [01:24:13 PM] <l4rry>	and anyway, i was thinking, it is probably better to have standalone analysis
+[Thursday, April 05, 2012] [01:24:14 PM] <ogzy>	running a webserber
+[Thursday, April 05, 2012] [01:24:19 PM] <l4rry>	without web server
+[Thursday, April 05, 2012] [01:24:34 PM] <ogzy>	the web server part is just to display the results
+[Thursday, April 05, 2012] [01:24:48 PM] <ogzy>	let me be more specific
+[Thursday, April 05, 2012] [01:25:00 PM] <ogzy>	you upload the loacl web server pcapr.local, i mean
+[Thursday, April 05, 2012] [01:25:14 PM] <ogzy>	it analtyzes the traffic by using xtractr
+[Thursday, April 05, 2012] [01:25:51 PM] <ogzy>	you may get some bar charts by choosing the analyzed parameters, choosing service type, protocol name for ex
+[Thursday, April 05, 2012] [01:25:57 PM] <l4rry>	yes
+[Thursday, April 05, 2012] [01:26:00 PM] <ogzy>	till now there is no probem
+[Thursday, April 05, 2012] [01:26:05 PM] <l4rry>	ok
+[Thursday, April 05, 2012] [01:26:17 PM] <ogzy>	but what we want is 
+[Thursday, April 05, 2012] [01:26:46 PM] <ogzy>	let me find the link
+[Thursday, April 05, 2012] [01:27:21 PM] <ogzy>	http://www.pcapr.net/view/guillaume.teissier.pas.le.pape/2010/5/3/11/Forensic_challenge_4-http.pcap.html
+[Thursday, April 05, 2012] [01:27:28 PM] <ogzy>	a flow analyzis
+[Thursday, April 05, 2012] [01:27:40 PM] <ogzy>	if you login, a detaşl packet headers will be displayed
+[Thursday, April 05, 2012] [01:29:14 PM] <ogzy>	the problem is
+[Thursday, April 05, 2012] [01:29:41 PM] <ogzy>	if i use pcapr.local and seletc ok man show me the flow analyzes, it redirects to the pcapr.net and opens the site :)
+[Thursday, April 05, 2012] [01:29:52 PM] <ogzy>	uploads the packet information there
+[Thursday, April 05, 2012] [01:30:14 PM] <ogzy>	two things
+[Thursday, April 05, 2012] [01:30:25 PM] <ogzy>	pcapr.net, did a nice thing
+[Thursday, April 05, 2012] [01:30:41 PM] <ogzy>	using their study at the web interface is possible
+[Thursday, April 05, 2012] [01:31:00 PM] <ogzy>	or i may write yet another one :)
+[Thursday, April 05, 2012] [01:31:57 PM] <l4rry>	can't register for some reasons. no emails sent. i'll look at it later
+[Thursday, April 05, 2012] [01:32:28 PM] <l4rry>	well for pcapr it looks good but after thinking, can we do without web server?
+[Thursday, April 05, 2012] [01:32:45 PM] <l4rry>	or just the SimpleHTTPServer?
+[Thursday, April 05, 2012] [01:32:48 PM] <l4rry>	let me explain
+[Thursday, April 05, 2012] [01:33:19 PM] <ogzy>	ok listening
+[Thursday, April 05, 2012] [01:33:29 PM] <l4rry>	sandboxes create usually 1 directory or 1 file per analysis, containing all info found, including the pcap file
+[Thursday, April 05, 2012] [01:33:30 PM] <l4rry>	right?
+[Thursday, April 05, 2012] [01:34:02 PM] <ogzy>	i dont know how they work but i can understand, go on
+[Thursday, April 05, 2012] [01:34:04 PM] <l4rry>	can our solution generate something 'standalone' that can be bundled in the sandboz analysis?
+[Thursday, April 05, 2012] [01:34:11 PM] <l4rry>	does it makes sense to create a sqlite database for each analysis? and store everything on it
+[Thursday, April 05, 2012] [01:34:26 PM] <l4rry>	then eventually have a thin client to display the info
+[Thursday, April 05, 2012] [01:34:33 PM] <ogzy>	where will we display the results then :)
+[Thursday, April 05, 2012] [01:34:42 PM] <ogzy>	a GUI?
+[Thursday, April 05, 2012] [01:34:51 PM] <l4rry>	could be as addon to cuckoo for example
+[Thursday, April 05, 2012] [01:34:59 PM] <l4rry>	web based
+[Thursday, April 05, 2012] [01:35:11 PM] <l4rry>	but like rendered directly from the browser
+[Thursday, April 05, 2012] [01:35:45 PM] <ogzy>	creating a database for each analysis? 
+[Thursday, April 05, 2012] [01:35:48 PM] <l4rry>	the sqlite db would contain the data, and like a csv or xslt we could have the form
+[Thursday, April 05, 2012] [01:35:57 PM] <l4rry>	yes 1 analysis = 1 db
+[Thursday, April 05, 2012] [01:36:06 PM] <ogzy>	what will be the reason?
+[Thursday, April 05, 2012] [01:36:19 PM] <ogzy>	is there a restriction?
+[Thursday, April 05, 2012] [01:36:22 PM] <l4rry>	easy parsing of the analysis
+[Thursday, April 05, 2012] [01:36:27 PM] <l4rry>	no restriction
+[Thursday, April 05, 2012] [01:36:48 PM] <ogzy>	ok when you want to search?
+[Thursday, April 05, 2012] [01:36:49 PM] <l4rry>	just thinking on how to abstract the data, the form and the renderer
+[Thursday, April 05, 2012] [01:37:53 PM] <l4rry>	ok, well to be honnest, it's the first time i am involved in gsoc and I didn't have to look at timeline. when to submit what, when will you research and start coding, when you need to deliver ….
+[Thursday, April 05, 2012] [01:38:01 PM] <l4rry>	basically I just have a need/idea
+[Thursday, April 05, 2012] [01:38:13 PM] <l4rry>	and was hoping someone could help dev it.
+[Thursday, April 05, 2012] [01:38:15 PM] <ogzy>	ok, adding to much todos is not a good idea
+[Thursday, April 05, 2012] [01:38:18 PM] <ogzy>	we will have deadlines
+[Thursday, April 05, 2012] [01:38:23 PM] <l4rry>	so it might already be too late for research
+[Thursday, April 05, 2012] [01:38:29 PM] <l4rry>	ok
+[Thursday, April 05, 2012] [01:38:36 PM] <ogzy>	the current idea is good
+[Thursday, April 05, 2012] [01:38:47 PM] <l4rry>	i guess the scope indeed should be clearly defined
+[Thursday, April 05, 2012] [01:38:54 PM] <ogzy>	spllitng the database or using a single one is not a too much issue if we decide later
+[Thursday, April 05, 2012] [01:39:03 PM] <l4rry>	ok
+[Thursday, April 05, 2012] [01:39:13 PM] <ogzy>	yes we should be strict on what to do
+[Thursday, April 05, 2012] [01:39:37 PM] <l4rry>	for this I'd need you to guide me (funny for a mentor to say ...)
+[Thursday, April 05, 2012] [01:39:43 PM] <ogzy>	no problem
+[Thursday, April 05, 2012] [01:39:48 PM] <ogzy>	we are together at this project
+[Thursday, April 05, 2012] [01:39:53 PM] <l4rry>	and if what i say doesn't make sense, let's refocus
+[Thursday, April 05, 2012] [01:39:54 PM] <ogzy>	you will guide me 
+[Thursday, April 05, 2012] [01:39:58 PM] <l4rry>	:)
+[Thursday, April 05, 2012] [01:40:03 PM] <ogzy>	share the knowledge
+[Thursday, April 05, 2012] [01:40:07 PM] <l4rry>	yep
+[Thursday, April 05, 2012] [01:40:09 PM] <ogzy>	it will be cooperative work
+[Thursday, April 05, 2012] [01:40:15 PM] <l4rry>	cool
+[Thursday, April 05, 2012] [01:40:21 PM] <ogzy>	there is nothing wrong about it
+[Thursday, April 05, 2012] [01:40:29 PM] <ogzy>	ok lets define what we want
+[Thursday, April 05, 2012] [01:40:33 PM] <ogzy>	we want a web interface
+[Thursday, April 05, 2012] [01:40:42 PM] <ogzy>	people will uplod their pcaps
+[Thursday, April 05, 2012] [01:40:47 PM] <ogzy>	and see analyzes
+[Thursday, April 05, 2012] [01:41:17 PM] <ogzy>	the results will be visualizations, packet based information and malware / attack information
+[Thursday, April 05, 2012] [01:41:27 PM] <ogzy>	visualization part we don't have a problem
+[Thursday, April 05, 2012] [01:41:29 PM] <l4rry>	web interface is ok, but it's the cherry on the cake, I am mostly interested on 'command line' tools
+[Thursday, April 05, 2012] [01:41:35 PM] <ogzy>	we will find something usefull
+[Thursday, April 05, 2012] [01:41:49 PM] <l4rry>	yes
+[Thursday, April 05, 2012] [01:42:01 PM] <l4rry>	do you know chaos reader?
+[Thursday, April 05, 2012] [01:42:06 PM] <ogzy>	i used it
+[Thursday, April 05, 2012] [01:42:25 PM] <l4rry>	it takes a pcap as argument and generate some files among which html files
+[Thursday, April 05, 2012] [01:42:30 PM] <ogzy>	yes i know
+[Thursday, April 05, 2012] [01:42:39 PM] <l4rry>	and dump the 'known stuff' on the same dir
+[Thursday, April 05, 2012] [01:42:50 PM] <ogzy>	reading the result is bad :)
+[Thursday, April 05, 2012] [01:42:57 PM] <l4rry>	exactly
+[Thursday, April 05, 2012] [01:43:17 PM] <ogzy>	we want something more
+[Thursday, April 05, 2012] [01:43:18 PM] <l4rry>	hence the new project, but i kinda like the idea that everything resides on a standalone folder
+[Thursday, April 05, 2012] [01:43:38 PM] <l4rry>	yet easy to see the result visualy
+[Thursday, April 05, 2012] [01:44:05 PM] <ogzy>	keeping the analyzed results either at a directory as files, or at a db
+[Thursday, April 05, 2012] [01:44:21 PM] <ogzy>	this shouldnt be the thing we should be thinking for now i think
+[Thursday, April 05, 2012] [01:44:28 PM] <ogzy>	lets think what we want
+[Thursday, April 05, 2012] [01:44:31 PM] <l4rry>	yes, true
+[Thursday, April 05, 2012] [01:44:37 PM] <l4rry>	so if all the viz is done either in javascript, or flash or basically anything on the client side, could it work?
+[Thursday, April 05, 2012] [01:44:46 PM] <ogzy>	we want people use it on Internet :)
+[Thursday, April 05, 2012] [01:44:49 PM] <ogzy>	right?
+[Thursday, April 05, 2012] [01:45:11 PM] <ogzy>	what i dream is something that will be used on Internet
+[Thursday, April 05, 2012] [01:45:16 PM] <l4rry>	hmmm. not sure
+[Thursday, April 05, 2012] [01:45:17 PM] <l4rry>	ok
+[Thursday, April 05, 2012] [01:45:20 PM] <l4rry>	understand
+[Thursday, April 05, 2012] [01:45:36 PM] <l4rry>	but like cuckoo, it should allow standalone too
+[Thursday, April 05, 2012] [01:45:40 PM] <ogzy>	for visualization i am planning to use a javscript library, pull the data from database and visualize it
+[Thursday, April 05, 2012] [01:46:01 PM] <ogzy>	what do you mean by standalone
+[Thursday, April 05, 2012] [01:46:08 PM] <ogzy>	anyone can use it locally?
+[Thursday, April 05, 2012] [01:46:08 PM] <l4rry>	ok, great, then indeed, it doesn't matter if file, directory, db ..
+[Thursday, April 05, 2012] [01:46:11 PM] <l4rry>	yes
+[Thursday, April 05, 2012] [01:46:13 PM] <ogzy>	sure
+[Thursday, April 05, 2012] [01:46:26 PM] <ogzy>	running a development server, will be what will happen
+[Thursday, April 05, 2012] [01:46:34 PM] <ogzy>	thet will open 127.0.0.1:8000 for ex
+[Thursday, April 05, 2012] [01:46:37 PM] <ogzy>	voila :)
+[Thursday, April 05, 2012] [01:46:40 PM] <ogzy>	thats it
+[Thursday, April 05, 2012] [01:46:50 PM] <l4rry>	hehe, sure
+[Thursday, April 05, 2012] [01:47:13 PM] <ogzy>	what kind of information we will display
+[Thursday, April 05, 2012] [01:47:22 PM] <ogzy>	yet another pcapr?
+[Thursday, April 05, 2012] [01:47:27 PM] <l4rry>	by standalone, I meant also as command line and the result to be potentially exportable by hpfeed
+[Thursday, April 05, 2012] [01:47:48 PM] <ogzy>	tell me what do you mean by result?
+[Thursday, April 05, 2012] [01:48:51 PM] <l4rry>	well useful packet content (unlike pcapr, I am not si nterested in the bytes of the flags of the header)
+[Thursday, April 05, 2012] [01:48:52 PM] <ogzy>	i may write an API for ex, and anyone can use this api  will export data in xml format for ex?
+[Thursday, April 05, 2012] [01:49:24 PM] <ogzy>	what is packet content?
+[Thursday, April 05, 2012] [01:49:27 PM] <ogzy>	payload?
+[Thursday, April 05, 2012] [01:49:53 PM] <ogzy>	malware information?
+[Thursday, April 05, 2012] [01:49:57 PM] <l4rry>	yes in a way. what i need is to answer the following question: what is the malware doing
+[Thursday, April 05, 2012] [01:50:13 PM] <ogzy>	ok 
+[Thursday, April 05, 2012] [01:50:37 PM] <ogzy>	this will be done after analyzes, payload part will be sent to the YARA for ex
+[Thursday, April 05, 2012] [01:50:38 PM] <l4rry>	connecting to a C&C, downloading some 'unknown stuff like config file', then starting to send spam
+[Thursday, April 05, 2012] [01:51:05 PM] <l4rry>	then the spam has email that looks like that (visual representation of email)
+[Thursday, April 05, 2012] [01:51:15 PM] <ogzy>	hımmm
+[Thursday, April 05, 2012] [01:51:30 PM] <l4rry>	and eventually focus on the unknown 
+[Thursday, April 05, 2012] [01:51:35 PM] <ogzy>	YARA does not do this
+[Thursday, April 05, 2012] [01:52:03 PM] <l4rry>	well, i need visual representation as much as possible
+[Thursday, April 05, 2012] [01:52:18 PM] <l4rry>	or i would say extraction of content as much as possible
+[Thursday, April 05, 2012] [01:52:28 PM] <ogzy>	ok i get this also
+[Thursday, April 05, 2012] [01:52:42 PM] <ogzy>	i don't have experince with YARA
+[Thursday, April 05, 2012] [01:53:04 PM] <ogzy>	but as i can understand, YARA has rules
+[Thursday, April 05, 2012] [01:53:05 PM] <l4rry>	yara creates signatures, like snort has, and allow matching it
+[Thursday, April 05, 2012] [01:53:11 PM] <ogzy>	yes exactly
+[Thursday, April 05, 2012] [01:53:19 PM] <ogzy>	it does not say it is spam :)
+[Thursday, April 05, 2012] [01:53:24 PM] <l4rry>	no
+[Thursday, April 05, 2012] [01:53:29 PM] <ogzy>	does it?
+[Thursday, April 05, 2012] [01:53:43 PM] <l4rry>	but if you see emails floating in the pcap, it's probably spam
+[Thursday, April 05, 2012] [01:53:54 PM] <ogzy>	i see
+[Thursday, April 05, 2012] [01:53:55 PM] <l4rry>	or at least something to look at
+[Thursday, April 05, 2012] [01:54:03 PM] <ogzy>	ok i get it also
+[Thursday, April 05, 2012] [01:54:24 PM] <ogzy>	we will be visualizing the communication indeed :)
+[Thursday, April 05, 2012] [01:54:30 PM] <l4rry>	do you know foremost? or sorter?
+[Thursday, April 05, 2012] [01:54:36 PM] <l4rry>	yes, exactly
+[Thursday, April 05, 2012] [01:54:37 PM] <ogzy>	no let me google them
+[Thursday, April 05, 2012] [01:54:51 PM] <l4rry>	content displayed at a certain time (sequence)
+[Thursday, April 05, 2012] [01:56:27 PM] <l4rry>	this is why, the force directed graph is beautiful (and i hope we can use something like this), parallel graphs are useful, but they somehow lacks the time essence
+[Thursday, April 05, 2012] [01:56:51 PM] <ogzy>	we don't have to find a single solution for everything :)
+[Thursday, April 05, 2012] [01:56:58 PM] <l4rry>	indeed
+[Thursday, April 05, 2012] [01:57:05 PM] <ogzy>	for IP rletaed com, we can use directed graphs
+[Thursday, April 05, 2012] [01:57:21 PM] <ogzy>	for port displas we can use paraller coordinates
+[Thursday, April 05, 2012] [01:57:32 PM] <l4rry>	possibly
+[Thursday, April 05, 2012] [01:57:38 PM] <ogzy>	for bytes transferred we can use treeemap
+[Thursday, April 05, 2012] [01:57:51 PM] <l4rry>	well with dir graphs we can use colors and possibly size of dots
+[Thursday, April 05, 2012] [01:58:10 PM] <l4rry>	so it is 3 dimensions
+[Thursday, April 05, 2012] [01:58:48 PM] <ogzy>	so for the first phase here is what i will concantrate
+[Thursday, April 05, 2012] [01:58:49 PM] <l4rry>	just looking at http://mbostock.github.com/d3/ there are a lot of nice solutions
+[Thursday, April 05, 2012] [01:58:57 PM] <l4rry>	ok, listening
+[Thursday, April 05, 2012] [01:58:58 PM] <ogzy>	yesi know d3.js
+[Thursday, April 05, 2012] [01:59:15 PM] <ogzy>	upload the photo, analyze it
+[Thursday, April 05, 2012] [01:59:25 PM] <l4rry>	photo?
+[Thursday, April 05, 2012] [01:59:38 PM] <ogzy>	photo = pcap 
+[Thursday, April 05, 2012] [01:59:40 PM] <l4rry>	ok
+[Thursday, April 05, 2012] [02:00:00 PM] <ogzy>	the main aim for me will be using YARA if there exists a binary
+[Thursday, April 05, 2012] [02:00:08 PM] <ogzy>	js analyzing if any
+[Thursday, April 05, 2012] [02:00:13 PM] <ogzy>	and visualizing the data
+[Thursday, April 05, 2012] [02:00:44 PM] <ogzy>	i wont be thinking about yet another pcapr creation
+[Thursday, April 05, 2012] [02:01:09 PM] <l4rry>	please explain "the main aim for me will be using YARA if there exists a binary" and "js analyzing if any"
+[Thursday, April 05, 2012] [02:01:55 PM] <ogzy>	if the traffic is unknown, check the payload, send the binary to the YARA rules
+[Thursday, April 05, 2012] [02:02:15 PM] <ogzy>	if there exists js file at the traffic send it to the service for analyze
+[Thursday, April 05, 2012] [02:04:10 PM] <ogzy>	we want timeline information
+[Thursday, April 05, 2012] [02:05:04 PM] <ogzy>	and visualizations
+[Thursday, April 05, 2012] [02:06:51 PM] <ogzy>	is there a problem till now?
+[Thursday, April 05, 2012] [02:07:20 PM] <ogzy>	we should decide abut visualizations also
+[Thursday, April 05, 2012] [02:07:28 PM] <ogzy>	what will we display
+[Thursday, April 05, 2012] [02:07:39 PM] <ogzy>	which information is required
+[Thursday, April 05, 2012] [02:09:46 PM] <l4rry>	sorry, i went away for a while
+[Thursday, April 05, 2012] [02:09:54 PM] <ogzy>	i should work on visualization part more and say exactly what will be visualized
+[Thursday, April 05, 2012] [02:10:03 PM] <l4rry>	good idea
+[Thursday, April 05, 2012] [02:10:53 PM] <ogzy>	so what i will be developing will be a web based project, that can be deployed to someones local machine also
+[Thursday, April 05, 2012] [02:11:15 PM] <ogzy>	at the web site it will be possible to dump eithter pcap itsels, results, whatever you think
+[Thursday, April 05, 2012] [02:11:34 PM] <l4rry>	ok, but again the main focus is to answer the malware related questions
+[Thursday, April 05, 2012] [02:11:44 PM] <ogzy>	i think we will be deciding some parts more clealry when we see the interfaces, and will say lets add this feature also etc
+[Thursday, April 05, 2012] [02:11:53 PM] <l4rry>	yep
+[Thursday, April 05, 2012] [02:12:08 PM] <l4rry>	i think deadline for melange is tomorrow?
+[Thursday, April 05, 2012] [02:12:13 PM] <ogzy>	will you be reachable by email? :)
+[Thursday, April 05, 2012] [02:12:24 PM] <l4rry>	tomorrow in .sg, its a public holiday
+[Thursday, April 05, 2012] [02:12:31 PM] <l4rry>	so i'll have more time
+[Thursday, April 05, 2012] [02:12:37 PM] <ogzy>	do i need to make an update at the proposal
+[Thursday, April 05, 2012] [02:12:48 PM] <l4rry>	and yes, i read my email frequently
+[Thursday, April 05, 2012] [02:12:49 PM] <ogzy>	it is fine i think :)
+[Thursday, April 05, 2012] [02:13:02 PM] <l4rry>	what time is it where you are now?
+[Thursday, April 05, 2012] [02:13:07 PM] <ogzy>	Turkey
+[Thursday, April 05, 2012] [02:13:14 PM] <ogzy>	02:13 pm now
+[Thursday, April 05, 2012] [02:13:18 PM] <ogzy>	u?
+[Thursday, April 05, 2012] [02:13:22 PM] <l4rry>	ok
+[Thursday, April 05, 2012] [02:13:29 PM] <l4rry>	7:13 pm
+[Thursday, April 05, 2012] [02:13:35 PM] <ogzy>	5 hours 
+[Thursday, April 05, 2012] [02:13:42 PM] <ogzy>	no problem :)
+[Thursday, April 05, 2012] [02:13:43 PM] <l4rry>	yes
+[Thursday, April 05, 2012] [02:13:51 PM] <ogzy>	we dont need to be online at the same time 
+[Thursday, April 05, 2012] [02:14:05 PM] <ogzy>	lets be able to communicate when we need, is fine for me
+[Thursday, April 05, 2012] [02:14:07 PM] <l4rry>	i need to leave office now in fact but tomorrow, I spare some time to finalise the details with you
+[Thursday, April 05, 2012] [02:14:14 PM] <ogzy>	ok
+[Thursday, April 05, 2012] [02:14:18 PM] <l4rry>	sure, will do
+[Thursday, April 05, 2012] [02:14:21 PM] <ogzy>	i will work on visualization
+[Thursday, April 05, 2012] [02:14:27 PM] <l4rry>	good
+[Thursday, April 05, 2012] [02:14:30 PM] <ogzy>	but i wont make any update now at the proposal
+[Thursday, April 05, 2012] [02:14:36 PM] <l4rry>	so, see you tomorrow (at least by emails)
+[Thursday, April 05, 2012] [02:14:40 PM] <ogzy>	sure
+[Thursday, April 05, 2012] [02:14:46 PM] <ogzy>	i will be online from the morning 
+[Thursday, April 05, 2012] [02:14:55 PM] <l4rry>	good
+[Thursday, April 05, 2012] [02:15:00 PM] <ogzy>	it will be 2.pm for you
+[Thursday, April 05, 2012] [02:15:16 PM] <l4rry>	ok, noted
+[Thursday, April 05, 2012] [02:15:16 PM] <ogzy>	see you
+[Thursday, April 05, 2012] [02:15:18 PM] <l4rry>	have a good day 
+[Thursday, April 05, 2012] [02:15:26 PM] <ogzy>	for me it will be 9 in the morning :)
+[Thursday, April 05, 2012] [02:15:33 PM] <l4rry>	:)
+[Thursday, April 05, 2012] [02:15:38 PM] <ogzy>	and for you 2 pm :)
+[Thursday, April 05, 2012] [02:15:48 PM] <ogzy>	anyway i will work on visualizatio
+[Thursday, April 05, 2012] [02:15:52 PM] <ogzy>	tomorrow we can talk more
+[Thursday, April 05, 2012] [02:16:00 PM] <l4rry>	good
+[Thursday, April 05, 2012] [02:16:07 PM] <ogzy>	thank you
+[Thursday, April 05, 2012] [02:16:13 PM] <l4rry>	my pleasure
+[Thursday, April 05, 2012] [02:16:17 PM] <l4rry>	bye
+[Thursday, April 05, 2012] [02:16:19 PM] <ogzy>	bye
+[Thursday, April 05, 2012] [02:16:21 PM] Quit	l4rry has left this server (Quit: l4rry).

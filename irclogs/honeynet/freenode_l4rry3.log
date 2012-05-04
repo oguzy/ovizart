@@ -1,0 +1,659 @@
+
+*** Logfile started
+*** on Fri Apr 6 11:01:48 2012
+
+[Friday, April 06, 2012] [11:01:48 AM] <l4rry>	yes
+[Friday, April 06, 2012] [11:02:00 AM] <ogzy>	ok
+[Friday, April 06, 2012] [11:02:09 AM] <ogzy>	let me tell what i study last night
+[Friday, April 06, 2012] [11:02:15 AM] <l4rry>	sure
+[Friday, April 06, 2012] [11:02:18 AM] <ogzy>	i made a plan i my mind
+[Friday, April 06, 2012] [11:02:25 AM] <ogzy>	e general design indeed
+[Friday, April 06, 2012] [11:02:32 AM] <ogzy>	you mentioned me about the timeline issue
+[Friday, April 06, 2012] [11:02:41 AM] <ogzy>	http://www.simile-widgets.org/timeline/
+[Friday, April 06, 2012] [11:02:43 AM] <ogzy>	i checked it
+[Friday, April 06, 2012] [11:03:05 AM] <ogzy>	at stackoverflow, some people mentioned it as a problomatic library
+[Friday, April 06, 2012] [11:03:13 AM] <ogzy>	consuming so much resource
+[Friday, April 06, 2012] [11:03:20 AM] <ogzy>	hard to handle errors
+[Friday, April 06, 2012] [11:03:39 AM] <l4rry>	ok, no pb, i was not recommending any specific anyway
+[Friday, April 06, 2012] [11:03:42 AM] <ogzy>	i checked the bugtracker and it seems they still maintain it
+[Friday, April 06, 2012] [11:03:46 AM] <ogzy>	i found a nother library
+[Friday, April 06, 2012] [11:03:53 AM] <ogzy>	http://timeglider.com/jquery/
+[Friday, April 06, 2012] [11:04:34 AM] <ogzy>	lets check the example at the page and image it is written SMTP, HTTP, FTP what ever 
+[Friday, April 06, 2012] [11:04:49 AM] <ogzy>	with icons red or green
+[Friday, April 06, 2012] [11:04:50 AM] <l4rry>	interesting
+[Friday, April 06, 2012] [11:04:57 AM] <ogzy>	green is = ok this is a normal HTTP
+[Friday, April 06, 2012] [11:05:05 AM] <ogzy>	red is = http but not at standart port
+[Friday, April 06, 2012] [11:05:20 AM] <ogzy>	and there may be blue marks for unknown traffic
+[Friday, April 06, 2012] [11:05:30 AM] <l4rry>	i don't see smtp, http, ftp ...
+[Friday, April 06, 2012] [11:05:41 AM] <ogzy>	i said imagine :)
+[Friday, April 06, 2012] [11:05:51 AM] <l4rry>	:) i imagine
+[Friday, April 06, 2012] [11:06:06 AM] <l4rry>	i like the idea
+[Friday, April 06, 2012] [11:06:24 AM] <ogzy>	after reading the pcap and analyzing it the main visualization will be this timeline
+[Friday, April 06, 2012] [11:06:36 AM] <ogzy>	i will see the traffic 
+[Friday, April 06, 2012] [11:06:40 AM] <ogzy>	i click on one of them
+[Friday, April 06, 2012] [11:06:48 AM] <ogzy>	it will open me a page with details
+[Friday, April 06, 2012] [11:06:52 AM] <ogzy>	like malware results
+[Friday, April 06, 2012] [11:06:58 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:07:19 AM] <ogzy>	i am planning to use treemap at this page with scatterplost also
+[Friday, April 06, 2012] [11:07:30 AM] <ogzy>	treemaps will display, byte size per protocol
+[Friday, April 06, 2012] [11:07:38 AM] <l4rry>	any example?
+[Friday, April 06, 2012] [11:07:38 AM] <ogzy>	not scatter sorry
+[Friday, April 06, 2012] [11:07:49 AM] <ogzy>	http://mbostock.github.com/d3/ex/treemap.html
+[Friday, April 06, 2012] [11:07:50 AM] <ogzy>	treemap
+[Friday, April 06, 2012] [11:08:01 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:08:38 AM] <ogzy>	and not scatter sorry parallelcoordinate
+[Friday, April 06, 2012] [11:08:46 AM] <ogzy>	it will give me the port based communication
+[Friday, April 06, 2012] [11:08:56 AM] <ogzy>	http://exposedata.com/parallel/veggie/
+[Friday, April 06, 2012] [11:09:02 AM] <ogzy>	or http://bl.ocks.org/1341281
+[Friday, April 06, 2012] [11:09:06 AM] <ogzy>	lets check the last one
+[Friday, April 06, 2012] [11:09:19 AM] <ogzy>	imagine it is written the IP numbers
+[Friday, April 06, 2012] [11:09:32 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:09:35 AM] <ogzy>	instead of economy, cylinders, ...
+[Friday, April 06, 2012] [11:09:46 AM] <ogzy>	and the numbers on the lines will ports
+[Friday, April 06, 2012] [11:09:48 AM] <l4rry>	the 1st one, exposedata looks pretty good
+[Friday, April 06, 2012] [11:10:01 AM] <ogzy>	yes i can make something like that too
+[Friday, April 06, 2012] [11:10:02 AM] <l4rry>	yep
+[Friday, April 06, 2012] [11:10:18 AM] <ogzy>	the idea will be, ok i have http on 8080, ftp on 21
+[Friday, April 06, 2012] [11:10:30 AM] <ogzy>	or there is a port scanning
+[Friday, April 06, 2012] [11:10:32 AM] <ogzy>	:)
+[Friday, April 06, 2012] [11:10:39 AM] <l4rry>	yes
+[Friday, April 06, 2012] [11:10:43 AM] <ogzy>	parallel coordinates are nice to visualizae thme
+[Friday, April 06, 2012] [11:11:07 AM] <ogzy>	and at treemaps, oh there is huge communication occured at port 21, ok it is ftp, for ex
+[Friday, April 06, 2012] [11:11:35 AM] <ogzy>	these will be my first aim till the midterm :)
+[Friday, April 06, 2012] [11:11:47 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:11:49 AM] <ogzy>	at least i plan to make them work for some protocols
+[Friday, April 06, 2012] [11:11:59 AM] <ogzy>	and there will be a scatterplot part
+[Friday, April 06, 2012] [11:12:06 AM] <ogzy>	http://mbostock.github.com/protovis/ex/dot.html
+[Friday, April 06, 2012] [11:12:19 AM] <ogzy>	it will display the overall protocols
+[Friday, April 06, 2012] [11:12:40 AM] <l4rry>	like what? what is x and y and size?
+[Friday, April 06, 2012] [11:12:45 AM] <ogzy>	x will be port number, y will be the count
+[Friday, April 06, 2012] [11:12:47 AM] <l4rry>	and color
+[Friday, April 06, 2012] [11:12:52 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:12:56 AM] <ogzy>	the circles will be tcp udp ftp
+[Friday, April 06, 2012] [11:13:11 AM] <ogzy>	their size will be propotional to count
+[Friday, April 06, 2012] [11:13:27 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:14:01 AM] <ogzy>	if there is traffic at a port that is not general
+[Friday, April 06, 2012] [11:14:06 AM] <l4rry>	so for all that to work, most importantly would be to disect the pcap and extract the relevant info
+[Friday, April 06, 2012] [11:14:14 AM] <ogzy>	yes exatly
+[Friday, April 06, 2012] [11:14:36 AM] <ogzy>	if the port and protocol are not matching, like 8888 at htttp the color will be red for x
+[Friday, April 06, 2012] [11:14:44 AM] <ogzy>	for x = for ex
+[Friday, April 06, 2012] [11:14:57 AM] <ogzy>	this will be second issue after midterm
+[Friday, April 06, 2012] [11:15:30 AM] <ogzy>	and we will be looking at the web interface and saying ok lets add this feature, most probably
+[Friday, April 06, 2012] [11:15:45 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:15:59 AM] <ogzy>	any questions?
+[Friday, April 06, 2012] [11:17:16 AM] <l4rry>	not for the moment
+[Friday, April 06, 2012] [11:17:41 AM] <ogzy>	i will start with writing parsers, keeping the information
+[Friday, April 06, 2012] [11:17:57 AM] <ogzy>	will take into consideration some protocols at the first sight
+[Friday, April 06, 2012] [11:18:00 AM] <ogzy>	visualizae them
+[Friday, April 06, 2012] [11:18:07 AM] <ogzy>	also a malware plugin
+[Friday, April 06, 2012] [11:18:17 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:18:38 AM] <ogzy>	if i can set this work out, cuckoo plugin will be also possible
+[Friday, April 06, 2012] [11:18:40 AM] <l4rry>	what's your background / strenght?
+[Friday, April 06, 2012] [11:18:49 AM] <ogzy>	what do you mean?
+[Friday, April 06, 2012] [11:18:52 AM] <ogzy>	my education?
+[Friday, April 06, 2012] [11:19:00 AM] <l4rry>	education and interest
+[Friday, April 06, 2012] [11:19:08 AM] <ogzy>	i am a ph.d student
+[Friday, April 06, 2012] [11:19:23 AM] <l4rry>	what's your thesis about?
+[Friday, April 06, 2012] [11:19:39 AM] <ogzy>	network anomaly detection using security visualization
+[Friday, April 06, 2012] [11:19:51 AM] <ogzy>	made my master on anomaly detection also
+[Friday, April 06, 2012] [11:19:56 AM] <ogzy>	did you read my proposal? :)
+[Friday, April 06, 2012] [11:20:10 AM] <l4rry>	not yet actually, will do now
+[Friday, April 06, 2012] [11:20:18 AM] <ogzy>	all are written there
+[Friday, April 06, 2012] [11:20:30 AM] <l4rry>	ok :) 
+[Friday, April 06, 2012] [11:20:45 AM] <ogzy>	what else
+[Friday, April 06, 2012] [11:26:12 AM] <l4rry>	not familiar with melange, could you please tell me where is your proposal?
+[Friday, April 06, 2012] [11:26:42 AM] <l4rry>	i guess I also need to sign-up as mentor, don't i?
+[Friday, April 06, 2012] [11:28:02 AM] <ogzy>	https://google-melange.appspot.com/gsoc/proposal/review/google/gsoc2012/oguzy/38004
+[Friday, April 06, 2012] [11:28:13 AM] <ogzy>	lucas knows my proposal also
+[Friday, April 06, 2012] [11:28:24 AM] <ogzy>	he already made a comment when i submited
+[Friday, April 06, 2012] [11:28:36 AM] <ogzy>	lukas_honeynet is the nick
+[Friday, April 06, 2012] [11:28:48 AM] <l4rry>	yes, know him well
+[Friday, April 06, 2012] [11:29:02 AM] <ogzy>	you may ask him the mentoring  part of melange
+[Friday, April 06, 2012] [11:29:06 AM] <ogzy>	i don't know that part
+[Friday, April 06, 2012] [11:29:31 AM] <l4rry>	where do sign in as student?
+[Friday, April 06, 2012] [11:29:35 AM] <ogzy>	yes
+[Friday, April 06, 2012] [11:29:42 AM] <ogzy>	any problem?
+[Friday, April 06, 2012] [11:29:59 AM] <l4rry>	can't see your proposal as i am not yet a mentor
+[Friday, April 06, 2012] [11:30:04 AM] <ogzy>	:)
+[Friday, April 06, 2012] [11:30:12 AM] <l4rry>	i need to register
+[Friday, April 06, 2012] [11:30:15 AM] <ogzy>	wait
+[Friday, April 06, 2012] [11:30:29 AM] <ogzy>	i can make my proposal public
+[Friday, April 06, 2012] [11:30:50 AM] <ogzy>	try again
+[Friday, April 06, 2012] [11:30:50 AM] <l4rry>	no, pb, found it
+[Friday, April 06, 2012] [11:30:54 AM] <l4rry>	ok
+[Friday, April 06, 2012] [11:31:10 AM] <ogzy>	i need to go now for lunch
+[Friday, April 06, 2012] [11:31:15 AM] <ogzy>	will return in 1 hour
+[Friday, April 06, 2012] [11:31:25 AM] <ogzy>	message / mail me if any questions
+[Friday, April 06, 2012] [11:31:44 AM] <l4rry>	ok, sure, enjoy your lunch
+[Friday, April 06, 2012] [11:31:49 AM] <ogzy>	see you
+[Friday, April 06, 2012] [11:44:14 AM] Quit	l4rry has left this server (Ping timeout: 246 seconds).
+[Friday, April 06, 2012] [11:47:17 AM] Quit	l4rry has left this server (Remote host closed the connection).
+
+*** Logfile started
+*** on Fri Apr 6 12:30:19 2012
+
+[Friday, April 06, 2012] [12:30:19 PM] <l4rry>	i think you should probably replace that the project is to replace netwitness (though it's true)
+[Friday, April 06, 2012] [12:30:52 PM] <l4rry>	i was trying to play with it now but it does not work (can't import - size = 0)
+[Friday, April 06, 2012] [12:32:27 PM] <l4rry>	btw, i applied as mentor, pending approval
+[Friday, April 06, 2012] [12:34:45 PM] <l4rry>	did you see http://netwitness.com/resources/videos/investigator-tutorial-1-overview-navigation ?
+[Friday, April 06, 2012] [12:45:07 PM] <ogzy>	checking now
+[Friday, April 06, 2012] [12:49:53 PM] <ogzy>	so you suggest me to update the proposal?
+[Friday, April 06, 2012] [12:51:33 PM] <l4rry>	at least to remove the "For the long term, the aim will be the open alternative for http://netwitness.com/products-services/investigator" 
+[Friday, April 06, 2012] [12:52:02 PM] <l4rry>	though it's indeed the aim
+[Friday, April 06, 2012] [12:52:44 PM] <ogzy>	ok i am updating
+[Friday, April 06, 2012] [12:52:56 PM] <l4rry>	thx
+[Friday, April 06, 2012] [12:53:58 PM] <ogzy>	also adding comments what we talked so far
+[Friday, April 06, 2012] [12:54:07 PM] <ogzy>	like visualization parts, dpkt usage
+[Friday, April 06, 2012] [12:54:41 PM] <l4rry>	ok
+[Friday, April 06, 2012] [12:55:30 PM] <l4rry>	one question, for you, it it a one-off or you plan to continue working on it even after gsoc?
+[Friday, April 06, 2012] [12:59:49 PM] <ogzy>	as i said at my proposal, i would like to continue developing it
+[Friday, April 06, 2012] [01:01:23 PM] <l4rry>	good :)
+[Friday, April 06, 2012] [01:02:16 PM] <ogzy>	there can be many improvements at the project
+[Friday, April 06, 2012] [01:02:28 PM] <ogzy>	I even think becoming a mentor of it at the following years :)
+[Friday, April 06, 2012] [01:02:30 PM] <l4rry>	yes, exactly
+[Friday, April 06, 2012] [01:05:10 PM] <l4rry>	if you look in the options of netwitness, in the process section, you can find what they capture/store by default
+[Friday, April 06, 2012] [01:06:20 PM] <ogzy>	they keep the header information :)
+[Friday, April 06, 2012] [01:06:33 PM] <ogzy>	which you dont want :)
+[Friday, April 06, 2012] [01:07:36 PM] <ogzy>	basic information about the traffic like IP (geo location also), port, file information carried are mentioned
+[Friday, April 06, 2012] [01:07:54 PM] <l4rry>	well, it's not I don't want and you said in proposal:
+[Friday, April 06, 2012] [01:07:56 PM] <l4rry>	I am planning to use Scapy/Dpkt to handle pcap files and get the header information. I plan to save as much information as possible to the database. The payload will be saved also for malware analysis. 
+[Friday, April 06, 2012] [01:08:18 PM] <ogzy>	ok, i mean the displaying information part
+[Friday, April 06, 2012] [01:08:55 PM] <ogzy>	not yet another pcapr but i better display every usefull information for the packets
+[Friday, April 06, 2012] [01:09:16 PM] <ogzy>	netwitness have search
+[Friday, April 06, 2012] [01:09:29 PM] <l4rry>	yes, exactly, useful info
+[Friday, April 06, 2012] [01:17:32 PM] <ogzy>	updated
+[Friday, April 06, 2012] [01:17:43 PM] <ogzy>	also added a comment what we talked
+[Friday, April 06, 2012] [01:18:01 PM] <l4rry>	good
+[Friday, April 06, 2012] [01:58:43 PM] <l4rry>	http://gutterchurl.blogspot.com/ <-- some more tools to compete with (and get good ideas from them) ;)
+[Friday, April 06, 2012] [02:10:27 PM] <ogzy>	checking
+[Friday, April 06, 2012] [02:11:07 PM] <l4rry>	and besides pcapr, here is another repository to test our tools later https://www.openpacket.org/capture/by_category?category=Malicious
+[Friday, April 06, 2012] [02:18:47 PM] <l4rry>	for each decoded/parsed content, we could have a summary table like: http://www.xplico.org/wp-content/uploads/2008/11/xwi_emails_list.png (for collected emails)
+[Friday, April 06, 2012] [02:19:06 PM] <l4rry>	or http://www.xplico.org/wp-content/uploads/2008/11/xwi_http_list.png
+[Friday, April 06, 2012] [02:22:22 PM] <l4rry>	and by command line, some ideas: http://www.netresec.com/?page=Blog&month=2011-03&post=Command-line-Network-Forensics-with-NetworkMinerCLI
+[Friday, April 06, 2012] [02:32:27 PM] <l4rry>	http://www.netresec.com/?page=SplitCap --> http://sourceforge.net/projects/spid/ --> SPID Statistical Protocol IDentification
+[Friday, April 06, 2012] [02:32:29 PM] <l4rry>	A proof-of-concept application of the Statistical Protocol IDentification (SPID) algorithm. SPID can detect the application layer protocol (layer 7) by analysing flow (packet sizes etc.) and payload statistics (byte values etc.) from pcap files.
+[Friday, April 06, 2012] [02:38:16 PM] <l4rry>	ok, ogzy i need to go
+[Friday, April 06, 2012] [02:38:35 PM] <l4rry>	if you have any question/comment, feel free to send me emails
+[Friday, April 06, 2012] [02:42:28 PM] <ogzy>	ok was checking what you sent
+[Friday, April 06, 2012] [02:42:37 PM] <ogzy>	ok please reply me when i sent mails
+[Friday, April 06, 2012] [02:42:47 PM] <l4rry>	ok :)
+[Friday, April 06, 2012] [02:42:50 PM] <ogzy>	writing i read it will return is even fine :)
+[Friday, April 06, 2012] [02:42:57 PM] <ogzy>	what is your email by the way :)
+[Friday, April 06, 2012] [02:43:05 PM] <ogzy>	aa david has sent us emails
+[Friday, April 06, 2012] [02:43:10 PM] <ogzy>	ok i know it
+[Friday, April 06, 2012] [02:43:11 PM] <l4rry>	nicolas.collery@gmail.com
+[Friday, April 06, 2012] [02:43:16 PM] <ogzy>	ok
+[Friday, April 06, 2012] [02:43:39 PM] <l4rry>	or ncollery@honeynet.sg
+[Friday, April 06, 2012] [02:43:44 PM] <ogzy>	ok
+[Friday, April 06, 2012] [02:44:03 PM] <l4rry>	i am very excited abt this project
+[Friday, April 06, 2012] [02:44:07 PM] <ogzy>	me too
+[Friday, April 06, 2012] [02:44:28 PM] <l4rry>	I just hope to have enough time to spare for you
+[Friday, April 06, 2012] [02:44:38 PM] <ogzy>	ok i can go alone
+[Friday, April 06, 2012] [02:44:45 PM] <ogzy>	but there will be times we should talk about it
+[Friday, April 06, 2012] [02:44:54 PM] <ogzy>	my idea is to use a issue tracker
+[Friday, April 06, 2012] [02:44:57 PM] <ogzy>	git
+[Friday, April 06, 2012] [02:44:57 PM] <l4rry>	shall we have a place to collect links
+[Friday, April 06, 2012] [02:45:03 PM] <l4rry>	exactly
+[Friday, April 06, 2012] [02:45:06 PM] <ogzy>	what links?
+[Friday, April 06, 2012] [02:45:37 PM] <ogzy>	the links that you sent here?
+[Friday, April 06, 2012] [02:45:40 PM] <l4rry>	i mean anything we find along the way, ideas, links to other websites, to do,  ...
+[Friday, April 06, 2012] [02:45:44 PM] <ogzy>	i see
+[Friday, April 06, 2012] [02:45:49 PM] <ogzy>	i saev them at delicious
+[Friday, April 06, 2012] [02:45:54 PM] <l4rry>	ok
+[Friday, April 06, 2012] [02:45:56 PM] <ogzy>	and i save the the logs also :)
+[Friday, April 06, 2012] [02:46:01 PM] <ogzy>	at my github account
+[Friday, April 06, 2012] [02:46:07 PM] <l4rry>	ok
+[Friday, April 06, 2012] [02:46:10 PM] <ogzy>	so i have irc logs
+[Friday, April 06, 2012] [02:46:25 PM] <l4rry>	all good then
+[Friday, April 06, 2012] [02:46:41 PM] <ogzy>	after honeynet gave me the git account and redmine
+[Friday, April 06, 2012] [02:46:48 PM] <ogzy>	we will be adding what we had
+[Friday, April 06, 2012] [02:46:55 PM] <ogzy>	or i have github micro student account :)
+[Friday, April 06, 2012] [02:46:56 PM] <l4rry>	good
+[Friday, April 06, 2012] [02:47:02 PM] <ogzy>	a private repo we will be working
+[Friday, April 06, 2012] [02:47:05 PM] <ogzy>	adding issues
+[Friday, April 06, 2012] [02:47:14 PM] <ogzy>	so you dont need to follow everything
+[Friday, April 06, 2012] [02:47:24 PM] <ogzy>	but at least we should be having meetings with you
+[Friday, April 06, 2012] [02:47:28 PM] <ogzy>	waht will done 
+[Friday, April 06, 2012] [02:47:41 PM] <ogzy>	a kind os agile development
+[Friday, April 06, 2012] [02:47:44 PM] <ogzy>	os = of
+[Friday, April 06, 2012] [02:47:52 PM] <l4rry>	sounds  good to me
+[Friday, April 06, 2012] [02:48:03 PM] <ogzy>	so no worry about your business
+[Friday, April 06, 2012] [02:48:09 PM] <l4rry>	:)
+[Friday, April 06, 2012] [02:48:17 PM] <ogzy>	we will be working so that you will be monitoring me easily
+[Friday, April 06, 2012] [02:48:21 PM] <ogzy>	what i want is
+[Friday, April 06, 2012] [02:48:26 PM] <ogzy>	return me when necessary
+[Friday, April 06, 2012] [02:48:32 PM] <ogzy>	when you want to say something
+[Friday, April 06, 2012] [02:48:33 PM] <l4rry>	sure, will do
+[Friday, April 06, 2012] [02:48:48 PM] <ogzy>	writing even ok i read the mail, will return you asap is even something
+[Friday, April 06, 2012] [02:49:04 PM] <l4rry>	definitely, I'll do that
+[Friday, April 06, 2012] [02:49:08 PM] <ogzy>	you better go if you want
+[Friday, April 06, 2012] [02:49:33 PM] <l4rry>	hehe, ok, have a good day
+[Friday, April 06, 2012] [02:49:45 PM] <ogzy>	see you
+[Friday, April 06, 2012] [02:49:46 PM] <l4rry>	thanks for your detailed proposal
+
+*** Logfile started
+*** on Thu Apr 12 09:33:37 2012
+
+[Thursday, April 12, 2012] [09:33:37 AM] <l4rry>	hello
+[Thursday, April 12, 2012] [09:33:39 AM] <ogzy>	hi
+[Thursday, April 12, 2012] [09:33:44 AM] <ogzy>	i was already writing you an email
+[Thursday, April 12, 2012] [09:33:57 AM] <l4rry>	:) yeah, saw your emails just now
+[Thursday, April 12, 2012] [09:33:57 AM] <ogzy>	better to write here 
+[Thursday, April 12, 2012] [09:34:04 AM] <ogzy>	will be faster
+[Thursday, April 12, 2012] [09:34:23 AM] <ogzy>	Let me first mention the github address that i created while working on this project: https://github.com/oguzy/openwitness
+[Thursday, April 12, 2012] [09:34:23 AM] <ogzy>	If you give me your github nick, i can add you as collebator. I added the links to its wiki. Making my tests and commiting there. You may check the playground branch. Nothing so much yet, just trying to understand what can be done with dpkt.
+[Thursday, April 12, 2012] [09:34:57 AM] <l4rry>	I like the name openwitness
+[Thursday, April 12, 2012] [09:35:15 AM] <l4rry>	i don't have nick in github yet, i'll create one
+[Thursday, April 12, 2012] [09:35:36 AM] <l4rry>	404 btw for the moment
+[Thursday, April 12, 2012] [09:36:06 AM] <ogzy>	create an account
+[Thursday, April 12, 2012] [09:36:39 AM] <ogzy>	you will see when you logged in
+[Thursday, April 12, 2012] [09:36:59 AM] <l4rry>	ncollery
+[Thursday, April 12, 2012] [09:37:45 AM] <ogzy>	try again
+[Thursday, April 12, 2012] [09:38:05 AM] <l4rry>	ok now
+[Thursday, April 12, 2012] [09:38:07 AM] <l4rry>	thx
+[Thursday, April 12, 2012] [09:38:30 AM] <ogzy>	https://github.com/oguzy/openwitness/wiki
+[Thursday, April 12, 2012] [09:38:42 AM] <ogzy>	https://github.com/oguzy/openwitness/wiki/_pages
+[Thursday, April 12, 2012] [09:38:47 AM] <ogzy>	links are there
+[Thursday, April 12, 2012] [09:39:11 AM] <l4rry>	yep, reading the Links page
+[Thursday, April 12, 2012] [09:39:33 AM] <l4rry>	good job
+[Thursday, April 12, 2012] [09:40:54 AM] <ogzy>	now lets continue with other stuff
+[Thursday, April 12, 2012] [09:40:59 AM] <ogzy>	you may add links there too
+[Thursday, April 12, 2012] [09:41:13 AM] <ogzy>	I tried the tshark command with a regular http file, captured my traffic as
+[Thursday, April 12, 2012] [09:41:13 AM] <ogzy>	tcpdump -i wlan0 -s 0 -w http.pcap
+[Thursday, April 12, 2012] [09:41:13 AM] <ogzy>	This file is under pcaps folder.
+[Thursday, April 12, 2012] [09:41:44 AM] <ogzy>	https://github.com/oguzy/openwitness/tree/playground/tests
+[Thursday, April 12, 2012] [09:41:50 AM] <ogzy>	you may clone the repo indeed
+[Thursday, April 12, 2012] [09:42:17 AM] <ogzy>	the regular http dissecting results
+[Thursday, April 12, 2012] [09:42:21 AM] <ogzy>	1   0.000000  192.168.1.2 -> 173.194.35.178 TCP 74 51963 > 80 [SYN] Seq=0 Win=14600 Len=0 MSS=1460 SACK_PERM=1 TSval=2836491 TSecr=0 WS=16
+[Thursday, April 12, 2012] [09:42:21 AM] <ogzy>	  2   0.095286 173.194.35.178 -> 192.168.1.2  TCP 74 80 > 51963 [SYN, ACK] Seq=0 Ack=1 Win=14180 Len=0 MSS=1430 SACK_PERM=1 TSval=286902142 TSecr=2836491 WS=64
+[Thursday, April 12, 2012] [09:42:21 AM] <ogzy>	  3   0.095364  192.168.1.2 -> 173.194.35.178 TCP 66 51963 > 80 [ACK] Seq=1 Ack=1 Win=14608 Len=0 TSval=2836515 TSecr=286902142
+[Thursday, April 12, 2012] [09:42:21 AM] <ogzy>	  4   0.095734  192.168.1.2 -> 173.194.35.178 HTTP 775 GET /search?client=ubuntu&channel=fs&q=deneme+meneme&ie=utf-8&oe=utf-8 HTTP/1.1 
+[Thursday, April 12, 2012] [09:42:27 AM] <ogzy>	fine for now
+[Thursday, April 12, 2012] [09:42:32 AM] <ogzy>	then i tried with ftp :)
+[Thursday, April 12, 2012] [09:42:38 AM] <ogzy>	$ tshark -r http.pcap -n -d tcp.port==80,ftp
+[Thursday, April 12, 2012] [09:42:53 AM] <ogzy>	I get same outputs except as with the http dissecting except from the protocol descriptions are changed from http to ftp.
+[Thursday, April 12, 2012] [09:42:53 AM] <ogzy>	So, using tshark dissector is good only if i know the protocol. I can get summarized information.
+[Thursday, April 12, 2012] [09:43:01 AM] <ogzy>	thats what i learned
+[Thursday, April 12, 2012] [09:43:09 AM] <ogzy>	but i may be missing some parts
+[Thursday, April 12, 2012] [09:43:18 AM] <l4rry>	interesting
+[Thursday, April 12, 2012] [09:43:18 AM] <ogzy>	I also read the lua part of wireshark. It is possible to write lua scripts, define rules to get information from the pcap file like getting the header information.
+[Thursday, April 12, 2012] [09:43:31 AM] <ogzy>	Thats fine also
+[Thursday, April 12, 2012] [09:43:37 AM] <ogzy>	one sec telephone
+[Thursday, April 12, 2012] [09:43:49 AM] <l4rry>	sure
+[Thursday, April 12, 2012] [09:45:15 AM] <ogzy>	so by writing lua scripts i can get custom information from pcap files, but then i asked myself what should i do it via lua script, can't i do it via dpkt?
+[Thursday, April 12, 2012] [09:45:23 AM] <ogzy>	i will return this part soon again
+[Thursday, April 12, 2012] [09:45:27 AM] <ogzy>	now lets continue with bro
+[Thursday, April 12, 2012] [09:45:32 AM] <ogzy>	i installed bro 2
+[Thursday, April 12, 2012] [09:45:34 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [09:45:54 AM] <ogzy>	according to your configuration you are using the old version because the sigs you mentioned are already added at the bro
+[Thursday, April 12, 2012] [09:46:09 AM] <l4rry>	yes, it's in bro
+[Thursday, April 12, 2012] [09:46:21 AM] <ogzy>	let me check my command line for reading pcap file
+[Thursday, April 12, 2012] [09:46:52 AM] <l4rry>	bro -r WinXP.pcap -f tcp detect-protocols{,-http} dpd
+[Thursday, April 12, 2012] [09:48:37 AM] <l4rry>	or if specific:
+[Thursday, April 12, 2012] [09:48:38 AM] <l4rry>	bro -r WinXP.pcap -f tcp detect-protocols{,-http} dpd http-abstract http-anon-server http-anon-useragent http-anon-utils http-body http-detect-passwd http-entity http-event http-extract-items http-header http-identified-files http-reply http-request http-rewriter http-rw.bif http 
+[Thursday, April 12, 2012] [09:49:21 AM] <ogzy>	bro -p broctl -p broctl-live -p standalone -p local -p bro -r test-http.pcap
+[Thursday, April 12, 2012] [09:49:41 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [09:49:50 AM] <l4rry>	how to clone?
+[Thursday, April 12, 2012] [09:49:52 AM] <l4rry>	$ git clone git@github.com:oguzy/openwitness.git
+[Thursday, April 12, 2012] [09:49:52 AM] <l4rry>	Cloning into openwitness...
+[Thursday, April 12, 2012] [09:49:53 AM] <l4rry>	The authenticity of host 'github.com (207.97.227.239)' can't be established.
+[Thursday, April 12, 2012] [09:49:53 AM] <l4rry>	RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+[Thursday, April 12, 2012] [09:49:53 AM] <l4rry>	Are you sure you want to continue connecting (yes/no)? yes
+[Thursday, April 12, 2012] [09:49:53 AM] <l4rry>	Warning: Permanently added 'github.com,207.97.227.239' (RSA) to the list of known hosts.
+[Thursday, April 12, 2012] [09:49:54 AM] <l4rry>	Permission denied (publickey).
+[Thursday, April 12, 2012] [09:49:54 AM] <l4rry>	fatal: The remote end hung up unexpectedly
+[Thursday, April 12, 2012] [09:50:00 AM] <ogzy>	you should add your key :)
+[Thursday, April 12, 2012] [09:50:11 AM] <ogzy>	you to your profiles
+[Thursday, April 12, 2012] [09:50:19 AM] <ogzy>	you will see SSH Keys at the left
+[Thursday, April 12, 2012] [09:50:25 AM] <l4rry>	oh, ok
+[Thursday, April 12, 2012] [09:50:28 AM] <ogzy>	add your public key :)
+[Thursday, April 12, 2012] [09:51:49 AM] <ogzy>	bro -r WinXP.pcap -f tcp detect-protocols{,-http} dpd: so thi says use dpd signatures, filter tcp traffic
+[Thursday, April 12, 2012] [09:51:52 AM] <ogzy>	let me try it 
+[Thursday, April 12, 2012] [09:52:59 AM] <l4rry>	dpd for dynamic port detection
+[Thursday, April 12, 2012] [09:53:19 AM] <l4rry>	(s/port/protocol/g) correction: dpd for dynamic protocol detection
+[Thursday, April 12, 2012] [09:55:59 AM] <ogzy>	error: can't open detect-protocols
+[Thursday, April 12, 2012] [09:56:20 AM] <l4rry>	is it in your sig folder?
+[Thursday, April 12, 2012] [09:56:22 AM] <ogzy>	it seems we don't have the same installation
+[Thursday, April 12, 2012] [09:56:48 AM] <l4rry>	$ ll /opt/local/share/bro/detect-protocols*
+[Thursday, April 12, 2012] [09:56:49 AM] <l4rry>	-rw-r--r--  1 root  admin   3.7K Sep 16  2011 /opt/local/share/bro/detect-protocols-http.bro
+[Thursday, April 12, 2012] [09:56:49 AM] <l4rry>	-rw-r--r--  1 root  admin   6.6K Sep 16  2011 /opt/local/share/bro/detect-protocols.bro
+[Thursday, April 12, 2012] [09:57:40 AM] <ogzy>	# find ./ -name "detect-protocols.bro"
+[Thursday, April 12, 2012] [09:57:40 AM] <ogzy>	./share/bro/policy/frameworks/dpd/detect-protocols.bro
+[Thursday, April 12, 2012] [09:58:25 AM] <l4rry>	and it doesn't work?
+[Thursday, April 12, 2012] [09:58:32 AM] <ogzy>	i think it works
+[Thursday, April 12, 2012] [09:58:35 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [09:58:38 AM] <ogzy>	when i run bro -p broctl -p broctl-live -p standalone -p local -p bro -r test-http.pcap
+[Thursday, April 12, 2012] [09:58:43 AM] <ogzy>	i have log files created
+[Thursday, April 12, 2012] [09:59:17 AM] <ogzy>	# ls
+[Thursday, April 12, 2012] [09:59:17 AM] <ogzy>	conn.log  debug.log  dns.log  http.log  notice_policy.log  packet_filter.log  weird.log
+[Thursday, April 12, 2012] [10:00:20 AM] <l4rry>	I don't have your options in -p 
+[Thursday, April 12, 2012] [10:00:33 AM] <l4rry>	why is it needed?
+[Thursday, April 12, 2012] [10:00:34 AM] <ogzy>	you are using the old version 
+[Thursday, April 12, 2012] [10:00:47 AM] <l4rry>	$ bro -v
+[Thursday, April 12, 2012] [10:00:48 AM] <l4rry>	bro version 1.5.3
+[Thursday, April 12, 2012] [10:00:56 AM] <ogzy>	2.0 :)
+[Thursday, April 12, 2012] [10:01:15 AM] <ogzy>	# bro -v
+[Thursday, April 12, 2012] [10:01:15 AM] <ogzy>	bro version 2.0-debug
+[Thursday, April 12, 2012] [10:01:19 AM] <l4rry>	ok, I'll upgrade, I used the port system (eq of apt-get on mac)
+[Thursday, April 12, 2012] [10:01:28 AM] <ogzy>	anyway i will dive into the documentation later
+[Thursday, April 12, 2012] [10:01:32 AM] <l4rry>	sure
+[Thursday, April 12, 2012] [10:01:44 AM] <ogzy>	i also checked a regular ftp 
+[Thursday, April 12, 2012] [10:02:14 AM] <ogzy>	ls
+[Thursday, April 12, 2012] [10:02:14 AM] <ogzy>	conn.log  debug.log  ftp-active.pcap  ftp_mkdir.pcap  notice_policy.log  packet_filter.log  weird.log
+[Thursday, April 12, 2012] [10:02:35 AM] <ogzy>	# cat conn.log | grep ftp
+[Thursday, April 12, 2012] [10:02:35 AM] <ogzy>	1329498648.596829	eoUddLl5Zwc	192.168.1.182	48955	192.168.1.101	21	tcp	ftp	0.064567	120	383	OTH	-	0hCdDa	10	640	23	1587
+[Thursday, April 12, 2012] [10:02:35 AM] <ogzy>	1329498648.655549	LWgERIQVthg	192.168.1.101	20	192.168.1.182	39452	tcp	ftp-data	0.000655	62	0	SH	-0	ScADF	5	330	0	0
+[Thursday, April 12, 2012] [10:02:43 AM] <ogzy>	so the result with bro, i learned
+[Thursday, April 12, 2012] [10:02:52 AM] <ogzy>	i can use bro command line to detect the protocol
+[Thursday, April 12, 2012] [10:03:54 AM] <ogzy>	then i decided to try dpkt
+[Thursday, April 12, 2012] [10:04:06 AM] <ogzy>	checked the http.py file please
+[Thursday, April 12, 2012] [10:04:09 AM] <ogzy>	a simple file
+[Thursday, April 12, 2012] [10:04:20 AM] <ogzy>	i created a http.pcap by using tcpdum
+[Thursday, April 12, 2012] [10:04:32 AM] <ogzy>	tdpcump -i wlan0 -s 0 -w http.pcap
+[Thursday, April 12, 2012] [10:05:12 AM] <ogzy>	when you run http.py you will see 
+[Thursday, April 12, 2012] [10:05:12 AM] <ogzy>	packet: 6
+[Thursday, April 12, 2012] [10:05:12 AM] <ogzy>	         HTTP response error: (<class 'dpkt.dpkt.NeedData'>, 'http.py', 30)
+[Thursday, April 12, 2012] [10:05:43 AM] <ogzy>	packet: 73
+[Thursday, April 12, 2012] [10:05:43 AM] <ogzy>	         http response gathered
+[Thursday, April 12, 2012] [10:06:02 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [10:06:04 AM] <ogzy>	and when i check the packet 73, the body, it is empty, althoug the header says it is an image file
+[Thursday, April 12, 2012] [10:06:18 AM] <ogzy>	so it seems we have splitted packets that should be combined
+[Thursday, April 12, 2012] [10:06:26 AM] <ogzy>	am i right?
+[Thursday, April 12, 2012] [10:06:52 AM] <l4rry>	I am not sure, I should try to replicate the pb
+[Thursday, April 12, 2012] [10:07:04 AM] <ogzy>	clone the repo
+[Thursday, April 12, 2012] [10:07:24 AM] <ogzy>	git clone address
+[Thursday, April 12, 2012] [10:07:29 AM] <ogzy>	git branch playground
+[Thursday, April 12, 2012] [10:07:35 AM] <ogzy>	git pull
+[Thursday, April 12, 2012] [10:07:47 AM] <l4rry>	i am still trying to clone it
+[Thursday, April 12, 2012] [10:08:01 AM] <ogzy>	are you getting errors?
+[Thursday, April 12, 2012] [10:08:02 AM] <l4rry>	i imported my key but for some reasons it doesnt work
+[Thursday, April 12, 2012] [10:08:13 AM] <ogzy>	do you have ssh connection outside?
+[Thursday, April 12, 2012] [10:08:57 AM] <l4rry>	yes, i think my password is wrong, I'll generate a new key
+[Thursday, April 12, 2012] [10:09:06 AM] <ogzy>	ssh-keygen -t rsa 
+[Thursday, April 12, 2012] [10:09:12 AM] <l4rry>	yes
+[Thursday, April 12, 2012] [10:09:12 AM] <ogzy>	linux command
+[Thursday, April 12, 2012] [10:14:11 AM] <l4rry>	finally. it was my ~/.ssh/config that was wrong
+[Thursday, April 12, 2012] [10:14:40 AM] <l4rry>	ost github.com
+[Thursday, April 12, 2012] [10:14:41 AM] <l4rry>	Hostname github.com
+[Thursday, April 12, 2012] [10:14:41 AM] <l4rry>	User ncollery
+[Thursday, April 12, 2012] [10:14:41 AM] <l4rry>	PreferredAuthentications publickey
+[Thursday, April 12, 2012] [10:14:41 AM] <l4rry>	IdentityFile "location of my key"
+[Thursday, April 12, 2012] [10:14:52 AM] <l4rry>	git clone ssh://git@github.com:22/oguzy/openwitness
+[Thursday, April 12, 2012] [10:15:26 AM] <ogzy>	i don't have such a config file :)
+[Thursday, April 12, 2012] [10:15:40 AM] <ogzy>	there is no need for it indeed 
+[Thursday, April 12, 2012] [10:15:52 AM] <ogzy>	anyway
+[Thursday, April 12, 2012] [10:16:00 AM] <l4rry>	it's to specify which key to use with which site
+[Thursday, April 12, 2012] [10:16:14 AM] <ogzy>	you have multiple keys then :)
+[Thursday, April 12, 2012] [10:16:17 AM] <l4rry>	anyway as you said ...
+[Thursday, April 12, 2012] [10:19:43 AM] <l4rry>	stupid question, how to get the branch playground?
+[Thursday, April 12, 2012] [10:20:07 AM] <l4rry>	$ git branch playground  ssh://git@github.com:22/oguzy/openwitness/
+[Thursday, April 12, 2012] [10:20:08 AM] <l4rry>	fatal: A branch named 'playground' already exists.
+[Thursday, April 12, 2012] [10:20:27 AM] <ogzy>	just clone
+[Thursday, April 12, 2012] [10:20:47 AM] <l4rry>	$ git clone ssh://git@github.com:22/oguzy/openwitness/
+[Thursday, April 12, 2012] [10:20:48 AM] <l4rry>	Cloning into openwitness...
+[Thursday, April 12, 2012] [10:20:48 AM] <l4rry>	ERROR: Repository not found.
+[Thursday, April 12, 2012] [10:20:48 AM] <l4rry>	fatal: The remote end hung up unexpectedly
+[Thursday, April 12, 2012] [10:20:50 AM] <ogzy>	git clone git@github.com:oguzy/openwitness.git
+[Thursday, April 12, 2012] [10:20:56 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [10:22:03 AM] <ogzy>	are we fine?
+[Thursday, April 12, 2012] [10:23:10 AM] <l4rry>	well, not really, I'll dig further later, I only get the main branch, not playground
+[Thursday, April 12, 2012] [10:23:13 AM] <l4rry>	nvm for now
+[Thursday, April 12, 2012] [10:23:41 AM] <ogzy>	ok to go to playground
+[Thursday, April 12, 2012] [10:23:57 AM] <ogzy>	git branch playground when you are at the openwitness directory
+[Thursday, April 12, 2012] [10:24:05 AM] <ogzy>	then git pull
+[Thursday, April 12, 2012] [10:26:43 AM] <l4rry>	$ git branch playground
+[Thursday, April 12, 2012] [10:26:43 AM] <l4rry>	$ git pull
+[Thursday, April 12, 2012] [10:26:43 AM] <l4rry>	Already up-to-date.
+[Thursday, April 12, 2012] [10:26:49 AM] <l4rry>	yet not dl
+[Thursday, April 12, 2012] [10:27:01 AM] <l4rry>	anyway, there are 2 files, I got it via web
+[Thursday, April 12, 2012] [10:27:05 AM] <l4rry>	so it works
+[Thursday, April 12, 2012] [10:27:19 AM] <ogzy>	ok
+[Thursday, April 12, 2012] [10:27:26 AM] <ogzy>	are you able to run http.py
+[Thursday, April 12, 2012] [10:27:31 AM] <l4rry>	yes
+[Thursday, April 12, 2012] [10:27:37 AM] <ogzy>	cool
+[Thursday, April 12, 2012] [10:27:44 AM] <l4rry>	packet: 73
+[Thursday, April 12, 2012] [10:27:45 AM] <l4rry>		 http response gathered
+[Thursday, April 12, 2012] [10:27:45 AM] <l4rry>	packet: 74
+[Thursday, April 12, 2012] [10:27:50 AM] <l4rry>	packet: 6
+[Thursday, April 12, 2012] [10:27:51 AM] <l4rry>		 HTTP response error: (<class 'dpkt.dpkt.NeedData'>, 'http.py', 30)
+[Thursday, April 12, 2012] [10:27:51 AM] <l4rry>	packet: 7
+[Thursday, April 12, 2012] [10:27:52 AM] <ogzy>	and packet 2:
+[Thursday, April 12, 2012] [10:28:18 AM] <ogzy>	aa no packet: 6
+[Thursday, April 12, 2012] [10:28:22 AM] <ogzy>	yes
+[Thursday, April 12, 2012] [10:28:47 AM] <ogzy>	for packet 73, by using i python
+[Thursday, April 12, 2012] [10:29:42 AM] <ogzy>	In [1]: import dpkt
+[Thursday, April 12, 2012] [10:29:42 AM] <ogzy>	In [2]: f = file("pcaps/http.pcap")
+[Thursday, April 12, 2012] [10:29:42 AM] <ogzy>	In [3]: pcap = dpkt.pcap.Reader(f)
+[Thursday, April 12, 2012] [10:29:42 AM] <ogzy>	In [4]: packets = pcap.readpkts()
+[Thursday, April 12, 2012] [10:29:42 AM] <ogzy>	In [5]: 
+[Thursday, April 12, 2012] [10:29:49 AM] <l4rry>	I am not sure for your script, I analyse later line by line. with mine:
+[Thursday, April 12, 2012] [10:29:50 AM] <l4rry>	$ httpflowincomplete.py pcaps/http.pcap 
+[Thursday, April 12, 2012] [10:29:50 AM] <l4rry>	[+] www.google.com/search?client=ubuntu&channel=fs&q=deneme+meneme&ie=utf-8&oe=utf-8 (GET)
+[Thursday, April 12, 2012] [10:29:51 AM] <l4rry>	content-type: text/html; charset=UTF-8
+[Thursday, April 12, 2012] [10:29:51 AM] <l4rry>	[+] www.google.com/csi?v=3&s=web&action=&e=25657,34955,36683,36888,36934,37102,37197,37501,37518,37573,37646,37682,37729,37991,38000,38027,38113&ei=x8-FT5DqFoSMswak_vznBg&imc=3&imn=3&imp=0&rt=xjsls.522,prt.527,xjses.591,xjsee.677,xjs.689,ol.699,iml.527,wsrt.867,cst.96,dnst.597,rqst.667,rspt.528 (GET)
+[Thursday, April 12, 2012] [10:30:24 AM] <ogzy>	hımm may i read the source of it?
+[Thursday, April 12, 2012] [10:30:51 AM] <l4rry>	sure
+[Thursday, April 12, 2012] [10:31:35 AM] <l4rry>	really not familiar with git, how can I upload?
+[Thursday, April 12, 2012] [10:31:43 AM] <l4rry>	via the web first
+[Thursday, April 12, 2012] [10:33:22 AM] <ogzy>	hımm :)
+[Thursday, April 12, 2012] [10:33:27 AM] <ogzy>	use pastebin :)
+[Thursday, April 12, 2012] [10:33:35 AM] <ogzy>	there is no upload as i can see via web
+[Thursday, April 12, 2012] [10:33:36 AM] <l4rry>	also can :P
+[Thursday, April 12, 2012] [10:34:08 AM] <ogzy>	you couldn't clone the repo?
+[Thursday, April 12, 2012] [10:34:12 AM] <ogzy>	or did you?
+[Thursday, April 12, 2012] [10:34:42 AM] <l4rry>	http://pastebin.com/h9691s6Z
+[Thursday, April 12, 2012] [10:34:47 AM] <l4rry>	expire in 10mins
+[Thursday, April 12, 2012] [10:35:28 AM] <l4rry>	i can clone the repo but only the main branch, for some reasons, using the playground, it says I am already up to date but I don't see it
+[Thursday, April 12, 2012] [10:37:27 AM] <ogzy>	write git branch
+[Thursday, April 12, 2012] [10:37:33 AM] <ogzy>	you will see branch list
+[Thursday, April 12, 2012] [10:37:49 AM] <ogzy>	then git branch playrgound to change the branch to playground
+[Thursday, April 12, 2012] [10:37:55 AM] <ogzy>	and then git pull
+[Thursday, April 12, 2012] [10:38:03 AM] <ogzy>	ls will show you test directory
+[Thursday, April 12, 2012] [10:38:29 AM] <l4rry>	git branch 
+[Thursday, April 12, 2012] [10:38:30 AM] <l4rry>	* master
+[Thursday, April 12, 2012] [10:38:30 AM] <l4rry>	  playground
+[Thursday, April 12, 2012] [10:38:43 AM] <l4rry>	$ git branch playground
+[Thursday, April 12, 2012] [10:38:44 AM] <l4rry>	fatal: A branch named 'playground' already exists.
+[Thursday, April 12, 2012] [10:38:44 AM] <l4rry>	$ git pull
+[Thursday, April 12, 2012] [10:38:44 AM] <l4rry>	Already up-to-date.
+[Thursday, April 12, 2012] [10:38:53 AM] <l4rry>	$ tree 
+[Thursday, April 12, 2012] [10:38:54 AM] <l4rry>	.
+[Thursday, April 12, 2012] [10:38:54 AM] <l4rry>	└── README
+[Thursday, April 12, 2012] [10:38:54 AM] <l4rry>	0 directories, 1 file
+[Thursday, April 12, 2012] [10:39:08 AM] <ogzy>	git checkout playground
+[Thursday, April 12, 2012] [10:39:35 AM] <l4rry>	$ git checkout playground
+[Thursday, April 12, 2012] [10:39:35 AM] <l4rry>	Switched to branch 'playground'
+[Thursday, April 12, 2012] [10:39:36 AM] <l4rry>	\o/
+[Thursday, April 12, 2012] [10:39:39 AM] <ogzy>	:)
+[Thursday, April 12, 2012] [10:39:54 AM] <ogzy>	now you can create a directory
+[Thursday, April 12, 2012] [10:39:57 AM] <ogzy>	add your file there
+[Thursday, April 12, 2012] [10:39:59 AM] <ogzy>	then
+[Thursday, April 12, 2012] [10:40:00 AM] <ogzy>	git add -A
+[Thursday, April 12, 2012] [10:40:08 AM] <ogzy>	git commit -m"some message"
+[Thursday, April 12, 2012] [10:40:13 AM] <ogzy>	git push origin playground
+[Thursday, April 12, 2012] [10:44:36 AM] <l4rry>	really sorry to appear so slow but i am trying to figure out how it works:
+[Thursday, April 12, 2012] [10:44:37 AM] <l4rry>	$ git pull
+[Thursday, April 12, 2012] [10:44:38 AM] <l4rry>	You asked me to pull without telling me which branch you
+[Thursday, April 12, 2012] [10:44:38 AM] <l4rry>	want to merge with, and 'branch.playground.merge' in
+[Thursday, April 12, 2012] [10:44:39 AM] <l4rry>	your configuration file does not tell me, either. Please
+[Thursday, April 12, 2012] [10:44:40 AM] <l4rry>	specify which branch you want to use on the command line and
+[Thursday, April 12, 2012] [10:44:40 AM] <l4rry>	try again (e.g. 'git pull <repository> <refspec>').
+[Thursday, April 12, 2012] [10:44:40 AM] <l4rry>	See git-pull(1) for details.
+[Thursday, April 12, 2012] [10:44:41 AM] <l4rry>	If you often merge with the same branch, you may want to
+[Thursday, April 12, 2012] [10:44:41 AM] <l4rry>	use something like the following in your configuration file:
+[Thursday, April 12, 2012] [10:44:41 AM] <l4rry>	    [branch "playground"]
+[Thursday, April 12, 2012] [10:44:41 AM] <l4rry>	    remote = <nickname>
+[Thursday, April 12, 2012] [10:44:42 AM] <l4rry>	    merge = <remote-ref>
+[Thursday, April 12, 2012] [10:44:42 AM] <l4rry>	    [remote "<nickname>"]
+[Thursday, April 12, 2012] [10:44:43 AM] <l4rry>	    url = <url>
+[Thursday, April 12, 2012] [10:44:43 AM] <l4rry>	    fetch = <refspec>
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	1> 1 [core]
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	   2     repositoryformatversion = 0
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	   3     filemode = true
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	   4     bare = false
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	   5     logallrefupdates = true
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	   6 [remote "origin"]
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	   7     url = git@github.com:oguzy/openwitness.git
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	   8     fetch = +refs/heads/*:refs/remotes/origin/*
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	   9 [branch "master"]
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	  10     remote = origin
+[Thursday, April 12, 2012] [10:45:55 AM] <ogzy>	]>11     merge = refs/heads/maste
+[Thursday, April 12, 2012] [10:46:23 AM] <ogzy>	the .git file under openwithess directory
+[Thursday, April 12, 2012] [10:46:32 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [10:46:41 AM] <ogzy>	you have missing configuration
+[Thursday, April 12, 2012] [10:46:45 AM] <l4rry>	$ git pull git@github.com:oguzy/openwitness.git playground
+[Thursday, April 12, 2012] [10:46:46 AM] <l4rry>	From github.com:oguzy/openwitness
+[Thursday, April 12, 2012] [10:46:46 AM] <l4rry>	 * branch            playground -> FETCH_HEAD
+[Thursday, April 12, 2012] [10:46:46 AM] <l4rry>	Updating c75616e..3a303b7
+[Thursday, April 12, 2012] [10:46:47 AM] <l4rry>	Fast-forward
+[Thursday, April 12, 2012] [10:46:47 AM] <l4rry>	 tests/http.py         |   43 +++++++++++++++++++++++++++++++++++++++++++
+[Thursday, April 12, 2012] [10:46:47 AM] <l4rry>	 tests/pcaps/http.pcap |  Bin 0 -> 52764 bytes
+[Thursday, April 12, 2012] [10:46:48 AM] <l4rry>	 2 files changed, 43 insertions(+), 0 deletions(-)
+[Thursday, April 12, 2012] [10:46:48 AM] <l4rry>	 create mode 100644 tests/http.py
+[Thursday, April 12, 2012] [10:46:48 AM] <l4rry>	 create mode 100644 tests/pcaps/http.pcap
+[Thursday, April 12, 2012] [10:46:53 AM] <l4rry>	i was missing playground
+[Thursday, April 12, 2012] [10:47:10 AM] <ogzy>	ok
+[Thursday, April 12, 2012] [10:48:56 AM] <l4rry>	$ git commit -m"parsing gzipp'ed pcaps"
+[Thursday, April 12, 2012] [10:48:57 AM] <l4rry>	[playground 7aec966] parsing gzipp'ed pcaps
+[Thursday, April 12, 2012] [10:48:57 AM] <l4rry>	 1 files changed, 98 insertions(+), 0 deletions(-)
+[Thursday, April 12, 2012] [10:48:58 AM] <l4rry>	 create mode 100755 test2/httpflowincomplete.py
+[Thursday, April 12, 2012] [10:48:58 AM] <l4rry>	$ git push origin playground
+[Thursday, April 12, 2012] [10:48:59 AM] <l4rry>	Counting objects: 5, done.
+[Thursday, April 12, 2012] [10:48:59 AM] <l4rry>	Delta compression using up to 4 threads.
+[Thursday, April 12, 2012] [10:48:59 AM] <l4rry>	Compressing objects: 100% (3/3), done.
+[Thursday, April 12, 2012] [10:48:59 AM] <l4rry>	Writing objects: 100% (4/4), 1.39 KiB, done.
+[Thursday, April 12, 2012] [10:48:59 AM] <l4rry>	Total 4 (delta 0), reused 0 (delta 0)
+[Thursday, April 12, 2012] [10:49:00 AM] <l4rry>	To git@github.com:oguzy/openwitness.git
+[Thursday, April 12, 2012] [10:49:00 AM] <l4rry>	   3a303b7..7aec966  playground -> playground
+[Thursday, April 12, 2012] [10:52:28 AM] <ogzy>	ok got it
+[Thursday, April 12, 2012] [10:52:34 AM] <ogzy>	i undertsands what your code does
+[Thursday, April 12, 2012] [10:52:45 AM] <ogzy>	will be digging more in it
+[Thursday, April 12, 2012] [10:53:03 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [10:53:07 AM] <ogzy>	i am trying to understand whether iw ill need session reassembly or not
+[Thursday, April 12, 2012] [10:53:37 AM] <ogzy>	otherwise how can i get email information?
+[Thursday, April 12, 2012] [10:53:38 AM] <ogzy>	right
+[Thursday, April 12, 2012] [10:53:44 AM] <l4rry>	you need
+[Thursday, April 12, 2012] [10:53:46 AM] <ogzy>	ok
+[Thursday, April 12, 2012] [10:54:10 AM] <l4rry>	tcp can be chunked too
+[Thursday, April 12, 2012] [10:54:13 AM] <ogzy>	yes
+[Thursday, April 12, 2012] [10:54:26 AM] <ogzy>	so what is your suggestion?, do you think i can use pynids?
+[Thursday, April 12, 2012] [10:54:32 AM] <ogzy>	or lua scripts can do it?
+[Thursday, April 12, 2012] [10:54:37 AM] <ogzy>	i am not sure about the last part
+[Thursday, April 12, 2012] [10:54:51 AM] <l4rry>	i think as you mentioned, pynids is buggy
+[Thursday, April 12, 2012] [10:55:52 AM] <l4rry>	the advantage of lua or the bro sigs is it already exist, so if you can write plugins to use it, you can leverage well known existing products
+[Thursday, April 12, 2012] [10:56:16 AM] <l4rry>	having said that, it's probably more fun to recreate your own with dpkt
+[Thursday, April 12, 2012] [10:56:25 AM] <ogzy>	hımm
+[Thursday, April 12, 2012] [10:56:34 AM] <l4rry>	ideally, you should have plugins in tree
+[Thursday, April 12, 2012] [10:56:43 AM] <l4rry>	and parse the tree
+[Thursday, April 12, 2012] [10:57:07 AM] <l4rry>	so the plugins depends on what's the higher level of encapsulation
+[Thursday, April 12, 2012] [10:57:41 AM] <l4rry>	IP(TCP(HTTP(HTML(Javascript(shellcode ….)))))
+[Thursday, April 12, 2012] [10:57:55 AM] <ogzy>	yes
+[Thursday, April 12, 2012] [10:57:59 AM] <l4rry>	so you can be very granular and only extract relevant info
+[Thursday, April 12, 2012] [10:58:09 AM] <ogzy>	and Ethernet at the outher :)
+[Thursday, April 12, 2012] [10:58:14 AM] <l4rry>	yes :P
+[Thursday, April 12, 2012] [10:58:37 AM] <ogzy>	so you suggest me to write my own assembler for tcp sessions
+[Thursday, April 12, 2012] [10:59:22 AM] <l4rry>	i expect most traffic to follow legitimate patterns, so the brute-force/unknown should not take much to parse
+[Thursday, April 12, 2012] [10:59:43 AM] <ogzy>	sure
+[Thursday, April 12, 2012] [10:59:47 AM] <l4rry>	well, I am not suggesting anything right now, we have to weight existing/custom 
+[Thursday, April 12, 2012] [11:00:00 AM] <l4rry>	time to re code / benefits
+[Thursday, April 12, 2012] [11:00:06 AM] <ogzy>	ok
+[Thursday, April 12, 2012] [11:00:14 AM] <ogzy>	let me play with your sample code
+[Thursday, April 12, 2012] [11:00:20 AM] <l4rry>	ok, sure
+[Thursday, April 12, 2012] [11:00:21 AM] <ogzy>	change it 
+[Thursday, April 12, 2012] [11:00:32 AM] <ogzy>	try to extract some gifs or js files
+[Thursday, April 12, 2012] [11:00:41 AM] <ogzy>	and then lets talk again
+[Thursday, April 12, 2012] [11:00:53 AM] <ogzy>	of course we won't be dealing with ust http traffic
+[Thursday, April 12, 2012] [11:00:53 AM] <l4rry>	ideally it should be modular (each parsers separately), like includes?
+[Thursday, April 12, 2012] [11:00:56 AM] <ogzy>	ftp smtp
+[Thursday, April 12, 2012] [11:01:07 AM] <l4rry>	so you could invoke only one or many or all
+[Thursday, April 12, 2012] [11:01:13 AM] <ogzy>	yes sure
+[Thursday, April 12, 2012] [11:01:22 AM] <ogzy>	if i find a solution for one
+[Thursday, April 12, 2012] [11:01:25 AM] <l4rry>	yes, exactly, we should cater for most common ones first
+[Thursday, April 12, 2012] [11:01:50 AM] <ogzy>	for now, i can use bro for either detecting the traffic at the first sight
+[Thursday, April 12, 2012] [11:01:55 AM] <ogzy>	liek first run bro
+[Thursday, April 12, 2012] [11:01:59 AM] <ogzy>	check the protocol
+[Thursday, April 12, 2012] [11:02:05 AM] <ogzy>	invoke the related parser
+[Thursday, April 12, 2012] [11:02:44 AM] <l4rry>	and the beauty of the project is that unknown is tagged as 'unknown' , so we can focus on that and write plugins/parser for those until everything is known
+[Thursday, April 12, 2012] [11:03:14 AM] <l4rry>	for example, but same thing, run bro or make your own signatures?
+[Thursday, April 12, 2012] [11:03:30 AM] <ogzy>	first at bro side, writing our custom sigs
+[Thursday, April 12, 2012] [11:03:34 AM] <l4rry>	i guess, running bro at the beginning is
+[Thursday, April 12, 2012] [11:03:35 AM] <ogzy>	then detecting the traffic as known
+[Thursday, April 12, 2012] [11:03:41 AM] <ogzy>	then writing our custom parsers
+[Thursday, April 12, 2012] [11:03:49 AM] <l4rry>	sure
+[Thursday, April 12, 2012] [11:03:58 AM] <ogzy>	thats all i study
+[Thursday, April 12, 2012] [11:04:02 AM] <ogzy>	i read the paper also
+[Thursday, April 12, 2012] [11:04:07 AM] <ogzy>	related with the bro
+[Thursday, April 12, 2012] [11:04:20 AM] <ogzy>	let me play with the py file a bit
+[Thursday, April 12, 2012] [11:04:25 AM] <l4rry>	but the way i saw bro work, it doesn't seem too complicated to reimplement the sig for dpd
+[Thursday, April 12, 2012] [11:04:28 AM] <ogzy>	see whether i have problems with dpkt
+[Thursday, April 12, 2012] [11:04:33 AM] <ogzy>	i get the idea indeed
+[Thursday, April 12, 2012] [11:04:34 AM] <l4rry>	no problem
+[Thursday, April 12, 2012] [11:04:44 AM] <ogzy>	i can understand when i read it
+[Thursday, April 12, 2012] [11:04:52 AM] <l4rry>	let me push another file .py in test2
+[Thursday, April 12, 2012] [11:04:52 AM] <ogzy>	want to change it according to my needs :)
+[Thursday, April 12, 2012] [11:04:58 AM] <ogzy>	git pull first
+[Thursday, April 12, 2012] [11:05:01 AM] <ogzy>	i changed the name
+[Thursday, April 12, 2012] [11:05:06 AM] <ogzy>	test2 -> samples
+[Thursday, April 12, 2012] [11:05:29 AM] <ogzy>	please do not use such a naming standarts :)
+[Thursday, April 12, 2012] [11:06:26 AM] <l4rry>	arf … ok
+[Thursday, April 12, 2012] [11:06:41 AM] <ogzy>	it becomes so confusing when the file count increaes
+[Thursday, April 12, 2012] [11:06:51 AM] <l4rry>	i used test2 because you used test ,…..
+[Thursday, April 12, 2012] [11:07:01 AM] <l4rry>	but i understand
+[Thursday, April 12, 2012] [11:09:27 AM] <l4rry>	ok, i deleted the new test2 and put the new file in samples
+[Thursday, April 12, 2012] [11:09:56 AM] <l4rry>	pcap2httpflow.v2.py
+[Thursday, April 12, 2012] [11:12:18 AM] <ogzy>	:)
+[Thursday, April 12, 2012] [11:12:22 AM] <l4rry>	self.parser.feed(html)
+[Thursday, April 12, 2012] [11:12:23 AM] <l4rry>	                                for script in self.parser.get_scripts(): 
+[Thursday, April 12, 2012] [11:12:23 AM] <l4rry>	                                    jsfile = "%s.stream.%s_%s.js" % (self.filename, str(self.streamcounter), str(i))
+[Thursday, April 12, 2012] [11:12:23 AM] <l4rry>	                                    self.save_stream(jsfile, script)
+[Thursday, April 12, 2012] [11:12:45 AM] <l4rry>	but we could have many of those to get images, media, shellcodes ...
+[Thursday, April 12, 2012] [11:12:53 AM] <l4rry>	and handlers for each
+[Thursday, April 12, 2012] [11:13:00 AM] <l4rry>	shellcode --> libemu
+[Thursday, April 12, 2012] [11:13:36 AM] <l4rry>	actually, before shellcode, javascript --> js sandbox to get the unobfuscated code ...
+[Thursday, April 12, 2012] [11:13:44 AM] <l4rry>	brb
+[Thursday, April 12, 2012] [11:13:49 AM] <l4rry>	in 5-10'
+[Thursday, April 12, 2012] [11:14:33 AM] <ogzy>	ok
+[Thursday, April 12, 2012] [11:46:10 AM] <ogzy>	i am away for a while
+[Thursday, April 12, 2012] [11:46:15 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [11:46:23 AM] <ogzy>	will read your codes
+[Thursday, April 12, 2012] [11:46:31 AM] <l4rry>	ok
+[Thursday, April 12, 2012] [11:46:39 AM] <ogzy>	i read indeed
+[Thursday, April 12, 2012] [11:46:43 AM] <ogzy>	need to play with them
+[Thursday, April 12, 2012] [11:46:58 AM] <l4rry>	yep
+[Thursday, April 12, 2012] [11:47:05 AM] <ogzy>	by for now
+[Thursday, April 12, 2012] [11:47:13 AM] <l4rry>	ok, bye
+[Thursday, April 12, 2012] [12:35:56 PM] <ogzy>	i am back 
+[Thursday, April 12, 2012] [12:36:31 PM] <l4rry>	wb
+[Thursday, April 12, 2012] [01:02:49 PM] <ogzy>	you used tupl for an identification for the packet i think
+[Thursday, April 12, 2012] [01:02:59 PM] <ogzy>	tupl = (self.ip.src, self.ip.dst, self.tcp.sport, self.tcp.dport)
+[Thursday, April 12, 2012] [01:03:49 PM] <l4rry>	yes
+[Thursday, April 12, 2012] [01:12:38 PM] <l4rry>	just commited another file 
+[Thursday, April 12, 2012] [01:12:58 PM] <l4rry>	from http://www.mgraziano.info/codes/ 
+[Thursday, April 12, 2012] [01:13:02 PM] <l4rry>	orion.py
+[Thursday, April 12, 2012] [01:36:12 PM] <ogzy>	ok
+[Thursday, April 12, 2012] [01:39:46 PM] <l4rry>	just pushed pcapline for additional ideas (carvers)
+[Thursday, April 12, 2012] [01:46:16 PM] <l4rry>	i think pcapline has good ideas in fact, was just playing with it and your pcap file
+[Thursday, April 12, 2012] [01:49:03 PM] <l4rry>	https://github.com/cuckoobox/cuckoo/blob/master/cuckoo/processing/pcap.py has good coding 
+[Thursday, April 12, 2012] [01:56:22 PM] <l4rry>	https://projects.honeynet.org/svn/honeysnap/trunk/honeysnap has good ideas too
+[Thursday, April 12, 2012] [02:25:25 PM] <ogzy>	cool
+[Thursday, April 12, 2012] [02:27:22 PM] <l4rry>	ok, gtg, leaving office now
+[Thursday, April 12, 2012] [02:27:29 PM] <l4rry>	email me if you have any question
+[Thursday, April 12, 2012] [02:28:18 PM] <l4rry>	one more thing, once we are quite clear on what/how to do, it would be good to have a proper timeline, don't you think?
+[Thursday, April 12, 2012] [02:29:02 PM] <ogzy>	yes
+[Thursday, April 12, 2012] [02:29:13 PM] <ogzy>	let me work on what you sent
+[Thursday, April 12, 2012] [02:29:20 PM] <ogzy>	next week we may talk about the timeline
+[Thursday, April 12, 2012] [02:29:29 PM] <l4rry>	of course, no pb at all
+[Thursday, April 12, 2012] [02:29:37 PM] <ogzy>	thank you for clues
+[Thursday, April 12, 2012] [02:30:01 PM] <l4rry>	by timeline btw, I meant coding timeline, not the visual timeline representation
+[Thursday, April 12, 2012] [02:30:09 PM] <ogzy>	yes i got it no worry
+[Thursday, April 12, 2012] [02:30:14 PM] <l4rry>	:)
+[Thursday, April 12, 2012] [02:30:37 PM] <ogzy>	why pcapline created the hex output also?
+[Thursday, April 12, 2012] [02:30:42 PM] <ogzy>	and useful area for it?
+[Thursday, April 12, 2012] [02:31:46 PM] <l4rry>	i guess for known stuff (successfully decoded) no, but if we fail to decode, it should be the fallback
+[Thursday, April 12, 2012] [02:32:23 PM] <ogzy>	hımm
+[Thursday, April 12, 2012] [02:33:20 PM] <l4rry>	ok, so I let you digest what we discussed but I am available should you need to discuss. either emails or irc if you ask me before
+[Thursday, April 12, 2012] [02:33:41 PM] <ogzy>	ok, will get in touch with you asap
+[Thursday, April 12, 2012] [02:33:48 PM] <l4rry>	ok, good
+[Thursday, April 12, 2012] [02:33:59 PM] <l4rry>	have a gd day and see you later
+[Thursday, April 12, 2012] [02:34:05 PM] <l4rry>	bye for now
+[Thursday, April 12, 2012] [02:34:11 PM] Quit	l4rry has left this server (Quit: l4rry).
