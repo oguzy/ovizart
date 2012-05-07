@@ -1,4 +1,6 @@
 # Create your views here.
+
+import hashlib
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.conf import settings
@@ -6,6 +8,9 @@ from openwitness.pcap.forms import UploadPcapForm
 from openwitness.modules.file.handler import Handler as FileHandler
 from openwitness.modules.traffic.pcap.handler import Handler as PcapHandler
 from openwitness.modules.traffic.flow.handler import Handler as FlowHandler
+from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
+from openwitness.modules.traffic.parser.http.handler import Handler as HttpHandler
+from openwitness.modules.md5.handler import Handler as HashHandler
 
 from openwitness.pcap.models import Flow, Pcap, PacketDetails
 
@@ -22,6 +27,7 @@ def upload(request):
         if form.is_valid():
             context['form'] = form
             file_handler = FileHandler()
+            file_handler.create_dir()
             mem_file = request.FILES['pcap_file']
             log.message("file: %s" % mem_file.name)
             file_handler.save_file(mem_file)
@@ -31,7 +37,9 @@ def upload(request):
             pcap_name = mem_file
             upload_path = file_handler.upload_dir
             # evey pcap file is saved as a flow container, there may or may not be flows, the pcaps colon will give the flow pcaps
-            flow_file = Flow.objects.create(file_name=pcap_name, path=upload_path)
+            hash_handler = HashHandler()
+            hash_handler.set_file("/".join([mem_file.name, upload_path]))
+            flow_file, created = Flow.objects.get_or_create(hash_value=hash_handler.get_hash(),file_name=mem_file.name, path=upload_path)
             # send the file to the defined protocol handler so that it can detect
             protocol_handler = settings.PROTOCOL_HANDLER
             package = "openwitness.modules.traffic.detector"
@@ -42,8 +50,6 @@ def upload(request):
             output = imported_handler.detect_proto(file_handler.file_path, upload_path)
             log.message("protocol detected: %s" % output)
             if "tcp" in output:
-                # lets save the flow file name to the db first
-
                 # run tcp flow extractor
                 p_read_handler = PcapHandler()
                 p_read_handler.open_file(file_handler.file_path)
@@ -56,14 +62,33 @@ def upload(request):
                 files = f_handler.save_flow(flow, p_write_handler, save_path=upload_path)
 
                 # save the flow pcap names to the mongo db
-                pcap_list = map(lambda x: Pcap.objects.create(file_name=x, path=upload_path), files.values())
+                pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([x, upload_path])).hexdigest(), file_name=x, path=upload_path), files.values())
                 flow_file.pcaps = pcap_list
                 flow_file.save()
 
+                p_read_handler.close_file()
+                p_write_handler.close_file()
                 # now i should hook a protocol detector
                 # before that i should detect the application level protocol
-
                 for f in files.values():
+                    packets  = []
+                    # better to save tcp level information to db here
+                    full_path = "/".join([upload_path, f])
+                    print full_path
+                    p_read_handler.open_file(full_path)
+                    p_read_handler.open_pcap()
+                    pcap = p_read_handler.get_pcap()
+                    for ts, buf in pcap:
+                        tcp_handler = TcpHandler()
+                        tcp = tcp_handler.read_tcp(ts, buf)
+                        if not tcp: continue
+                        tcp_packet = PacketDetails.objects.create(timestamp=tcp_handler.timestamp, protocol=tcp_handler.proto, src_ip=tcp_handler.src_ip, dst_ip=tcp_handler.dst_ip, sport=tcp_handler.sport, dport=tcp_handler.dport)
+                        packets.append(tcp_packet)
+                    hash_handler.set_file("/".join([f, upload_path]))
+                    p = Pcap.objects.get(hash_value=hash_handler.get_hash())
+                    p.packets = packets
+                    p.save()
+
                     output = imported_handler.detect_appproto(f, upload_path)
                     log.message("protocol detected: %s" % output)
                     if output.lower() == "http":
