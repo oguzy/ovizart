@@ -77,7 +77,6 @@ class Handler:
             for value in values:
                 pcap_handler.write_pcap(value[0], value[1])
             pcap_handler.close_file()
-        pcap_handler.close_pcap()
         return files
 
 
