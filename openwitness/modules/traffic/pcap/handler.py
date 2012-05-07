@@ -16,7 +16,7 @@ class Handler:
         self._filter_type = None
         self._file_pointer = None
 
-    def open_file(self, pcap_file, mode="r"):
+    def open_file(self, pcap_file, mode="rb"):
         try:
             self._file_pointer = file(pcap_file, mode)
             self._logger.set_log_level("DEBUG")
@@ -38,9 +38,6 @@ class Handler:
 
     def close_file(self):
         self._file_pointer.close()
-
-    def close_pcap(self):
-        self._pcap.close()
 
     def set_filter_type(self, t):
         self._filter_type = t
