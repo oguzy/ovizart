@@ -3,6 +3,7 @@
 
 import dpkt
 import datetime
+from openwitness.modules.traffic.log.logger import Logger
 
 class Handler(object):
     def __init__(self):
@@ -13,6 +14,9 @@ class Handler(object):
         self.dst_ip = None
         self.sport = None
         self.dport = None
+        self.ident = None
+        self.log = Logger("TCP Protocol Handler", "DEBUG")
+        self.log.message("TCP protocol handler called")
 
     def read_tcp(self, ts, buf):
         eth = self.get_eth(buf)
@@ -44,6 +48,7 @@ class Handler(object):
 
     def get_tcp(self, ip):
         tcp = ip.data
+        self.ident = ip.id
         self.sport = tcp.sport
         self.dport = tcp.dport
         return tcp
