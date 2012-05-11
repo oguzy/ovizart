@@ -67,7 +67,7 @@ class Handler(TcpHandler):
             names = map(lambda x: int(x.split(".")[0]), html_list)
             names.sort()
             stream_name = str(names[-1] + 1) + ".html"
-        stream_path = "/".join([js_dir, stream_name])
+        stream_path = "/".join([html_dir, stream_name])
         htmlfile = open(stream_path, 'w')
         htmlfile.write(html)
         htmlfile.close()
