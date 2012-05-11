@@ -75,7 +75,7 @@ class Handler(TcpHandler):
 
     def get_js(self, path):
         # get the path of html file
-        base = os.path.basename(path)
+        base = os.path.dirname(path)
         js_dir = "js"
         js_dir_path = "/".join([base, js_dir])
         if not os.path.exists(js_dir_path):
