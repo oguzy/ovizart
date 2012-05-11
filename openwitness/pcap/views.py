@@ -70,7 +70,7 @@ def upload(request):
                 p_write_handler.close_file()
                 # now i should hook a protocol detector
                 # before that i should detect the application level protocol
-                for f in files.values():
+                for f in files.values()[0]:
                     packets  = []
                     # better to save tcp level information to db here
                     full_path = "/".join([upload_path, f])
