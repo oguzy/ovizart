@@ -62,7 +62,7 @@ def upload(request):
                 files = f_handler.save_flow(flow, p_write_handler, save_path=upload_path)
 
                 # save the flow pcap names to the mongo db
-                pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([x, upload_path])).hexdigest(), file_name=x, path=upload_path), files.values())
+                pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([x, upload_path])).hexdigest(), file_name=x, path=upload_path), files.values()[0])
                 flow_file.pcaps = pcap_list
                 flow_file.save()
 

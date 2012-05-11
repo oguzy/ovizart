@@ -71,7 +71,7 @@ class Handler:
             if files.has_key(save_path):
                 files[save_path].append(file_name)
             else:
-                files[save_path] = file_name
+                files[save_path] = [file_name]
             pcap_handler.open_file(full_file_path, "w")
             pcap_handler.open_pcap("w")
             for value in values:
