@@ -99,7 +99,6 @@ def upload(request):
                     output = traffic_detector_handler.detect_appproto(f, upload_path)
                     log.message("protocol detected: %s" % output)
                     if output.strip().lower() == "http":
-                        print "tcp_list", tcp
                         # by looking at the output http hook the parser related with it
                         http_handler = HttpHandler()
 
@@ -117,6 +116,12 @@ def upload(request):
                                     #{'headers': response.headers, 'status': response.status, 'body': response.body, 'version': response.version}
                                     info = http_info['response']
                                     http = HttpDetails.objects.create(http_type="response", headers=info['headers'], status=info['status'], body=info['body'], version=info['version'])
+
+                                    # save the returned html and js files to the disk
+                                    html = http_handler.get_html(info['headers'])
+                                    stream_path = http_handler.save_html(html, upload_path)
+                                    http_handler.get_js(stream_path)
+
                                 # save the packet http information
                                 tcp_packet = filter(lambda x: x.ident == tcp[1], p.packets)[0]
                                 if not http:
