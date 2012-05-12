@@ -4,11 +4,9 @@
 import sys
 sys.path.append("../")
 
-import random
-import string
-
 from openwitness.modules.traffic.pcap.handler import Handler
 from openwitness.modules.traffic.log.logger import Logger
+from openwitness.modules.utils.handler import generate_random_name
 
 class Handler:
 
@@ -59,11 +57,8 @@ class Handler:
             flow_id += 1
         return flow, direction
 
-    def generate_random_name(self, N):
-        return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(N))
-
     def save_flow(self, flow, pcap_handler, save_path=""):
-        random_key = self.generate_random_name(10)
+        random_key = generate_random_name(10)
         files = dict()
         for key, values in flow.iteritems():
             file_name = ".".join([random_key, str(key), "pcap"])
