@@ -6,6 +6,7 @@ import gzip
 import StringIO
 import os
 import tempfile
+import urllib2
 from lxml.html import fromstring
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.log.logger import Logger
@@ -73,7 +74,7 @@ class Handler(TcpHandler):
         htmlfile.close()
         return stream_path
 
-    def get_js(self, path):
+    def get_js(self, path, tcp):
         # get the path of html file
         base = os.path.dirname(path)
         js_dir = "js"
@@ -90,7 +91,25 @@ class Handler(TcpHandler):
             if items:
                 #[('src', 'index_files/adnet_async.js'), ('type', 'text/javascript')]
                 # i should do something for these files to, need the requested url
-                pass
+                js_status = False
+                src_status = False
+                src = None
+                for item in items:
+                    if 'type' in item and 'text/javascript' in item:
+                        js_status = False
+                    if 'src' in item:
+                        src_status = True
+                        src = item[1]
+
+                if js_status and src_status:
+                    file_name = src.split("/")[-1]
+                    url = "/".join([tcp.dst_ip, src])
+                    u = urllib2.urlopen(url)
+                    path = "/".join([js_dir_path, file_name])
+                    localFile = open(path, 'w')
+                    localFile.write(u.read())
+                    localFile.close()
+                    
             else:
                 # text between script headers
                 txt = script.text()
