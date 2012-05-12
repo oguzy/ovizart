@@ -119,12 +119,17 @@ def upload(request):
 
                                     # save the returned html and js files to the disk
                                     html = http_handler.get_html(info['headers'])
+                                    log.message("html from the returned response: %s" % html)
                                     stream_path = http_handler.save_html(html, upload_path)
-                                    http_handler.get_js(stream_path)
+                                    http_handler.get_js(stream_path, tcp)
+
+                                # there may be no http layer to handle
+                                if not http_info:
+                                    continue
 
                                 # save the packet http information
                                 tcp_packet = filter(lambda x: x.ident == tcp[1], p.packets)[0]
-                                if not http:
+                                if http:
                                     tcp_packet.http = http
                                     tcp_packet.save()
 
