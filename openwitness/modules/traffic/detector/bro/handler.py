@@ -16,7 +16,8 @@ class Handler(BaseHandler):
 
     def detect_proto(self, file_path, file_dir):
         self.log.message("file_path: %s file_dir: %s" % (file_path, file_dir))
-        cmd = " ".join([self.bro_cmd, "-C -r", file_path])
+        # i had used -C to skip the checksum issue but with this command i got some errors on some pcaps
+        cmd = " ".join([self.bro_cmd, "-r", file_path])
         self.log.message("Bro command: %s" % cmd)
         output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
         cmd = " ".join(["cat conn.log", "|", self.bro_cut_cmd, "proto"])
