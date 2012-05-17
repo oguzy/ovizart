@@ -7,6 +7,7 @@ class Flow(models.Model):
     file_name = models.CharField(max_length=50)
     path = models.FilePathField()
     pcaps = ListField(EmbeddedModelField('Pcap', null=True, blank=True))
+    details = ListField(EmbeddedModelField('FlowDetails', null=True, blank=True))
 
     def __unicode__(self):
         return u'%s/%s' % (self.path, self.file_name)
@@ -31,10 +32,18 @@ class PacketDetails(models.Model):
     dst_ip = models.IPAddressField()
     sport = models.IntegerField()
     dport = models.IntegerField()
-    http = EmbeddedModelField('HttpDetails', null=True, blank=True)
 
     def __unicode__(self):
         return u'(%s, %s, %s, %s, %s)' % (self.protocol, self.src_ip, self.sport, self.dst_ip, self.dport)
+
+# save the ips at the applayerproto.log (http.log for ex)
+class FlowDetails(models.Model):
+    src_ip = models.IPAddressField()
+    dst_ip = models.IPAddressField()
+    sport = models.IntegerField()
+    dport = models.IntegerField()
+    protocol = models.CharField(max_length=10)
+
 
 class HttpDetails(models.Model):
     # request or response
@@ -52,3 +61,4 @@ class HttpDetails(models.Model):
     body = models.TextField(null=True, blank=True)
     # response ends
     files = ListField(null=True, blank=True)
+    flow = EmbeddedModelField('FlowDetails', null=True, blank=True)
