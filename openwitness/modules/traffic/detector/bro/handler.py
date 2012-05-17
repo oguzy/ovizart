@@ -4,6 +4,7 @@
 from openwitness.modules.traffic.detector.base.handler import Handler as BaseHandler
 
 import subprocess
+import os
 
 BRO_CMD = "/usr/local/bro/bin/bro"
 BRO_CUT_CMD = "/usr/local/bro/bin/bro-cut"
@@ -14,24 +15,40 @@ class Handler(BaseHandler):
         self.bro_cmd = BRO_CMD
         self.bro_cut_cmd = BRO_CUT_CMD
 
-    def detect_proto(self, file_path, file_dir):
-        self.log.message("file_path: %s file_dir: %s" % (file_path, file_dir))
+    def create_reassemble_information(self, file_path, file_dir):
         # i had used -C to skip the checksum issue but with this command i got some errors on some pcaps
         cmd = " ".join([self.bro_cmd, "-r", file_path])
         self.log.message("Bro command: %s" % cmd)
-        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+        # this command will create dat files for each contents and log for each communication level data
+        subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+
+    def detect_proto(self, file_path, file_dir):
         cmd = " ".join(["cat conn.log", "|", self.bro_cut_cmd, "proto"])
         self.log.message("Bro-cut command: %s" % cmd)
         output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
-        return output
+        return output.split("\n")
 
     def detect_appproto(self, file_path, file_dir):
-        self.log.message("file_path: %s file_dir: %s" % (file_path, file_dir))
-        cmd = " ".join([self.bro_cmd, "-C -r", file_path])
-        self.log.message("Bro command: %s" % cmd)
-        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+        #check whether there exists any of the following log files is so return it
+        protos = ['http', 'ftp', 'smtp']
+        output = filter(lambda x: os.path.exists("/".join([file_dir, ".".join([x, "log"])])), protos)
+        if output:
+            return output
+
+        # not every time i have application_layer_proto.log, use tshark
+        pre_cmd = " ".join(["tshark -q -z io,phs, -r", file_path, "| grep"])
+        for proto in protos:
+            cmd = " ".join([pre_cmd, proto])
+            output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+            if output:
+                return output.split()[0]
+
+        # the last option is to use the conn.log information
         cmd = " ".join(["cat conn.log", "|", self.bro_cut_cmd, "service"])
         self.log.message("Bro-cut command: %s" % cmd)
         output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
-        return output
+        result = filter(lambda x: x in output.split('\n'), protos)
+        if result:
+            return result
+        return False
 
