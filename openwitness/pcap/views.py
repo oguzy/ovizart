@@ -12,7 +12,7 @@ from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.parser.http.handler import Handler as HttpHandler
 from openwitness.modules.md5.handler import Handler as HashHandler
 
-from openwitness.pcap.models import Flow, Pcap, PacketDetails, HttpDetails
+from openwitness.pcap.models import Flow, Pcap, PacketDetails, HttpDetails, FlowDetails
 
 from openwitness.modules.traffic.log.logger import Logger
 
@@ -47,6 +47,7 @@ def upload(request):
             # from openwitness.modules.traffic.detector.x import handler as imported_module
             traffic_detector_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
             traffic_detector_handler = traffic_detector_module.Handler()
+            traffic_detector_handler.create_reassemble_information(file_handler.file_path, upload_path)
             output = traffic_detector_handler.detect_proto(file_handler.file_path, upload_path)
             log.message("protocol detected: %s" % output)
             if "tcp" in output:
@@ -64,7 +65,7 @@ def upload(request):
                 # save the flow pcap names to the mongo db
                 pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([x, upload_path])).hexdigest(), file_name=x, path=upload_path), files.values()[0])
                 flow_file.pcaps = pcap_list
-                flow_file.save()
+                flow_file.save(force_insert=True)
 
                 p_read_handler.close_file()
                 p_write_handler.close_file()
@@ -86,54 +87,31 @@ def upload(request):
                         if tcp:
                             tcp_list.append((tcp, tcp_handler.ident))
                         else: continue
-                        PacketDetails.objects.create(ident=tcp_handler.ident, timestamp=tcp_handler.timestamp, protocol=tcp_handler.proto, src_ip=tcp_handler.src_ip, dst_ip=tcp_handler.dst_ip, sport=tcp_handler.sport, dport=tcp_handler.dport)
-                    packets = PacketDetails.objects.all()
+                        packet = PacketDetails.objects.create(ident=tcp_handler.ident, timestamp=tcp_handler.timestamp, protocol=tcp_handler.proto, src_ip=tcp_handler.src_ip, dst_ip=tcp_handler.dst_ip, sport=tcp_handler.sport, dport=tcp_handler.dport)
+                        packets.append(packet)
                     hash_handler.set_file("/".join([f, upload_path]))
                     # get the pcap object
                     p = Pcap.objects.get(hash_value=hash_handler.get_hash())
                     log.message("pcap for packet update detected: %s" % p)
                     # update its packets
                     p.packets = list(packets) # converting a queryset to list
-                    p.save()
-
-                    output = traffic_detector_handler.detect_appproto(f, upload_path)
-                    log.message("protocol detected: %s" % output)
-                    if output.strip().lower() == "http":
-                        # by looking at the output http hook the parser related with it
-                        http_handler = HttpHandler()
-
-                        if tcp_list:
-                            for tcp in tcp_list:
-                                # get the http information to a list
-                                http_info = http_handler.read_http(tcp[0])
-                        # save the result of the http infor to db
-                                http = None
-                                if http_info and http_info.has_key('request'):
-                                    # {'method': request.method, 'uri': request.uri, 'headers': request.headers, 'version': request.version}
-                                    info = http_info['request']
-                                    http = HttpDetails.objects.create(http_type="request", method=info['method'], uri=info['uri'], headers=info['headers'], version=info['version'])
-                                if http_info and http_info.has_key('response'):
-                                    #{'headers': response.headers, 'status': response.status, 'body': response.body, 'version': response.version}
-                                    info = http_info['response']
-                                    http = HttpDetails.objects.create(http_type="response", headers=info['headers'], status=info['status'], body=info['body'], version=info['version'])
-
-                                    # save the returned html and js files to the disk
-                                    html = http_handler.get_html(info['headers'])
-                                    log.message("html from the returned response: %s" % html)
-                                    stream_path = http_handler.save_html(html, upload_path)
-                                    http_handler.get_js(stream_path, tcp)
-
-                                # there may be no http layer to handle
-                                if not http_info:
-                                    continue
-
-                                # save the packet http information
-                                tcp_packet = filter(lambda x: x.ident == tcp[1], p.packets)[0]
-                                if http:
-                                    tcp_packet.http = http
-                                    tcp_packet.save()
-
+                    p.save(force_insert=True)
                     p_read_handler.close_file()
+
+            # starting the bro related issues for the reassembled data
+            output = traffic_detector_handler.detect_appproto(file_handler.file_path, upload_path)
+            log.message("protocol detected: %s" % output)
+            if "http" in output:
+                # save the reassembled http session IPs to FlowDetails
+                http_handler = HttpHandler()
+                flow_ips = http_handler.read_dat_files(upload_path)
+                flow_detail_li = []
+                for detail in flow_ips:
+                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=detail[1], dst_ip=detail[2], dport=detail[3], protocol="http")
+                    flow_detail_li.append(flow_detail)
+                flow_file.details = flow_detail_li
+                flow_file.save(force_insert=True)
+
 
     else:
         form = UploadPcapForm()
