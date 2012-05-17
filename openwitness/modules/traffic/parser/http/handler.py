@@ -118,3 +118,42 @@ class Handler(TcpHandler):
                 tmp = tempfile.NamedTemporaryFile(mode="w+", dir=js_dir_path, delete=False)
                 tmp.write(data)
                 tmp.close()
+
+    def read_http_log(self, path):
+        # first check whether there is an http.log created
+        result = []
+        full_path = "/".join([path, "http.log"])
+        if os.path.exists(full_path):
+            f = open(full_path, "r")
+            for line in f.readlines():
+                if line.startswith("#"):
+                    continue
+                else:
+                    data = line.split()
+                    # src ip, sport, dst ip, dport
+                    result.append(data[2:6])
+        else:
+            return False
+
+        return result
+
+    def read_dat_files(self, path):
+        result = []
+        files = os.listdir(path)
+        for f in files:
+            f_path = "/".join([path, f])
+            if os.path.isdir(f_path):
+                continue
+            #contents_192.168.1.5:42825-62.212.84.227:80_orig.dat
+            name = f.split("_")
+            extension = name[-1].split(".")[-1]
+            if extension == "dat":
+                communication = name[1].split("-")
+                source = communication[0].split(":")
+                destination = communication[1].split(":")
+                source.extend(destination)
+                result.append(source)
+            else:
+                continue
+
+        return result
