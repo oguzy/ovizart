@@ -11,6 +11,9 @@ class Handler(object):
         self.log = Logger("Base Protocol Handler", "DEBUG")
         self.log.message("base protocol handler called")
 
+    def create_reassemble_information(self, **params):
+        pass
+
     def detect_proto(self,**params):
         pass
 
