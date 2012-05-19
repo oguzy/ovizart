@@ -107,7 +107,7 @@ def upload(request):
                 flow_ips = http_handler.read_dat_files(upload_path)
                 flow_detail_li = []
                 for detail in flow_ips:
-                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=detail[1], dst_ip=detail[2], dport=detail[3], protocol="http")
+                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http")
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save(force_insert=True)
