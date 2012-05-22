@@ -9,7 +9,6 @@ from openwitness.modules.file.handler import Handler as FileHandler
 from openwitness.modules.traffic.pcap.handler import Handler as PcapHandler
 from openwitness.modules.traffic.flow.handler import Handler as FlowHandler
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
-from openwitness.modules.traffic.parser.http.handler import Handler as HttpHandler
 from openwitness.modules.md5.handler import Handler as HashHandler
 
 from openwitness.pcap.models import Flow, Pcap, PacketDetails, HttpDetails, FlowDetails
@@ -103,15 +102,23 @@ def upload(request):
             log.message("protocol detected: %s" % output)
             if "http" in output:
                 # save the reassembled http session IPs to FlowDetails
-                http_handler = HttpHandler()
-                flow_ips = http_handler.read_dat_files(upload_path)
+
+                # this part is checking the http handler module name and importing the handler
+                http_protocol_handler = settings.HTTP_HANDLER
+                package = "openwitness.modules.traffic.parser"
+                module_name = ".".join([package, http_protocol_handler])
+                # from openwitness.modules.traffic.parser.x import handler as imported_module
+                http_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+                http_handler = http_handler_module.Handler()
+                # define a get_flow_ips function for the custom handler if required
+                flow_ips = http_handler.get_flow_ips(upload_path)
                 flow_detail_li = []
                 for detail in flow_ips:
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http")
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save(force_insert=True)
-
+                # then define a save_request_response that will parse dat files, save the headers and files
 
     else:
         form = UploadPcapForm()
