@@ -11,6 +11,15 @@ $ cp buildout.cfg.org buildout.cfg
 $ python bootstrap.py
 $ buildout2.7
 
+* install mongodb server
+$ sudo apt-get install mongodb-server
+You may test the mongodb running my writing mongo to he command line
+it you see an shell like below then you may continue with bro installation
+
+$ mongo
+MongoDB shell version: 2.0.4
+connecting to: test
+
 Requirements for Bro installation
 
 $ sudo apt-get install libmagic-dev libgeoip-dev libpcap-dev libssl-dev libncurses5-dev g++ bison flex cmake swig2.0 make gcc g++ python-dev swig zlib1g-dev
@@ -25,3 +34,10 @@ $ stop
 $ check
 $ exit
 $ /usr/local/bro/bin/bro -C -r pcap_fille.name should be working
+
+As the last step
+
+make a directory named "upload" where the setting.py file is. 
+
+$ mkdir uploads
+$ chown a+w uploads
