@@ -20,6 +20,9 @@ PROJECT_ROOT = os.path.dirname(__file__)
 # the detect method is the thing what you want to do
 PROTOCOL_HANDLER = "bro"
 
+# means that there exists an http module under parser directory, if the name changes, than the directory should be exists
+HTTP_HANDLER = "http"
+
 MANAGERS = ADMINS
 
 DATABASES = {
