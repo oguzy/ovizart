@@ -37,7 +37,7 @@ $ /usr/local/bro/bin/bro -C -r pcap_fille.name should be working
 
 As the last step
 
-make a directory named "upload" where the setting.py file is. 
+make a directory named "uploads" where the setting.py file is. 
 
 $ mkdir uploads
 $ chown a+w uploads
