@@ -10,6 +10,9 @@ import urllib2
 from lxml.html import fromstring
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.log.logger import Logger
+from openwitness.pcap.models import Flow, HttpDetails
+from openwitness.modules.file.handler import Handler as FileHandler
+
 
 class Handler(TcpHandler):
     def __init__(self):
@@ -161,3 +164,129 @@ class Handler(TcpHandler):
 
     def get_flow_ips(self,path):
         return self.read_dat_files(path)
+
+    def save_request(self, path, hash_value):
+        # the the ip from database
+
+        try:
+            flow = Flow.objects.get(hash_value=hash_value)
+            flow_details = flow.details
+            for detail in flow_details:
+                # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_resp.dat
+                source_str = ":".join([detail.src_ip, detail.sport])
+                destination_str = ":".join([detail.dst_ip, detail.dport])
+                flow_str = "-".join([source_str, destination_str])
+                orig_file = "_".join(["contents", flow_str,"orig.dat"])
+                file_path = "/".join(path, orig_file)
+
+                strings = ["GET", "PUT", "POST"]
+                file_handler = FileHandler()
+                requests = []
+                for item in file_handler.search(file_path, strings):
+                    requests.append(item[0])
+
+                # i am making a hacky thing here, finding empty lines, each request is seperated with an empty line
+                empty_lines = []
+                strings = ["\r\n\r\n"]
+                for item in file_handler.search(file_path, strings):
+                    empty_lines.append(item[0])
+
+                for x in range(len(requests)):
+                    # here i have the request header
+                    request = data[requests[x]:empty_lines[x]]
+                    request_li = request.split("\n")
+
+                    for entry in request_li:
+                        # the first line is method and uri with version information
+                        info = entry.split(":")
+                        if len(info) == 1:
+                            info = info.split()
+                            method = info[0]
+                            uri = info[1]
+                            version = info[2].split("/")[1]
+
+                            http_details = HttpDetails.objets.get_or_create(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow=flow)
+
+                            return True
+
+
+        except:
+            return False
+
+    def save_response_headers(self, path, hash_value):
+        try:
+            flow = Flow.objects.get(hash_value=hash_value)
+            flow_details = flow.details
+            for detail in flow_details:
+                # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_resp.dat
+                source_str = ":".join([detail.src_ip, detail.sport])
+                destination_str = ":".join([detail.dst_ip, detail.dport])
+                flow_str = "-".join([source_str, destination_str])
+                resp_file = "_".join(["contents", flow_str,"resp.dat"])
+                file_path = "/".join(path, resp_file)
+
+                strings = ["HTTP/1.1"]
+                file_handler = FileHandler()
+                responses = []
+                for item in file_handler.search(file_path, strings):
+                    responses.append(item[0])
+
+                empty_lines = []
+                strings = ["\r\n\r\n"]
+                for item in file_handler.search(file_path, strings):
+                    empty_lines.append(item[0])
+
+                for x in range(len(responses)):
+                    # here i have the request header
+                    response = data[requests[x]:empty_lines[x]]
+                    response_li = response.split("\n")
+
+                    for entry in response_li:
+                        # the first line is method and uri with version information
+                        info = entry.split(":")
+                        if len(info) == 1:
+                            info = info.split()
+                            version = info[0].split("/")[1]
+                            header = response_li
+                            status = info[1]
+                        else:
+                            if "Content-Type" in info:
+                                content_type = info[1]
+
+
+                        http_details = HttpDetails.objets.get_or_create(http_type="response", version=version, header=header, status=status, content_type=content_type, flow=flow)
+
+                        return True
+
+        except:
+            return False
+
+
+    def save_response_files(self, path, hash_value):
+        try:
+            flow = Flow.objects.get(hash_value=hash_value)
+            flow_details = flow.details
+            for detail in flow_details:
+                # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_resp.dat
+                source_str = ":".join([detail.src_ip, detail.sport])
+                destination_str = ":".join([detail.dst_ip, detail.dport])
+                flow_str = "-".join([source_str, destination_str])
+                resp_file = "_".join(["contents", flow_str,"resp.dat"])
+                file_path = "/".join(path, resp_file)
+
+                stream = FileInputStream(unicodeFilename(filename), real_filename=filename)
+                subfile = SearchSubfile(stream, 0, None)
+                subfile.loadParsers()
+                output = flow_str
+                if not os.path.exists(output):
+                    os.mkdir(output)
+                subfile.setOutput(output)
+                ok = subfile.main()
+
+                # save the files info at the db also
+
+            return True
+
+        except:
+            return False
+
