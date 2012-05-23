@@ -38,7 +38,9 @@ def upload(request):
             # evey pcap file is saved as a flow container, there may or may not be flows, the pcaps colon will give the flow pcaps
             hash_handler = HashHandler()
             hash_handler.set_file("/".join([pcap_name, upload_path]))
-            flow_file, created = Flow.objects.get_or_create(hash_value=hash_handler.get_hash(),file_name=mem_file.name, path=upload_path)
+            hash_value = hash_handler.get_hash()
+            flow_file, created = Flow.objects.get_or_create(hash_value=hash_value,file_name=mem_file.name, path=upload_path)
+            reqest.session['uploaded_hash'] = hash_value
             # send the file to the defined protocol handler so that it can detect
             protocol_handler = settings.PROTOCOL_HANDLER
             package = "openwitness.modules.traffic.detector"
@@ -118,7 +120,12 @@ def upload(request):
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save(force_insert=True)
-                # then define a save_request_response that will parse dat files, save the headers and files
+                # then call functions that will save request and responses that will parse dat files, save the headers and files
+                http_handler.save_request(upload_path, reqest.session['uploaded_hash'])
+                http_handler.data = None
+                http_handler.save_response_headers(upload_path, reqest.session['uploaded_hash'])
+                http_handler.save_response_files(upload_path, reqest.session['uploaded_hash'])
+                # should save the file names to db also
 
     else:
         form = UploadPcapForm()
