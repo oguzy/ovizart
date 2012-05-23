@@ -7,11 +7,18 @@ from django.conf import settings
 from openwitness.modules.traffic.log.logger import Logger
 
 from openwitness.modules.utils.handler import generate_name_from_timestame
+#hachoir related imports
+from hachoir_core.cmd_line import unicodeFilename
+from hachoir_core.stream import FileInputStream
+from hachoir_regex.pattern import PatternMatching
+from hachoir_subfile.search import SearchSubfile
 
 class Handler:
     def __init__(self):
         self.file_path = None
         self.file_name = None
+        self.stream = None
+        self.data = None
         self.log = Logger("File Handler", "DEBUG")
 
     def create_dir(self):
@@ -39,3 +46,18 @@ class Handler:
         for chunk in f.chunks():
             destination.write(chunk)
         destination.close()
+
+    def search(self, file_name, strings=None):
+        self.stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+        patterns = PatternMatching()
+        for s in strings:
+            patterns.addString(s)
+
+        start = 0
+        end = stream.size
+        if not self.data:
+            self.data = stream.readBytes(start, end//8)
+        return patterns.search(self.data)
+
+    def reset_data(self):
+        self.data = None
