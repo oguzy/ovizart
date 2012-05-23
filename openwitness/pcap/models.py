@@ -58,7 +58,10 @@ class HttpDetails(models.Model):
     # header and version is here also
     reason = models.CharField(max_length="5", null=True, blank=True)
     status = models.IntegerField(null=True, blank=True)
+    # i might need body
     body = models.TextField(null=True, blank=True)
+    content_type = modesl.CharField(max_length=25, null=True, blank=True)
     # response ends
+    # i might need files also
     files = ListField(null=True, blank=True)
     flow = EmbeddedModelField('FlowDetails', null=True, blank=True)
