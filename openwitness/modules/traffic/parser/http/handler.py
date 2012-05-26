@@ -259,7 +259,7 @@ class Handler(TcpHandler):
                                 content_type = info[1]
 
 
-                        http_details = HttpDetails.objects.get_or_create(http_type="response", version=version, header=header, status=status, content_type=content_type, flow=flow)
+                        http_details = HttpDetails.objects.get_or_create(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_detail=detail)
 
                         return True
 
