@@ -11,7 +11,7 @@ from openwitness.modules.traffic.flow.handler import Handler as FlowHandler
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.md5.handler import Handler as HashHandler
 
-from openwitness.pcap.models import Flow, Pcap, PacketDetails, HttpDetails, FlowDetails
+from openwitness.pcap.models import Flow, Pcap, PacketDetails, FlowDetails
 
 from openwitness.modules.traffic.log.logger import Logger
 
@@ -40,7 +40,7 @@ def upload(request):
             hash_handler.set_file("/".join([pcap_name, upload_path]))
             hash_value = hash_handler.get_hash()
             flow_file, created = Flow.objects.get_or_create(hash_value=hash_value,file_name=mem_file.name, path=upload_path)
-            reqest.session['uploaded_hash'] = hash_value
+            request.session['uploaded_hash'] = hash_value
             # send the file to the defined protocol handler so that it can detect
             protocol_handler = settings.PROTOCOL_HANDLER
             package = "openwitness.modules.traffic.detector"
@@ -121,10 +121,10 @@ def upload(request):
                 flow_file.details = flow_detail_li
                 flow_file.save(force_insert=True)
                 # then call functions that will save request and responses that will parse dat files, save the headers and files
-                http_handler.save_request(upload_path, reqest.session['uploaded_hash'])
+                http_handler.save_request(upload_path, request.session['uploaded_hash'])
                 http_handler.data = None
-                http_handler.save_response_headers(upload_path, reqest.session['uploaded_hash'])
-                http_handler.save_response_files(upload_path, reqest.session['uploaded_hash'])
+                http_handler.save_response_headers(upload_path, request.session['uploaded_hash'])
+                http_handler.save_response_files(upload_path, request.session['uploaded_hash'])
                 # should save the file names to db also
 
     else:
