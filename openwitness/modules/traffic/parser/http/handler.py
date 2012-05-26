@@ -223,6 +223,8 @@ class Handler(TcpHandler):
                 flow_str = "-".join([source_str, destination_str])
                 resp_file = "_".join(["contents", flow_str,"resp.dat"])
                 file_path = "/".join([path, resp_file])
+                # path is created as unicode, convert it a regular string for hachoir operation
+                file_path = str(file_path)
 
                 strings = ["HTTP/1.1"]
                 file_handler = FileHandler()
