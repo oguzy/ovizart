@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 #-*- coding: UTF-8 -*-
 
-import dpkt
-import gzip
-import StringIO
+
 import os
-import tempfile
-import urllib2
-from lxml.html import fromstring
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.log.logger import Logger
 from openwitness.pcap.models import Flow, HttpDetails
 from openwitness.modules.file.handler import Handler as FileHandler
 
+from hachoir_core.cmd_line import unicodeFilename
+from hachoir_core.stream import FileInputStream
+from hachoir_subfile.search import SearchSubfile
 
 class Handler(TcpHandler):
     def __init__(self):
@@ -177,7 +175,7 @@ class Handler(TcpHandler):
                 destination_str = ":".join([detail.dst_ip, detail.dport])
                 flow_str = "-".join([source_str, destination_str])
                 orig_file = "_".join(["contents", flow_str,"orig.dat"])
-                file_path = "/".join(path, orig_file)
+                file_path = "/".join([path, orig_file])
 
                 strings = ["GET", "PUT", "POST"]
                 file_handler = FileHandler()
@@ -185,7 +183,7 @@ class Handler(TcpHandler):
                 for item in file_handler.search(file_path, strings):
                     requests.append(item[0])
 
-                # i am making a hacky thing here, finding empty lines, each request is seperated with an empty line
+                # i am making a hacky thing here, finding empty lines, each request is separeted with an empty line
                 empty_lines = []
                 strings = ["\r\n\r\n"]
                 for item in file_handler.search(file_path, strings):
@@ -193,6 +191,7 @@ class Handler(TcpHandler):
 
                 for x in range(len(requests)):
                     # here i have the request header
+                    data = file_handler.data
                     request = data[requests[x]:empty_lines[x]]
                     request_li = request.split("\n")
 
@@ -205,7 +204,7 @@ class Handler(TcpHandler):
                             uri = info[1]
                             version = info[2].split("/")[1]
 
-                            http_details = HttpDetails.objets.get_or_create(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow=flow)
+                            http_details = HttpDetails.objects.get_or_create(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow=flow)
 
                             return True
 
@@ -223,7 +222,7 @@ class Handler(TcpHandler):
                 destination_str = ":".join([detail.dst_ip, detail.dport])
                 flow_str = "-".join([source_str, destination_str])
                 resp_file = "_".join(["contents", flow_str,"resp.dat"])
-                file_path = "/".join(path, resp_file)
+                file_path = "/".join([path, resp_file])
 
                 strings = ["HTTP/1.1"]
                 file_handler = FileHandler()
@@ -238,8 +237,11 @@ class Handler(TcpHandler):
 
                 for x in range(len(responses)):
                     # here i have the request header
-                    response = data[requests[x]:empty_lines[x]]
+                    data = file_handler.data
+                    response = data[responses[x]:empty_lines[x]]
                     response_li = response.split("\n")
+
+                    header = info = version = status = content_type = None
 
                     for entry in response_li:
                         # the first line is method and uri with version information
@@ -254,7 +256,7 @@ class Handler(TcpHandler):
                                 content_type = info[1]
 
 
-                        http_details = HttpDetails.objets.get_or_create(http_type="response", version=version, header=header, status=status, content_type=content_type, flow=flow)
+                        http_details = HttpDetails.objects.get_or_create(http_type="response", version=version, header=header, status=status, content_type=content_type, flow=flow)
 
                         return True
 
@@ -272,9 +274,9 @@ class Handler(TcpHandler):
                 destination_str = ":".join([detail.dst_ip, detail.dport])
                 flow_str = "-".join([source_str, destination_str])
                 resp_file = "_".join(["contents", flow_str,"resp.dat"])
-                file_path = "/".join(path, resp_file)
+                file_path = "/".join([path, resp_file])
 
-                stream = FileInputStream(unicodeFilename(filename), real_filename=filename)
+                stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
                 output = flow_str
