@@ -258,8 +258,11 @@ class Handler(TcpHandler):
                             if "Content-Type" in info:
                                 content_type = info[1]
 
-
-                        http_details = HttpDetails.objects.get_or_create(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_detail=detail)
+                        try:
+                            http_details = HttpDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_details=detail)
+                        except HttpDetails.DoesNotExist:
+                            http_details = HttpDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_details=detail)
+                            http_details.save(force_insert=True)
 
                         return True
 
