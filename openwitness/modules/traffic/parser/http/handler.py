@@ -249,10 +249,11 @@ class Handler(TcpHandler):
                         # the first line is method and uri with version information
                         info = entry.split(":")
                         if len(info) == 1:
-                            info = info.split()
+                            info = info[0].split()
                             version = info[0].split("/")[1]
-                            header = response_li
                             status = info[1]
+                            header = response_li
+
                         else:
                             if "Content-Type" in info:
                                 content_type = info[1]
