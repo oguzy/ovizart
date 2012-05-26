@@ -260,7 +260,7 @@ class Handler(TcpHandler):
 
                         try:
                             http_details = HttpDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_details=detail)
-                        except HttpDetails.DoesNotExist:
+                        except Exception, ex:# encoding error is occuring at the embedded field, dont know why now
                             http_details = HttpDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_details=detail)
                             http_details.save(force_insert=True)
 
