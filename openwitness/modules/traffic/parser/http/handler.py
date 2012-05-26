@@ -286,7 +286,8 @@ class Handler(TcpHandler):
                 stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
-                output = flow_str
+                output = "/".join([path, flow_str])
+                output = str(output)
                 if not os.path.exists(output):
                     os.mkdir(output)
                 subfile.setOutput(output)
