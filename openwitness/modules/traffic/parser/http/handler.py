@@ -171,11 +171,12 @@ class Handler(TcpHandler):
             flow_details = flow.details
             for detail in flow_details:
                 # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_resp.dat
-                source_str = ":".join([detail.src_ip, detail.sport])
-                destination_str = ":".join([detail.dst_ip, detail.dport])
+                source_str = ":".join([detail.src_ip, str(detail.sport)])
+                destination_str = ":".join([detail.dst_ip, str(detail.dport)])
                 flow_str = "-".join([source_str, destination_str])
                 orig_file = "_".join(["contents", flow_str,"orig.dat"])
                 file_path = "/".join([path, orig_file])
+                file_path = str(file_path)
 
                 strings = ["GET", "PUT", "POST"]
                 file_handler = FileHandler()
