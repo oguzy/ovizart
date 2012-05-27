@@ -200,15 +200,15 @@ class Handler(TcpHandler):
                         # the first line is method and uri with version information
                         info = entry.split(":")
                         if len(info) == 1:
-                            info = info.split()
+                            info = info[0].split()
                             method = info[0]
                             uri = info[1]
                             version = info[2].split("/")[1]
 
                             try:
-                                http_details = HttpDetails.objects.get(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow=flow)
+                                http_details = HttpDetails.objects.get(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_deatils=detail)
                             except:
-                                http_details = HttpDetails(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow=flow)
+                                http_details = HttpDetails(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_details=detail)
                                 http_details.save(force_insert=True)
 
                 return True
