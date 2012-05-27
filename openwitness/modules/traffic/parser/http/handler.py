@@ -170,7 +170,7 @@ class Handler(TcpHandler):
             flow = Flow.objects.get(hash_value=hash_value)
             flow_details = flow.details
             for detail in flow_details:
-                # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_resp.dat
+                # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_orig.dat
                 source_str = ":".join([detail.src_ip, str(detail.sport)])
                 destination_str = ":".join([detail.dst_ip, str(detail.dport)])
                 flow_str = "-".join([source_str, destination_str])
@@ -211,7 +211,7 @@ class Handler(TcpHandler):
                                 http_details = HttpDetails(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_details=detail)
                                 http_details.save(force_insert=True)
 
-                return True
+            return True
 
 
         except:
