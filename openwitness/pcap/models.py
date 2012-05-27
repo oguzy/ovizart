@@ -61,6 +61,7 @@ class HttpDetails(models.Model):
     # i might need body
     body = models.TextField(null=True, blank=True)
     content_type = models.CharField(max_length=25, null=True, blank=True)
+    content_encoding = models.CharField(max_length=25, null=True, blank=True)
     # response ends
     # i might need files also
     files = ListField(null=True, blank=True)
