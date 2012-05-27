@@ -11,6 +11,7 @@ from openwitness.modules.file.handler import Handler as FileHandler
 from hachoir_core.cmd_line import unicodeFilename
 from hachoir_core.stream import FileInputStream
 from hachoir_subfile.search import SearchSubfile
+from hachoir_core.stream.input import NullStreamError
 
 class Handler(TcpHandler):
     def __init__(self):
@@ -181,13 +182,17 @@ class Handler(TcpHandler):
                 strings = ["GET", "PUT", "POST"]
                 file_handler = FileHandler()
                 requests = []
-                for item in file_handler.search(file_path, strings):
+                search_li = file_handler.search(file_path, strings)
+                if not search_li: continue
+                for item in search_li:
                     requests.append(item[0])
 
                 # i am making a hacky thing here, finding empty lines, each request is separeted with an empty line
                 empty_lines = []
                 strings = ["\r\n\r\n"]
-                for item in file_handler.search(file_path, strings):
+                search_li = file_handler.search(file_path, strings)
+                if not search_li: continue
+                for item in search_li:
                     empty_lines.append(item[0])
 
                 for x in range(len(requests)):
@@ -210,11 +215,9 @@ class Handler(TcpHandler):
                             except:
                                 http_details = HttpDetails(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_details=detail)
                                 http_details.save(force_insert=True)
-
             return True
 
-
-        except:
+        except Exception, ex:
             return False
 
     def save_response_headers(self, path, hash_value):
@@ -234,12 +237,16 @@ class Handler(TcpHandler):
                 strings = ["HTTP/1.1"]
                 file_handler = FileHandler()
                 responses = []
-                for item in file_handler.search(file_path, strings):
+                search_li = file_handler.search(file_path, strings)
+                if not search_li: continue
+                for item in search_li:
                     responses.append(item[0])
 
                 empty_lines = []
                 strings = ["\r\n\r\n"]
-                for item in file_handler.search(file_path, strings):
+                search_li = file_handler.search(file_path, strings)
+                if not search_li: continue
+                for item in search_li:
                     empty_lines.append(item[0])
 
                 for x in range(len(responses)):
@@ -288,7 +295,10 @@ class Handler(TcpHandler):
                 file_path = "/".join([path, resp_file])
                 file_path = str(file_path)
 
-                stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+                try:
+                    stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+                except NullStreamError:
+                    continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
                 output = "/".join([path, flow_str])
@@ -302,6 +312,6 @@ class Handler(TcpHandler):
 
             return True
 
-        except:
+        except Exception, ex:
             return False
 
