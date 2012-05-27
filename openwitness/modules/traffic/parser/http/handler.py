@@ -282,7 +282,7 @@ class Handler(TcpHandler):
             return False
 
 
-    def save_response_files(self, path, hash_value):
+    def save_response_binaries(self, path, hash_value):
         try:
             flow = Flow.objects.get(hash_value=hash_value)
             flow_details = flow.details
@@ -314,4 +314,85 @@ class Handler(TcpHandler):
 
         except Exception, ex:
             return False
+
+    def save_response_files(self, path, hash_value):
+        try:
+            flow = Flow.objects.get(hash_value=hash_value)
+            flow_details = flow.details
+            for detail in flow_details:
+                # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_resp.dat
+                source_str = ":".join([detail.src_ip, str(detail.sport)])
+                destination_str = ":".join([detail.dst_ip, str(detail.dport)])
+                flow_str = "-".join([source_str, destination_str])
+                resp_file = "_".join(["contents", flow_str,"resp.dat"])
+                file_path = "/".join([path, resp_file])
+                # path is created as unicode, convert it a regular string for hachoir operation
+                file_path = str(file_path)
+
+                strings = ["Content-Type: text/html", "Content-Type: application/x-javascript", "Content-Type: text/css"]
+                file_handler = FileHandler()
+                responses = []
+                search_li = file_handler.search(file_path, strings)
+                if not search_li: continue
+                for item in search_li:
+                    responses.append(item[0])
+
+                empty_lines = []
+                strings = ["\r\n\r\n"]
+                search_li = file_handler.search(file_path, strings)
+                if not search_li: continue
+                for item in search_li:
+                    empty_lines.append(item[0])
+
+                http_lines = []
+                strings = ["HTTP/1.1"]
+                search_li = file_handler.search(file_path, strings)
+                if not search_li: continue
+                for item in search_li:
+                    http_lines.append(item[0])
+
+                stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+                subfile = SearchSubfile(stream, 0, None)
+                subfile.loadParsers()
+                output = "/".join([path, flow_str])
+                output = str(output)
+                subfile.setOutput(output)
+
+                for x in range(len(responses)):
+                    # here i have the request header
+                    data = file_handler.data
+                    #f = data[empty_lines[x]:http_lines[x+1]]
+                    file_ext = ".txt"
+                    #if ("html" in f or "body" in f):
+                    #    file_ext = ".html"
+                    #elif ("script" in f):
+                     #   file_ext = ".js"
+                    #else:
+
+                    # select the closest empty line
+                    empty_lines.append(responses[x])
+                    empty_lines.sort()
+                    index = empty_lines.index(responses[x])
+                    offset = empty_lines[index+1]
+
+                    size = None
+                    try:
+                        size = http_lines[x+1]
+                    except IndexError:
+                        size = stream.size
+
+                    f = data[offset:size]
+
+                    filename = subfile.output.createFilename(file_ext)
+                    w = open("/".join([output, filename]), "w")
+                    w.write(f)
+                    w.close()
+
+            return True
+
+        except Exception, ex:
+            print ex
+            return False
+
+
 
