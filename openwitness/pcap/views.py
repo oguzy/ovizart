@@ -125,6 +125,7 @@ def upload(request):
                 http_handler.save_response_headers(upload_path, request.session['uploaded_hash'])
                 http_handler.save_response_binaries(upload_path, request.session['uploaded_hash'])
                 http_handler.save_response_files(upload_path, request.session['uploaded_hash'])
+                http_handler.convert_gzip_files(upload_path, request.session['uploaded_hash'])
                 # should save the file names to db also
 
     else:
