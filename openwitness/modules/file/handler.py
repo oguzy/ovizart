@@ -54,8 +54,7 @@ class Handler:
 
         start = 0
         end = self.stream.size
-        if not self.data:
-            self.data = self.stream.readBytes(start, end//8)
+        self.data = self.stream.readBytes(start, end//8)
         return patterns.search(self.data)
 
     def reset_data(self):
