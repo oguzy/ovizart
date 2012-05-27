@@ -3,6 +3,8 @@
 
 
 import os
+import StringIO
+import gzip
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.log.logger import Logger
 from openwitness.pcap.models import Flow, HttpDetails
@@ -255,7 +257,7 @@ class Handler(TcpHandler):
                     response = data[responses[x]:empty_lines[x]]
                     response_li = response.split("\n")
 
-                    header = info = version = status = content_type = None
+                    header = info = version = status = content_type = content_encoding = None
 
                     for entry in response_li:
                         # the first line is method and uri with version information
@@ -270,10 +272,13 @@ class Handler(TcpHandler):
                             if "Content-Type" in info:
                                 content_type = info[1]
 
+                            if "gzip" in info:
+                                content_encoding = "gzip"
+
                         try:
-                            http_details = HttpDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_details=detail)
+                            http_details = HttpDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
                         except Exception, ex:# encoding error is occuring at the embedded field, dont know why now
-                            http_details = HttpDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_details=detail)
+                            http_details = HttpDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
                             http_details.save(force_insert=True)
 
             return True
@@ -387,6 +392,50 @@ class Handler(TcpHandler):
                     w = open("/".join([output, filename]), "w")
                     w.write(f)
                     w.close()
+
+            return True
+
+        except Exception, ex:
+            print ex
+            return False
+
+    def convert_gzip_files(self, path, hash_value):
+        try:
+            flow = Flow.objects.get(hash_value=hash_value)
+            flow_details = flow.details
+            for detail in flow_details:
+                # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_resp.dat
+                source_str = ":".join([detail.src_ip, str(detail.sport)])
+                destination_str = ":".join([detail.dst_ip, str(detail.dport)])
+                flow_str = "-".join([source_str, destination_str])
+                resp_file = "_".join(["contents", flow_str,"resp.dat"])
+                file_path = "/".join([path, resp_file])
+                # path is created as unicode, convert it a regular string for hachoir operation
+                file_path = str(file_path)
+
+                stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+                subfile = SearchSubfile(stream, 0, None)
+                subfile.loadParsers()
+                output = "/".join([path, flow_str])
+                output = str(output)
+                subfile.setOutput(output)
+
+                http_details = filter(lambda x: x.flow_details.id == detail.id ,HttpDetails.objects.filter(http_type="response"))
+                file_ext = ".txt"
+                for http in http_details:
+                    if http.content_type:
+                        filename = subfile.output.createFilename(file_ext)
+                        if http.content_encoding == "gzip":
+                            r = open("/".join([output, filename]), "r")
+                            body = r.read()
+                            r.close()
+                            data = StringIO.StringIO(body)
+                            gzipper = gzip.GzipFile(fileobj=data)
+                            html = gzipper.read()
+                            filename = subfile.output.createFilename(".html")
+                            w = open("/".join([output, filename]), "r")
+                            w.write(html)
+                            w.close()
 
             return True
 
