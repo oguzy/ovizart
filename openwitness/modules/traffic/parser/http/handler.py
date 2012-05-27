@@ -264,7 +264,7 @@ class Handler(TcpHandler):
                             http_details = HttpDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, flow_details=detail)
                             http_details.save(force_insert=True)
 
-                        return True
+            return True
 
         except:
             return False
