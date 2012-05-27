@@ -11,6 +11,7 @@ from openwitness.modules.utils.handler import generate_name_from_timestame
 from hachoir_core.cmd_line import unicodeFilename
 from hachoir_core.stream import FileInputStream
 from hachoir_regex.pattern import PatternMatching
+from hachoir_core.stream.input import NullStreamError
 
 class Handler:
     def __init__(self):
@@ -47,7 +48,10 @@ class Handler:
         destination.close()
 
     def search(self, file_path, strings=None):
-        self.stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+        try:
+            self.stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+        except NullStreamError:
+            return False
         patterns = PatternMatching()
         for s in strings:
             patterns.addString(s)
