@@ -385,11 +385,11 @@ class Handler(TcpHandler):
 
                     size = None
                     try:
-                        size = http_lines[x+1]
+                        size = http_lines[x+1]-2
                     except IndexError:
                         size = stream.size
 
-                    f = data[offset:size]
+                    f = data[offset+4:size]
 
                     filename = subfile.output.createFilename(file_ext)
                     w = open("/".join([output, filename]), "w")
@@ -438,7 +438,7 @@ class Handler(TcpHandler):
                             data = StringIO.StringIO(body)
                             gzipper = gzip.GzipFile(fileobj=data)
                             html = gzipper.read()
-                            filename = subfile.output.createFilename(".html")
+                            filename = filename.split(".")[0] + ".html"
                             w = open("/".join([output, filename]), "w")
                             w.write(html)
                             w.close()
