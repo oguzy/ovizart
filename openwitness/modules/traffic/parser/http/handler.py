@@ -433,7 +433,7 @@ class Handler(TcpHandler):
                             gzipper = gzip.GzipFile(fileobj=data)
                             html = gzipper.read()
                             filename = subfile.output.createFilename(".html")
-                            w = open("/".join([output, filename]), "r")
+                            w = open("/".join([output, filename]), "w")
                             w.write(html)
                             w.close()
 
