@@ -272,7 +272,7 @@ class Handler(TcpHandler):
                             if "Content-Type" in info:
                                 content_type = info[1]
 
-                            if "gzip" in info:
+                            if filter(lambda x: "gzip" in x, info):
                                 content_encoding = "gzip"
 
                         try:
