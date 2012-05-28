@@ -122,10 +122,7 @@ def upload(request):
                 flow_file.save(force_insert=True)
                 # then call functions that will save request and responses that will parse dat files, save the headers and files
                 http_handler.save_request(upload_path, request.session['uploaded_hash'])
-                http_handler.save_response_headers(upload_path, request.session['uploaded_hash'])
-                http_handler.save_response_binaries(upload_path, request.session['uploaded_hash'])
-                http_handler.save_response_files(upload_path, request.session['uploaded_hash'])
-                http_handler.convert_gzip_files(upload_path, request.session['uploaded_hash'])
+                http_handler.save_response(upload_path, request.session['uploaded_hash'])
                 # should save the file names to db also
 
     else:
