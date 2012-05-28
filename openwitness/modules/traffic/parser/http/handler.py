@@ -286,7 +286,6 @@ class Handler(TcpHandler):
         except:
             return False
 
-
     def save_response_binaries(self, path, hash_value):
         try:
             flow = Flow.objects.get(hash_value=hash_value)
@@ -449,5 +448,10 @@ class Handler(TcpHandler):
             print ex
             return False
 
+    def save_response(self, path, hash_value):
+        self.save_response_headers(path, hash_value)
+        self.save_response_binaries(path, hash_value)
+        self.save_response_files(path, hash_value)
+        self.convert_gzip_files(path, hash_value)
 
 
