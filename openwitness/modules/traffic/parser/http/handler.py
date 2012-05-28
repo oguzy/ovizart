@@ -356,7 +356,10 @@ class Handler(TcpHandler):
                 for item in search_li:
                     http_lines.append(item[0])
 
-                stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+                try:
+                    stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+                except NullStreamError:
+                    continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
                 output = "/".join([path, flow_str])
@@ -413,7 +416,10 @@ class Handler(TcpHandler):
                 # path is created as unicode, convert it a regular string for hachoir operation
                 file_path = str(file_path)
 
-                stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+                try:
+                    stream = FileInputStream(unicodeFilename(file_path), real_filename=file_path)
+                except NullStreamError:
+                    continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
                 output = "/".join([path, flow_str])
