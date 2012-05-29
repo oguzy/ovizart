@@ -43,6 +43,7 @@ class FlowDetails(models.Model):
     sport = models.IntegerField()
     dport = models.IntegerField()
     protocol = models.CharField(max_length=10)
+    timestamp = models.DateTimeField()
 
 
 class HttpDetails(models.Model):
