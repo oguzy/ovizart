@@ -7,7 +7,7 @@ import StringIO
 import gzip
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.log.logger import Logger
-from openwitness.pcap.models import Flow, HttpDetails
+from openwitness.pcap.models import Flow, HTTPDetails
 from openwitness.modules.file.handler import Handler as FileHandler
 
 from hachoir_core.cmd_line import unicodeFilename
@@ -234,9 +234,9 @@ class Handler(TcpHandler):
                             version = info[2].split("/")[1]
 
                             try:
-                                http_details = HttpDetails.objects.get(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_deatils=detail)
+                                http_details = HTTPDetails.objects.get(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_deatils=detail)
                             except:
-                                http_details = HttpDetails(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_details=detail)
+                                http_details = HTTPDetails(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_details=detail)
                                 http_details.save(force_insert=True)
             return True
 
@@ -297,9 +297,9 @@ class Handler(TcpHandler):
                                 content_encoding = "gzip"
 
                         try:
-                            http_details = HttpDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
+                            http_details = HTTPDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
                         except Exception, ex:# encoding error is occuring at the embedded field, dont know why now
-                            http_details = HttpDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
+                            http_details = HTTPDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
                             http_details.save(force_insert=True)
 
             return True
@@ -446,7 +446,7 @@ class Handler(TcpHandler):
                 output = str(output)
                 subfile.setOutput(output)
 
-                http_details = filter(lambda x: x.flow_details.id == detail.id ,HttpDetails.objects.filter(http_type="response"))
+                http_details = filter(lambda x: x.flow_details.id == detail.id ,HTTPDetails.objects.filter(http_type="response"))
                 file_ext = ".txt"
                 for http in http_details:
                     if http.content_type:
