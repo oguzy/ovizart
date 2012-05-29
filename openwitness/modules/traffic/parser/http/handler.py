@@ -162,9 +162,30 @@ class Handler(TcpHandler):
 
         return result
 
+    def read_conn_log(self, path):
+        result = dict() # lets the keys the connection id, values the ts
+        conn_log_path = "/".join([path, "conn.log"])
+        f = open(conn_log_path, "r")
+        for line in f.readlines():
+            if line.startswith("#"): continue
+            info = line.split()
+            key = info[2:6]
+            value = info[0]
+            result[key] = value
 
-    def get_flow_ips(self,path):
-        return self.read_dat_files(path)
+        return result
+
+
+    def get_flow_ips(self, path):
+        # TODO: add reading the conn log and parse the time stamp for each
+        flows =  self.read_dat_files(path)
+        ts = self.read_conn_log(path)
+        for flow in flows:
+            timestamp = float(ts[flow[0:5]])
+            flow.append(timestamp)
+
+        return flows
+
 
     def save_request(self, path, hash_value):
         # the the ip from database
