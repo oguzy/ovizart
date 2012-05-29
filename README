@@ -49,3 +49,11 @@ $ ip install hg+https://bitbucket.org/wkornewald/django-nonrel
 $ pip install hg+https://bitbucket.org/wkornewald/djangotoolbox
 $ pip install git+https://github.com/django-nonrel/mongodb-engine
 
+
+Django projects requires a table creation first
+
+$ bin/django syncdb
+
+The project uses hachoir Python library, install them also
+
+$ sudo apt-get install python-hachoir-* (i should add this part to the buildout configuration also)
