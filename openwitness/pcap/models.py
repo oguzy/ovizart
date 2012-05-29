@@ -46,7 +46,7 @@ class FlowDetails(models.Model):
     timestamp = models.DateTimeField()
 
 
-class HttpDetails(models.Model):
+class HTTPDetails(models.Model):
     # request or response
     http_type = models.CharField(max_length=10)
     # request fields
@@ -67,3 +67,15 @@ class HttpDetails(models.Model):
     # i might need files also
     files = ListField(null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
+
+class DNSRequest(models.Model):
+    type = models.IntegerField()
+    name = models.CharField(max_length=50)
+    flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
+
+class DNSResponse(models.Model):
+    type = models.IntegerField()
+    name = models.CharField(max_length=50)
+    value = ListField()
+    flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
+
