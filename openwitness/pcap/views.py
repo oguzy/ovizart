@@ -144,7 +144,7 @@ def upload(request):
                 flow_file.details = flow_detail_li
                 flow_file.save(force_insert=True)
 
-                dns_handler.save_request_response(upload_path)
+                dns_handler.save_request_response()
 
 
     else:
