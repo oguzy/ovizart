@@ -73,3 +73,11 @@ class Handler:
         #self._logger.message(("TCP is returned %s") % (tcp))
         return tcp
 
+    def get_udp(self, ip):
+        udp = ip.data
+        return udp
+
+    def get_reader(self):
+        return self._pcap
+
+
