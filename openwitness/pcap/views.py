@@ -39,8 +39,9 @@ def upload(request):
             hash_handler = HashHandler()
             hash_handler.set_file("/".join([pcap_name, upload_path]))
             hash_value = hash_handler.get_hash()
-            flow_file, created = Flow.objects.get_or_create(hash_value=hash_value,file_name=mem_file.name, path=upload_path)
+            flow_file, created = Flow.objects.get_or_create(hash_value=hash_value,file_name=pcap_name, path=upload_path)
             request.session['uploaded_hash'] = hash_value
+            request.session['uploaded_file_name'] = pcap_name
             # send the file to the defined protocol handler so that it can detect
             protocol_handler = settings.PROTOCOL_HANDLER
             package = "openwitness.modules.traffic.detector"
@@ -125,6 +126,26 @@ def upload(request):
                 http_handler.save_request(upload_path, request.session['uploaded_hash'])
                 http_handler.save_response(upload_path, request.session['uploaded_hash'])
                 # should save the file names to db also
+
+            # dns realted issues starts here
+            if "dns" in output:
+                dns_protocol_handler = settings.DNS_HANDLER
+                package = "openwitness.modules.traffic.parser"
+                module_name = ".".join([package, dns_protocol_handler])
+                # from openwitness.modules.traffic.parser.x import handler as imported_module
+                dns_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+                dns_handler = dns_handler_module.Handler()
+                # define a get_flow_ips function for the custom handler if required
+                flow_ips = dns_handler.get_flow_ips(upload_path, request.session['uploaded_file_name'])
+                flow_detail_li = []
+                for detail in flow_ips:
+                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
+                    flow_detail_li.append(flow_detail)
+                flow_file.details = flow_detail_li
+                flow_file.save(force_insert=True)
+
+                dns_handler.save_request_response(upload_path)
+
 
     else:
         form = UploadPcapForm()
