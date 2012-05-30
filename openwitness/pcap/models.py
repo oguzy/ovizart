@@ -70,12 +70,12 @@ class HTTPDetails(models.Model):
 
 class DNSRequest(models.Model):
     type = models.IntegerField()
-    name = models.CharField(max_length=50)
+    human_readable_type = models.CharField(max_length=50)
+    value = models.CharField(max_length=50, null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
 
 class DNSResponse(models.Model):
     type = models.IntegerField()
-    name = models.CharField(max_length=50)
-    value = ListField()
+    human_readable_type = models.CharField(max_length=50)
+    value = ListField(null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
-
