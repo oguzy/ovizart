@@ -9,8 +9,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Example:
     # (r'^{{ project_name }}/', include('{{ project_name }}.foo.urls')),
-    url(r'^$', view='main.views.welcome', name='home_page'),
-    (r'^pcap/', include('pcap.urls')),
+    url(r'^$', 'openwitness.main.views.welcome', name='home_page'),
+    (r'^pcap/', include('openwitness.pcap.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
