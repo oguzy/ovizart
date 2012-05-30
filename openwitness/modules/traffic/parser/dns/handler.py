@@ -3,7 +3,7 @@
 
 from openwitness.modules.traffic.pcap.handler import Handler as PcapHandler
 from openwitness.modules.traffic.parser.udp.handler import Handler as UDPHandler
-from openwitness.pcap.models import DNSRequest, DNSResponse
+from openwitness.pcap.models import DNSRequest, DNSResponse, FlowDetails
 from openwitness.modules.traffic.log.logger import Logger
 from socket import inet_ntoa, inet_ntop, AF_INET6
 
@@ -36,7 +36,7 @@ class Handler():
         for ts, buf in p_read_handler.get_reader():
             udp = udp_handler.read_udp(ts, buf)
             if udp:
-                self.flow_li.append([udp.src_ip, udp.sport, udp.dst_ip, udp.dport, udp.timestamp])
+                self.flow_li.append([udp_handler.src_ip, udp_handler.sport, udp_handler.dst_ip, udp_handler.dport, udp_handler.timestamp])
                 dns = dpkt.dns.DNS(udp.data)
                 self.dns_li.append(dns)
         return self.flow_li
@@ -44,11 +44,15 @@ class Handler():
     def save_request_response(self):
         index = 0
         for msg in self.dns_li:
-            if msg.rcode == dpkt.dns.DNS_RCODE_NOERR and len(msg.an)>0:
+            if msg.rcode == dpkt.dns.DNS_RCODE_NOERR:
                 if msg.qd[0].type in REQUEST_FLAGS.keys():
-                    flow_detail = self.flow_li[index]
-                    dns_request = DNSRequest(type=msg.qd[0].type, human_readable_type=REQUEST_FLAGS[msg.qd[0].name], value=msg.qd[0].name, flow_details=flow_detail)
-                    dns_request.save(force_insert=True)
+                    detail = self.flow_li[index]
+                    flow_detail = FlowDetails.objects.get(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
+                    try:
+                        dns_request = DNSRequest(type=msg.qd[0].type, human_readable_type=REQUEST_FLAGS[msg.qd[0].type], value=msg.qd[0].name, flow_details=flow_detail)
+                        dns_request.save(force_insert=True)
+                    except Exception, ex:
+                        print ex
                 for an in msg.an:
                     if an.type in RESPONSE_FLAGS.keys():
                         flow_detail = self.flow_li[index]
@@ -73,6 +77,9 @@ class Handler():
                             value = " ".join(an.text)
                         if type == dpkt.dns.DNS_AAAA:
                             value = inet_ntop(AF_INET6,an.ip6)
-                        flow_detail = self.flow_li[index]
+                        detail = self.flow_li[index]
+                        flow_detail = FlowDetails.objects.get(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                         dns_response = DNSResponse(type=type, human_readable_type=RESPONSE_FLAGS[type], value=value, flow_details = flow_detail)
                         dns_response.save(force_insert=True)
+                index += 1
+        return True
