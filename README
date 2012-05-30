@@ -35,9 +35,13 @@ $ check
 $ exit
 $ /usr/local/bro/bin/bro -C -r pcap_fille.name should be working
 
-As the last step
+* Bro is used both for protocol detection and TCP reassembly. To let Bro handle assemble the contents, a file should be changed. If you installed Bro to /usr/local/bro/ then edit the file /usr/local/bro/share/bro/base/protocols/conn/contents.bro as below
 
-make a directory named "uploads" where the setting.py file is. 
+	## If this variable is set to ``T``, then all contents of all connections
+	## will be  extracted.
+	const default_extract = T &redef;
+
+* make a directory named "uploads" where the setting.py file is. 
 
 $ mkdir uploads
 $ chown a+w uploads
