@@ -30,7 +30,7 @@ class Handler(BaseHandler):
 
     def detect_appproto(self, file_path, file_dir):
         #check whether there exists any of the following log files is so return it
-        protos = ['http', 'ftp', 'smtp']
+        protos = ['http', 'ftp', 'smtp', 'dns']
         output = filter(lambda x: os.path.exists("/".join([file_dir, ".".join([x, "log"])])), protos)
         if output:
             return output
