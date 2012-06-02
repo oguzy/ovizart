@@ -148,6 +148,25 @@ def upload(request):
 
                 dns_handler.save_request_response()
 
+            if "smtp" in output:
+                log.message("protocol detected: %s" % "SMTP")
+                smtp_protocol_handler = settings.SMTP_HANDLER
+                package = "openwitness.modules.traffic.parser"
+                module_name = ".".join([package, smtp_protocol_handler])
+                # from openwitness.modules.traffic.parser.x import handler as imported_module
+                smtp_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+                smtp_handler = smtp_handler_module.Handler()
+                # define a get_flow_ips function for the custom handler if required
+                flow_file.set_flow(flow_file) # i need this, to get the timestamp from a packet belongs to the flow
+                flow_ips = smtp_handler.get_flow_ips(upload_path, request.session['uploaded_file_name'])
+                flow_detail_li = []
+                for detail in flow_ips:
+                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
+                    flow_detail_li.append(flow_detail)
+                flow_file.details = flow_detail_li
+                flow_file.save(force_insert=True)
+
+                smtp_handler.save_request_response(upload_path)
 
     else:
         form = UploadPcapForm()
