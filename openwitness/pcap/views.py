@@ -51,8 +51,8 @@ def upload(request):
             traffic_detector_handler = traffic_detector_module.Handler()
             traffic_detector_handler.create_reassemble_information(file_handler.file_path, upload_path)
             output = traffic_detector_handler.detect_proto(file_handler.file_path, upload_path)
-            log.message("protocol detected: %s" % output)
             if "tcp" in output:
+                log.message("protocol detected: %s" % "TCP")
                 # run tcp flow extractor
                 p_read_handler = PcapHandler()
                 p_read_handler.open_file(file_handler.file_path)
@@ -101,9 +101,10 @@ def upload(request):
                     p_read_handler.close_file()
 
             # starting the bro related issues for the reassembled data
-            output = traffic_detector_handler.detect_appproto(file_handler.file_path, upload_path)
-            log.message("protocol detected: %s" % output)
+            #output = traffic_detector_handler.detect_appproto(file_handler.file_path, upload_path)
+            #log.message("protocol detected: %s" % output)
             if "http" in output:
+                log.message("protocol detected: %s" % "HTTP")
                 # save the reassembled http session IPs to FlowDetails
 
                 # this part is checking the http handler module name and importing the handler
@@ -129,6 +130,7 @@ def upload(request):
 
             # dns realted issues starts here
             if "dns" in output:
+                log.message("protocol detected: %s" % "DNS")
                 dns_protocol_handler = settings.DNS_HANDLER
                 package = "openwitness.modules.traffic.parser"
                 module_name = ".".join([package, dns_protocol_handler])
