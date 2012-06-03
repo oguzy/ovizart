@@ -8,6 +8,7 @@ import subprocess
 import email, mimetypes
 import zipfile
 from openwitness.modules.traffic.log.logger import Logger
+from openwitness.pcap.models import Pcap
 
 class Handler():
     def __init__(self):
@@ -44,16 +45,21 @@ class Handler():
                 dport = int(dst[4])
 
                 packet = None
+                found = False
                 for pcap in self.flow.pcaps:
+                    # this line is required, otherwise pcap.pcakets is not returning the info
+                    pcap = Pcap.objects.get(id = pcap.id)
                     for packet in pcap.packets:
                         if packet.src_ip == src_ip and packet.sport == sport and packet.dst_ip == dst_ip and packet.dport == dport:
                             packet = packet
+                            found = True
                             break
                     break
 
-                timestamp = packet.timestamp
-                result.append([src_ip, sport, dst_ip, dport, timestamp])
-                result.append([dst_ip, dport, src_ip, sport, timestamp])
+                if found:
+                    timestamp = packet.timestamp
+                    result.append([src_ip, sport, dst_ip, dport, timestamp])
+                    result.append([dst_ip, dport, src_ip, sport, timestamp])
 
         return result
 
