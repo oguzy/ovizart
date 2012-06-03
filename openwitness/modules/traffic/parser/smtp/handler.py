@@ -160,10 +160,10 @@ class Handler():
                             f = open(os.path.join(path, fname), 'wb')
                             data = zf.read(name)
                             f.write(data)
-                            self.log.message("         - Found file")
-                            self.log.message("           - Writing to filename: %s"%(os.path.join(path, fname)))
-                            self.log.message("           - Type of file: %s"%(mimetypes.guess_type(os.path.join(path, fname))[0]))
-                            self.log.message("           - MDS of File: %s"%(hashlib.md5(data).hexdigest()))
+                            self.log.message(" Found file")
+                            self.log.message(" Writing to filename: %s"%(os.path.join(path, fname)))
+                            self.log.message(" Type of file: %s"%(mimetypes.guess_type(os.path.join(path, fname))[0]))
+                            self.log.message(" MDS of File: %s"%(hashlib.md5(data).hexdigest()))
                         except Exception, ex:
                             self.log.message(ex)
 
