@@ -22,18 +22,18 @@ class Handler():
     def get_flow_ips(self, path, file_name):
         self.reportRoot = path
         full_path = "/".join([path, file_name])
-        cmd = " ".join(["tcpflow -r -v", full_path])
+        cmd = " ".join(["tcpflow -v -r", full_path])
         output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=path).communicate()[1]
         result = []
         for line in output.split("\n"):
             if "new flow" in line:
                 # the the created flow files are the ones that we are looking for
 
-                # test whether this is an smtp flow
-                if not self.decode_SMTP(full_path):
-                    continue
-
                 ip = line.split(":")[1].strip()
+                # test whether this is an smtp flow
+                smtp_flow_file_path = "/".join([path, ip])
+                if not self.decode_SMTP(smtp_flow_file_path):
+                    continue
                 self.file_name_li.append(ip)
                 ip_info = ip.split("-")
                 src = ip_info[0].split(".")
@@ -169,8 +169,12 @@ class Handler():
 
 
     def decode_SMTP(self, i):
-        if i.startswith("EHLO") or i.startswith("HELO"):
+        f = open(i, "r")
+        line = f.readline()
+        if line.startswith("EHLO") or line.startswith("HELO"):
+            f.close()
             return True
+        f.close()
         return False
 
 
