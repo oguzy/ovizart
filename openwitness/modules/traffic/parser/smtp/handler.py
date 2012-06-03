@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 #-*- coding: UTF-8 -*-
 
+import base64
+import hashlib
+import os.path, os
+import subprocess
+import email, mimetypes
+import zipfile
+from openwitness.modules.traffic.log.logger import Logger
+
 class Handler():
     def __init__(self):
         self.log = Logger("SMTP Protocol Handler", "DEBUG")
@@ -8,9 +16,12 @@ class Handler():
         self.file_name_li = []
         self.flow = None
         self.toProcess = dict()
+        self.reportRoot = None
+        self.streamcounter = 1
 
     def get_flow_ips(self, path, file_name):
-        full_path = "/".join(path, file_name)
+        self.reportRoot = path
+        full_path = "/".join([path, file_name])
         cmd = " ".join(["tcpflow -r -v", full_path])
         output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=path).communicate()[1]
         result = []
@@ -41,7 +52,8 @@ class Handler():
                     break
 
                 timestamp = packet.timestamp
-                result.append([src_ip, sport, dst_ip, dport, timestamp], [dst_ip, dport, src_ip, sport, timestamp])
+                result.append([src_ip, sport, dst_ip, dport, timestamp])
+                result.append([dst_ip, dport, src_ip, sport, timestamp])
 
         return result
 
@@ -57,7 +69,7 @@ class Handler():
             info["raw"] = open(path, "r").read()
             self.toProcess[f] = info
 
-    def save_request_response(upload_path):
+    def save_request_response(self, upload_path):
         self.create_process_dic(upload_path)
         for f in self.file_name_li:
             # both these functions should be reviewed
@@ -91,32 +103,28 @@ class Handler():
                 self.toProcess[aFile]['rcpt_to'] = i[9:]
 
     def report_SMTP(self, aFile):
-        self.log("-"* 40)
-        self.log(" Report: %s"%(aFile))
-        self.log("-"* 40 + "\n")
-        self.log("Found SMTP Session data")
-        #self.log(toProcess[aFile].keys()
+        self.log.message("Found SMTP Session data at %s" % (aFile))
 
         if self.toProcess[aFile].has_key("logindata"):
-            self.log("SMTP AUTH Login: %s"%(base64.decodestring(self.toProcess[aFile]['logindata'][0])))
-            self.log("SMTP AUTH Password: %s"%(base64.decodestring(self.toProcess[aFile]['logindata'][1])))
+            self.log.message("SMTP AUTH Login: %s"%(base64.decodestring(self.toProcess[aFile]['logindata'][0])))
+            self.log.message("SMTP AUTH Password: %s"%(base64.decodestring(self.toProcess[aFile]['logindata'][1])))
         if self.toProcess[aFile].has_key('msg_from'):
-            self.log("SMTP MAIL FROM: %s"%(self.toProcess[aFile]['msg_from']))
+            self.log.message("SMTP MAIL FROM: %s"%(self.toProcess[aFile]['msg_from']))
         if self.toProcess[aFile].has_key("rcpt_to"):
-            self.log("SMTP RCPT TO: %s"%(self.toProcess[aFile]['rcpt_to']))
+            self.log.message("SMTP RCPT TO: %s"%(self.toProcess[aFile]['rcpt_to']))
         if self.toProcess[aFile].has_key('msgdata'):
             self.streamcounter += 1
-            if not os.path.exists(os.path.join(self.reportRoot, "messages", str(self.streamcounter))):
-                os.makedirs(os.path.join(self.reportRoot, "messages", str(self.streamcounter)))
+            if not os.path.exists(os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter))):
+                os.makedirs(os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter)))
 
             x = "\r\n".join(self.toProcess[aFile]['msgdata'])
             msg = email.message_from_string(x)
-            f = open(os.path.join(self.reportRoot, "messages", str(self.streamcounter), "%s.msg"%(aFile)), "w")
+            f = open(os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter), "%s.msg"%(aFile)), "w")
             f.write(x)
             f.close()
-            self.log("Found email Messages")
-            self.log(" - Writing to file: %s"%(os.path.join(self.reportRoot, "messages", str(self.streamcounter), "%s.msg"%(aFile))))
-            self.log(" - MD5 of msg: %s"%(hashlib.md5(x).hexdigest()))
+            self.log.message("Found email Messages")
+            self.log.message(" - Writing to file: %s"%(os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter), "%s.msg"%(aFile))))
+            self.log.message(" - MD5 of msg: %s"%(hashlib.md5(x).hexdigest()))
             counter = 1
             # The great docs at http://docs.python.org/library/email-examples.html
             # show this easy way of breaking up a mail msg
@@ -132,32 +140,33 @@ class Handler():
                 part_data = part.get_payload(decode=True)
                 part_hash = hashlib.md5()
                 part_hash.update(part_data)
-                self.log("   - Found Attachment" )
-                self.log("     - Writing to filename: %s "%( os.path.join(self.reportRoot, "messages", str(self.streamcounter), filename)))
-                f = open(os.path.join(self.reportRoot, "messages", str(self.streamcounter), filename), "wb")
+                self.log.message("   - Found Attachment" )
+                self.log.message("     - Writing to filename: %s "%( os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter), filename)))
+                f = open(os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter), filename), "wb")
                 f.write(part_data)
                 f.close()
-                self.log("     - Type of Attachement: %s"%(part.get_content_type()))
-                self.log("     - MDS of Attachement: %s"%(part_hash.hexdigest()))
+                self.log.message("     - Type of Attachement: %s"%(part.get_content_type()))
+                self.log.message("     - MDS of Attachement: %s"%(part_hash.hexdigest()))
                 if filename.endswith(".zip") or filename.endswith(".docx"):
-                    self.log("       - ZIP Archive attachment extracting")
-                    if not os.path.exists(os.path.join(self.reportRoot, "messages", str(self.streamcounter), "%s.unzipped"%(filename))):
-                        os.makedirs(os.path.join(self.reportRoot, "messages", str(self.streamcounter), "%s.unzipped"%(filename)))
-                    zfp = os.path.join(self.reportRoot, "messages", str(self.streamcounter), "%s.unzipped"%(filename))
-                    zf = zipfile.ZipFile(os.path.join(self.reportRoot, "messages", str(self.streamcounter), filename))
+                    self.log.message("       - ZIP Archive attachment extracting")
+                    if not os.path.exists(os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter), "%s.unzipped"%(filename))):
+                        os.makedirs(os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter), "%s.unzipped"%(filename)))
+                    zfp = os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter), "%s.unzipped"%(filename))
+                    zf = zipfile.ZipFile(os.path.join(self.reportRoot, "smtp-messages", str(self.streamcounter), filename))
                     for name in zf.namelist():
                         try:
                             (path,fname) = os.path.split(os.path.join(zfp, name))
                             os.makedirs(path)
-                        except:
-                            pass
-                        f = open(os.path.join(path, fname), 'wb')
-                        data = zf.read(name)
-                        f.write(data)
-                        self.log("         - Found file")
-                        self.log("           - Writing to filename: %s"%(os.path.join(path, fname)))
-                        self.log("           - Type of file: %s"%(mimetypes.guess_type(os.path.join(path, fname))[0]))
-                        self.log("           - MDS of File: %s"%(hashlib.md5(data).hexdigest()))
+                            f = open(os.path.join(path, fname), 'wb')
+                            data = zf.read(name)
+                            f.write(data)
+                            self.log.message("         - Found file")
+                            self.log.message("           - Writing to filename: %s"%(os.path.join(path, fname)))
+                            self.log.message("           - Type of file: %s"%(mimetypes.guess_type(os.path.join(path, fname))[0]))
+                            self.log.message("           - MDS of File: %s"%(hashlib.md5(data).hexdigest()))
+                        except Exception, ex:
+                            self.log.message(ex)
+
 
     def decode_SMTP(self, i):
         if i.startswith("EHLO") or i.startswith("HELO"):
