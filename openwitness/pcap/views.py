@@ -97,7 +97,7 @@ def upload(request):
                     log.message("pcap for packet update detected: %s" % p)
                     # update its packets
                     p.packets = list(packets) # converting a queryset to list
-                    p.save(force_insert=True)
+                    p.save()
                     p_read_handler.close_file()
 
             # starting the bro related issues for the reassembled data
@@ -122,7 +122,7 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
-                flow_file.save(force_insert=True)
+                flow_file.save()
                 # then call functions that will save request and responses that will parse dat files, save the headers and files
                 http_handler.save_request(upload_path, request.session['uploaded_hash'])
                 http_handler.save_response(upload_path, request.session['uploaded_hash'])
@@ -144,7 +144,7 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
-                flow_file.save(force_insert=True)
+                flow_file.save()
 
                 dns_handler.save_request_response()
 
@@ -164,7 +164,7 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
-                flow_file.save(force_insert=True)
+                flow_file.save()
 
                 smtp_handler.save_request_response(upload_path)
 
