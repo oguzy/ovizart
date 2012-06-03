@@ -101,8 +101,8 @@ def upload(request):
                     p_read_handler.close_file()
 
             # starting the bro related issues for the reassembled data
-            #output = traffic_detector_handler.detect_appproto(file_handler.file_path, upload_path)
-            #log.message("protocol detected: %s" % output)
+            output = traffic_detector_handler.detect_appproto(file_handler.file_path, upload_path)
+            log.message("protocol detected: %s" % output)
             if "http" in output:
                 log.message("protocol detected: %s" % "HTTP")
                 # save the reassembled http session IPs to FlowDetails
