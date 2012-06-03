@@ -157,7 +157,7 @@ def upload(request):
                 smtp_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
                 smtp_handler = smtp_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
-                flow_file.set_flow(flow_file) # i need this, to get the timestamp from a packet belongs to the flow
+                smtp_handler.set_flow(flow_file) # i need this, to get the timestamp from a packet belongs to the flow
                 flow_ips = smtp_handler.get_flow_ips(upload_path, request.session['uploaded_file_name'])
                 flow_detail_li = []
                 for detail in flow_ips:
