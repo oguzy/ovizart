@@ -86,4 +86,5 @@ class SMTPDetails(models.Model):
     rcpt_to = models.CharField(max_length=100, null=True, blank=True)
     raw = models.TextField(null=True, blank=True)
     msgdata = models.TextField(null=True, blank=True)
+    attachment_path = ListField(null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
