@@ -178,8 +178,8 @@ class Handler(TcpHandler):
 
     def get_flow_ips(self, **args):
         # TODO: add reading the conn log and parse the time stamp for each
-        flows =  self.read_dat_files(path)
-        ts = self.read_conn_log(path)
+        flows =  self.read_dat_files(args['path'])
+        ts = self.read_conn_log(args['path'])
         for flow in flows:
             timestamp = float(ts[flow[0:5]])
             flow.append(timestamp)
@@ -191,7 +191,7 @@ class Handler(TcpHandler):
         # the the ip from database
 
         try:
-            flow = Flow.objects.get(hash_value=hash_value)
+            flow = Flow.objects.get(hash_value=args['hash_value'])
             flow_details = flow.details
             for detail in flow_details:
                 # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_orig.dat
@@ -199,7 +199,7 @@ class Handler(TcpHandler):
                 destination_str = ":".join([detail.dst_ip, str(detail.dport)])
                 flow_str = "-".join([source_str, destination_str])
                 orig_file = "_".join(["contents", flow_str,"orig.dat"])
-                file_path = "/".join([path, orig_file])
+                file_path = "/".join([args['path'], orig_file])
                 file_path = str(file_path)
 
                 strings = ["GET", "PUT", "POST"]
@@ -470,6 +470,8 @@ class Handler(TcpHandler):
             return False
 
     def save_response(self, **args):
+        path = args['path']
+        hash_value = args['hash_value']
         self.save_response_headers(path, hash_value)
         self.save_response_binaries(path, hash_value)
         self.save_response_files(path, hash_value)
