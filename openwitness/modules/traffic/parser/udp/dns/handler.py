@@ -28,6 +28,8 @@ class Handler():
         self.flow_li = []
 
     def get_flow_ips(self, **args):
+        path = args['path']
+        file_name = args['file_name']
         p_read_handler = PcapHandler()
         file_path = "/".join([path, file_name])
         p_read_handler.open_file(file_path)
