@@ -5,6 +5,7 @@
 import os
 import StringIO
 import gzip
+import datetime
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.log.logger import Logger
 from openwitness.pcap.models import Flow, HTTPDetails
@@ -171,7 +172,7 @@ class Handler(TcpHandler):
             info = line.split()
             key = info[2:6]
             value = info[0]
-            result[key] = value
+            result[str(key)] = value
 
         return result
 
@@ -181,8 +182,9 @@ class Handler(TcpHandler):
         flows =  self.read_dat_files(args['path'])
         ts = self.read_conn_log(args['path'])
         for flow in flows:
-            timestamp = float(ts[flow[0:5]])
-            flow.append(timestamp)
+            timestamp = float(ts[str(flow[0:5])])
+            dt = datetime.datetime.fromtimestamp(timestamp)
+            flow.append(dt)
 
         return flows
 
@@ -326,7 +328,10 @@ class Handler(TcpHandler):
                     continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
-                output = "/".join([path, flow_str])
+                root = "/".join([path, "html-files"])
+                if not os.path.exists(root):
+                    os.makedirs(root)
+                output = "/".join([root, flow_str])
                 output = str(output)
                 if not os.path.exists(output):
                     os.mkdir(output)
@@ -382,7 +387,10 @@ class Handler(TcpHandler):
                     continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
-                output = "/".join([path, flow_str])
+                root = "/".join([path, "html-files"])
+                if not os.path.exists(root):
+                    os.makedirs(root)
+                output = "/".join([root, flow_str])
                 output = str(output)
                 subfile.setOutput(output)
 
@@ -442,7 +450,10 @@ class Handler(TcpHandler):
                     continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
-                output = "/".join([path, flow_str])
+                root = "/".join([path, "html-files"])
+                if not os.path.exists(root):
+                    os.makedirs(root)
+                output = "/".join([root, flow_str])
                 output = str(output)
                 subfile.setOutput(output)
 
