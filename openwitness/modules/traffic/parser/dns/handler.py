@@ -50,7 +50,7 @@ class Handler():
                     flow_detail = FlowDetails.objects.get(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                     try:
                         dns_request = DNSRequest(type=msg.qd[0].type, human_readable_type=REQUEST_FLAGS[msg.qd[0].type], value=msg.qd[0].name, flow_details=flow_detail)
-                        dns_request.save(force_insert=True)
+                        dns_request.save()
                     except Exception, ex:
                         print ex
                 for an in msg.an:
@@ -80,6 +80,6 @@ class Handler():
                         detail = self.flow_li[index]
                         flow_detail = FlowDetails.objects.get(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                         dns_response = DNSResponse(type=type, human_readable_type=RESPONSE_FLAGS[type], value=value, flow_details = flow_detail)
-                        dns_response.save(force_insert=True)
+                        dns_response.save()
                 index += 1
         return True
