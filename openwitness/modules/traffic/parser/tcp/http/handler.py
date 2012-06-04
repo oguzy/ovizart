@@ -237,7 +237,7 @@ class Handler(TcpHandler):
                                 http_details = HTTPDetails.objects.get(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_deatils=detail)
                             except:
                                 http_details = HTTPDetails(http_type="request", method=method, uri=uri, headers=request_li, version=version, flow_details=detail)
-                                http_details.save(force_insert=True)
+                                http_details.save()
             return True
 
         except Exception, ex:
@@ -300,7 +300,7 @@ class Handler(TcpHandler):
                             http_details = HTTPDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
                         except Exception, ex:# encoding error is occuring at the embedded field, dont know why now
                             http_details = HTTPDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
-                            http_details.save(force_insert=True)
+                            http_details.save()
 
             return True
 

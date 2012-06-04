@@ -51,8 +51,8 @@ def upload(request):
             traffic_detector_handler = traffic_detector_module.Handler()
             traffic_detector_handler.create_reassemble_information(file_handler.file_path, upload_path)
             output = traffic_detector_handler.detect_proto(file_handler.file_path, upload_path)
-            log.message("protocol detected: %s" % output)
             if "tcp" in output:
+                log.message("protocol detected: %s" % "TCP")
                 # run tcp flow extractor
                 p_read_handler = PcapHandler()
                 p_read_handler.open_file(file_handler.file_path)
@@ -97,20 +97,21 @@ def upload(request):
                     log.message("pcap for packet update detected: %s" % p)
                     # update its packets
                     p.packets = list(packets) # converting a queryset to list
-                    p.save(force_insert=True)
+                    p.save()
                     p_read_handler.close_file()
 
             # starting the bro related issues for the reassembled data
             output = traffic_detector_handler.detect_appproto(file_handler.file_path, upload_path)
             log.message("protocol detected: %s" % output)
             if "http" in output:
+                log.message("protocol detected: %s" % "HTTP")
                 # save the reassembled http session IPs to FlowDetails
 
                 # this part is checking the http handler module name and importing the handler
                 http_protocol_handler = settings.HTTP_HANDLER
-                package = "openwitness.modules.traffic.parser"
+                package = "openwitness.modules.traffic.parser.tcp"
                 module_name = ".".join([package, http_protocol_handler])
-                # from openwitness.modules.traffic.parser.x import handler as imported_module
+                # from openwitness.modules.traffic.parser.tcp.x import handler as imported_module
                 http_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
                 http_handler = http_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
@@ -121,7 +122,7 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
-                flow_file.save(force_insert=True)
+                flow_file.save()
                 # then call functions that will save request and responses that will parse dat files, save the headers and files
                 http_handler.save_request(upload_path, request.session['uploaded_hash'])
                 http_handler.save_response(upload_path, request.session['uploaded_hash'])
@@ -129,10 +130,11 @@ def upload(request):
 
             # dns realted issues starts here
             if "dns" in output:
+                log.message("protocol detected: %s" % "DNS")
                 dns_protocol_handler = settings.DNS_HANDLER
-                package = "openwitness.modules.traffic.parser"
+                package = "openwitness.modules.traffic.parser.udp"
                 module_name = ".".join([package, dns_protocol_handler])
-                # from openwitness.modules.traffic.parser.x import handler as imported_module
+                # from openwitness.modules.traffic.parser.udp.x import handler as imported_module
                 dns_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
                 dns_handler = dns_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
@@ -142,10 +144,29 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
-                flow_file.save(force_insert=True)
+                flow_file.save()
 
                 dns_handler.save_request_response()
 
+            if "smtp" in output:
+                log.message("protocol detected: %s" % "SMTP")
+                smtp_protocol_handler = settings.SMTP_HANDLER
+                package = "openwitness.modules.traffic.parser.tcp"
+                module_name = ".".join([package, smtp_protocol_handler])
+                # from openwitness.modules.traffic.parser.tcp.x import handler as imported_module
+                smtp_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+                smtp_handler = smtp_handler_module.Handler()
+                # define a get_flow_ips function for the custom handler if required
+                smtp_handler.set_flow(flow_file) # i need this, to get the timestamp from a packet belongs to the flow
+                flow_ips = smtp_handler.get_flow_ips(upload_path, request.session['uploaded_file_name'])
+                flow_detail_li = []
+                for detail in flow_ips:
+                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
+                    flow_detail_li.append(flow_detail)
+                flow_file.details = flow_detail_li
+                flow_file.save()
+
+                smtp_handler.save_request_response(upload_path)
 
     else:
         form = UploadPcapForm()

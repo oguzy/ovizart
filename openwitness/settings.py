@@ -23,6 +23,7 @@ PROTOCOL_HANDLER = "bro"
 # means that there exists an http module under parser directory, if the name changes, than the directory should be exists
 HTTP_HANDLER = "http"
 DNS_HANDLER = "dns"
+SMTP_HANDLER = "smtp"
 
 MANAGERS = ADMINS
 

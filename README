@@ -61,3 +61,6 @@ $ bin/django syncdb
 The project uses hachoir Python library, install them also
 
 $ sudo apt-get install python-hachoir-* (i should add this part to the buildout configuration also)
+
+* to handle smtp, it is required to install tcpflow. After checking the results of Bro and Tcpflow, for smtp, the created flows files seem more manageable.
+$ sudo apt-get install tcpflow
