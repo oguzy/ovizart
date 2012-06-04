@@ -18,7 +18,7 @@ class Handler():
         self.flow = None
         self.toProcess = dict()
         self.reportRoot = None
-        self.streamcounter = 1
+        self.streamcounter = 0
 
     def get_flow_ips(self, path, file_name):
         self.reportRoot = path
