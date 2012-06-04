@@ -109,9 +109,9 @@ def upload(request):
 
                 # this part is checking the http handler module name and importing the handler
                 http_protocol_handler = settings.HTTP_HANDLER
-                package = "openwitness.modules.traffic.parser"
+                package = "openwitness.modules.traffic.parser.tcp"
                 module_name = ".".join([package, http_protocol_handler])
-                # from openwitness.modules.traffic.parser.x import handler as imported_module
+                # from openwitness.modules.traffic.parser.tcp.x import handler as imported_module
                 http_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
                 http_handler = http_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
@@ -132,9 +132,9 @@ def upload(request):
             if "dns" in output:
                 log.message("protocol detected: %s" % "DNS")
                 dns_protocol_handler = settings.DNS_HANDLER
-                package = "openwitness.modules.traffic.parser"
+                package = "openwitness.modules.traffic.parser.udp"
                 module_name = ".".join([package, dns_protocol_handler])
-                # from openwitness.modules.traffic.parser.x import handler as imported_module
+                # from openwitness.modules.traffic.parser.udp.x import handler as imported_module
                 dns_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
                 dns_handler = dns_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
@@ -151,9 +151,9 @@ def upload(request):
             if "smtp" in output:
                 log.message("protocol detected: %s" % "SMTP")
                 smtp_protocol_handler = settings.SMTP_HANDLER
-                package = "openwitness.modules.traffic.parser"
+                package = "openwitness.modules.traffic.parser.tcp"
                 module_name = ".".join([package, smtp_protocol_handler])
-                # from openwitness.modules.traffic.parser.x import handler as imported_module
+                # from openwitness.modules.traffic.parser.tcp.x import handler as imported_module
                 smtp_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
                 smtp_handler = smtp_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
