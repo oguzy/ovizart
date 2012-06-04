@@ -20,7 +20,7 @@ class Handler():
         self.reportRoot = None
         self.streamcounter = 0
 
-    def get_flow_ips(self, path, file_name):
+    def get_flow_ips(self, **args):
         self.reportRoot = path
         full_path = "/".join([path, file_name])
         cmd = " ".join(["tcpflow -v -r", full_path])
@@ -80,7 +80,7 @@ class Handler():
             info["raw"] = open(path).read().split("\r\n")
             self.toProcess[f] = info
 
-    def save_request_response(self, upload_path):
+    def save_request_response(self, **args):
         self.create_process_dic(upload_path)
         for f in self.file_name_li:
             # both these functions should be reviewed
