@@ -176,7 +176,7 @@ class Handler(TcpHandler):
         return result
 
 
-    def get_flow_ips(self, path):
+    def get_flow_ips(self, **args):
         # TODO: add reading the conn log and parse the time stamp for each
         flows =  self.read_dat_files(path)
         ts = self.read_conn_log(path)
@@ -187,7 +187,7 @@ class Handler(TcpHandler):
         return flows
 
 
-    def save_request(self, path, hash_value):
+    def save_request(self, **args):
         # the the ip from database
 
         try:
@@ -469,7 +469,7 @@ class Handler(TcpHandler):
             print ex
             return False
 
-    def save_response(self, path, hash_value):
+    def save_response(self, **args):
         self.save_response_headers(path, hash_value)
         self.save_response_binaries(path, hash_value)
         self.save_response_files(path, hash_value)
