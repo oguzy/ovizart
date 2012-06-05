@@ -19,6 +19,8 @@ PROJECT_ROOT = os.path.dirname(__file__)
 # it should have a handler.py, including a Handler class derived from the base/handler
 # the detect method is the thing what you want to do
 PROTOCOL_HANDLER = "bro"
+BRO_CMD = "/usr/local/bro/bin/bro"
+BRO_CUT_CMD = "/usr/local/bro/bin/bro-cut"
 
 # means that there exists an http module under parser directory, if the name changes, than the directory should be exists
 HTTP_HANDLER = "http"
