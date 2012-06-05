@@ -27,7 +27,9 @@ class Handler():
         self.dns_li = []
         self.flow_li = []
 
-    def get_flow_ips(self, path, file_name):
+    def get_flow_ips(self, **args):
+        path = args['path']
+        file_name = args['file_name']
         p_read_handler = PcapHandler()
         file_path = "/".join([path, file_name])
         p_read_handler.open_file(file_path)
@@ -41,7 +43,7 @@ class Handler():
                 self.dns_li.append(dns)
         return self.flow_li
 
-    def save_request_response(self):
+    def save_request_response(self, **args):
         index = 0
         for msg in self.dns_li:
             if msg.rcode == dpkt.dns.DNS_RCODE_NOERR:

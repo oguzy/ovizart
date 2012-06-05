@@ -5,6 +5,7 @@
 import os
 import StringIO
 import gzip
+import datetime
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.log.logger import Logger
 from openwitness.pcap.models import Flow, HTTPDetails
@@ -171,27 +172,28 @@ class Handler(TcpHandler):
             info = line.split()
             key = info[2:6]
             value = info[0]
-            result[key] = value
+            result[str(key)] = value
 
         return result
 
 
-    def get_flow_ips(self, path):
+    def get_flow_ips(self, **args):
         # TODO: add reading the conn log and parse the time stamp for each
-        flows =  self.read_dat_files(path)
-        ts = self.read_conn_log(path)
+        flows =  self.read_dat_files(args['path'])
+        ts = self.read_conn_log(args['path'])
         for flow in flows:
-            timestamp = float(ts[flow[0:5]])
-            flow.append(timestamp)
+            timestamp = float(ts[str(flow[0:5])])
+            dt = datetime.datetime.fromtimestamp(timestamp)
+            flow.append(dt)
 
         return flows
 
 
-    def save_request(self, path, hash_value):
+    def save_request(self, **args):
         # the the ip from database
 
         try:
-            flow = Flow.objects.get(hash_value=hash_value)
+            flow = Flow.objects.get(hash_value=args['hash_value'])
             flow_details = flow.details
             for detail in flow_details:
                 # create the orig file ex: contents_192.168.1.5:42825-62.212.84.227:80_orig.dat
@@ -199,7 +201,7 @@ class Handler(TcpHandler):
                 destination_str = ":".join([detail.dst_ip, str(detail.dport)])
                 flow_str = "-".join([source_str, destination_str])
                 orig_file = "_".join(["contents", flow_str,"orig.dat"])
-                file_path = "/".join([path, orig_file])
+                file_path = "/".join([args['path'], orig_file])
                 file_path = str(file_path)
 
                 strings = ["GET", "PUT", "POST"]
@@ -326,7 +328,10 @@ class Handler(TcpHandler):
                     continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
-                output = "/".join([path, flow_str])
+                root = "/".join([path, "html-files"])
+                if not os.path.exists(root):
+                    os.makedirs(root)
+                output = "/".join([root, flow_str])
                 output = str(output)
                 if not os.path.exists(output):
                     os.mkdir(output)
@@ -382,7 +387,10 @@ class Handler(TcpHandler):
                     continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
-                output = "/".join([path, flow_str])
+                root = "/".join([path, "html-files"])
+                if not os.path.exists(root):
+                    os.makedirs(root)
+                output = "/".join([root, flow_str])
                 output = str(output)
                 subfile.setOutput(output)
 
@@ -442,7 +450,10 @@ class Handler(TcpHandler):
                     continue
                 subfile = SearchSubfile(stream, 0, None)
                 subfile.loadParsers()
-                output = "/".join([path, flow_str])
+                root = "/".join([path, "html-files"])
+                if not os.path.exists(root):
+                    os.makedirs(root)
+                output = "/".join([root, flow_str])
                 output = str(output)
                 subfile.setOutput(output)
 
@@ -469,7 +480,9 @@ class Handler(TcpHandler):
             print ex
             return False
 
-    def save_response(self, path, hash_value):
+    def save_response(self, **args):
+        path = args['path']
+        hash_value = args['hash_value']
         self.save_response_headers(path, hash_value)
         self.save_response_binaries(path, hash_value)
         self.save_response_files(path, hash_value)

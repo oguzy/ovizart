@@ -116,7 +116,7 @@ def upload(request):
                 http_handler = http_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
                 # TODO: save the timestamps of the flows
-                flow_ips = http_handler.get_flow_ips(upload_path)
+                flow_ips = http_handler.get_flow_ips(path=upload_path)
                 flow_detail_li = []
                 for detail in flow_ips:
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
@@ -124,8 +124,8 @@ def upload(request):
                 flow_file.details = flow_detail_li
                 flow_file.save()
                 # then call functions that will save request and responses that will parse dat files, save the headers and files
-                http_handler.save_request(upload_path, request.session['uploaded_hash'])
-                http_handler.save_response(upload_path, request.session['uploaded_hash'])
+                http_handler.save_request(path=upload_path, hash_value=request.session['uploaded_hash'])
+                http_handler.save_response(path=upload_path, hash_value=request.session['uploaded_hash'])
                 # should save the file names to db also
 
             # dns realted issues starts here
@@ -138,7 +138,7 @@ def upload(request):
                 dns_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
                 dns_handler = dns_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
-                flow_ips = dns_handler.get_flow_ips(upload_path, request.session['uploaded_file_name'])
+                flow_ips = dns_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
                 flow_detail_li = []
                 for detail in flow_ips:
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
@@ -158,7 +158,7 @@ def upload(request):
                 smtp_handler = smtp_handler_module.Handler()
                 # define a get_flow_ips function for the custom handler if required
                 smtp_handler.set_flow(flow_file) # i need this, to get the timestamp from a packet belongs to the flow
-                flow_ips = smtp_handler.get_flow_ips(upload_path, request.session['uploaded_file_name'])
+                flow_ips = smtp_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
                 flow_detail_li = []
                 for detail in flow_ips:
                     flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
@@ -166,7 +166,7 @@ def upload(request):
                 flow_file.details = flow_detail_li
                 flow_file.save()
 
-                smtp_handler.save_request_response(upload_path)
+                smtp_handler.save_request_response(upload_path=upload_path)
 
     else:
         form = UploadPcapForm()
