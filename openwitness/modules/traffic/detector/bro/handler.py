@@ -2,12 +2,13 @@
 #-*- coding: UTF-8 -*-
 
 from openwitness.modules.traffic.detector.base.handler import Handler as BaseHandler
+from django.conf import settings
 
 import subprocess
 import os
 
-BRO_CMD = "/usr/local/bro/bin/bro"
-BRO_CUT_CMD = "/usr/local/bro/bin/bro-cut"
+BRO_CMD = settings.BRO_CMD
+BRO_CUT_CMD = settings.BRO_CUT_CMD
 
 class Handler(BaseHandler):
     def __init__(self):
