@@ -46,10 +46,13 @@ $ /usr/local/bro/bin/bro -C -r pcap_fille.name should be working
 $ mkdir uploads
 $ chown a+w uploads
 
+* tshark is required for an alternative method to detect application layer protocols where bro fails
+$ sudo apt-get install tshark
+
 * If you got backend errors like "django.core.exceptions.ImproperlyConfigured: 'django_mongodb_engine' isn't an available database backend."
 install the django-mongodb backend manually
 
-$ ip install hg+https://bitbucket.org/wkornewald/django-nonrel
+$ pip install hg+https://bitbucket.org/wkornewald/django-nonrel
 $ pip install hg+https://bitbucket.org/wkornewald/djangotoolbox
 $ pip install git+https://github.com/django-nonrel/mongodb-engine
 
