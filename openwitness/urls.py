@@ -1,6 +1,9 @@
 
 from django.conf.urls.defaults import *
 from django.conf import settings
+from openwitness.api.api import AppProtocolResource
+
+app_protocol_resource = AppProtocolResource()
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -11,6 +14,7 @@ urlpatterns = patterns('',
     # (r'^{{ project_name }}/', include('{{ project_name }}.foo.urls')),
     url(r'^$', 'openwitness.main.views.welcome', name='home_page'),
     (r'^pcap/', include('openwitness.pcap.urls')),
+    (r'^api/', include(app_protocol_resource.urls)),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
