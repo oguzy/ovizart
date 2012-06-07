@@ -148,7 +148,7 @@ def upload(request):
                 flow_ips = http_handler.get_flow_ips(path=upload_path)
                 flow_detail_li = []
                 for detail in flow_ips:
-                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
+                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save()
@@ -170,7 +170,7 @@ def upload(request):
                 flow_ips = dns_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
                 flow_detail_li = []
                 for detail in flow_ips:
-                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
+                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save()
@@ -190,7 +190,7 @@ def upload(request):
                 flow_ips = smtp_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
                 flow_detail_li = []
                 for detail in flow_ips:
-                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="smtp", timestamp = detail[4])
+                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="smtp", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save()
