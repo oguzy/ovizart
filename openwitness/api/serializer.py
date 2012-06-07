@@ -71,6 +71,7 @@ class CustomJSONSerializer(Serializer):
 
         return data
 
+    # TODO: for udp, packet details are not saved
     def get_start_end(self, flow):
         packets = PacketDetails.objects.filter(src_ip=flow['src_ip'], sport=flow['sport'], dst_ip=flow['dst_ip'], dport=flow['dport']).order_by('timestamp')
         return packets[0].timestamp, packets[len(packets)-1].timestamp
@@ -113,6 +114,6 @@ class CustomJSONSerializer(Serializer):
         if len(flow_details) > 0:
             info = flow_details[0]
             type = "SMTP"
-            description = " ".join([info.msg_from, info.rcpt_to])
+            description = " ".join(["FROM:", info.msg_from, "TO:", info.rcpt_to])
             return type, description
         return None, None
