@@ -14,6 +14,8 @@ ADMINS = (
 PROJECT_NAME = 'Network Analyzer'
 PROJECT_ROOT = os.path.dirname(__file__)
 
+BASE_URL = "http://127.0.0.1:8000"
+
 # define the protocol detecter directory name
 # it should be under the modules/traffic/detector directory
 # it should have a handler.py, including a Handler class derived from the base/handler
