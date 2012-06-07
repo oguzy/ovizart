@@ -9,6 +9,7 @@ from openwitness.modules.file.handler import Handler as FileHandler
 from openwitness.modules.traffic.pcap.handler import Handler as PcapHandler
 from openwitness.modules.traffic.flow.handler import Handler as FlowHandler
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
+from openwitness.modules.traffic.parser.udp.handler import Handler as UDPHandler
 from openwitness.modules.md5.handler import Handler as HashHandler
 
 from openwitness.pcap.models import Flow, Pcap, PacketDetails, FlowDetails
@@ -65,9 +66,9 @@ def upload(request):
                 files = f_handler.save_flow(flow, p_write_handler, save_path=upload_path)
 
                 # save the flow pcap names to the mongo db
-                pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([x, upload_path])).hexdigest(), file_name=x, path=upload_path), files.values()[0])
+                pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([upload_path, x])).hexdigest(), file_name=x, path=upload_path), files.values()[0])
                 flow_file.pcaps = pcap_list
-                flow_file.save(force_insert=True)
+                flow_file.save()
 
                 p_read_handler.close_file()
                 p_write_handler.close_file()
@@ -91,7 +92,7 @@ def upload(request):
                         else: continue
                         packet = PacketDetails.objects.create(ident=tcp_handler.ident, timestamp=tcp_handler.timestamp, protocol=tcp_handler.proto, src_ip=tcp_handler.src_ip, dst_ip=tcp_handler.dst_ip, sport=tcp_handler.sport, dport=tcp_handler.dport)
                         packets.append(packet)
-                    hash_handler.set_file("/".join([f, upload_path]))
+                    hash_handler.set_file("/".join([upload_path, f]))
                     # get the pcap object
                     p = Pcap.objects.get(hash_value=hash_handler.get_hash())
                     log.message("pcap for packet update detected: %s" % p)
@@ -99,6 +100,34 @@ def upload(request):
                     p.packets = list(packets) # converting a queryset to list
                     p.save()
                     p_read_handler.close_file()
+
+            if "udp" in output:
+                log.message("protocol detected: %s" % "UDP")
+                p_read_handler = PcapHandler()
+                file_path = "/".join([upload_path, pcap_name])
+                p_read_handler.open_file(file_path)
+                p_read_handler.open_pcap()
+                udp_handler = UDPHandler()
+                pcap = Pcap.objects.create(hash_value=hashlib.md5("/".join([upload_path, pcap_name])).hexdigest(), file_name=pcap_name, path=upload_path)
+                pcap_list = list([pcap])
+                flow_file.pcaps = pcap_list
+                flow_file.save()
+
+                for ts, buf in p_read_handler.get_reader():
+                    udp = udp_handler.read_udp(ts, buf)
+                    if udp:
+                        packets  = []
+                        packet = PacketDetails.objects.create(ident=udp_handler.ident, timestamp=udp_handler.timestamp, protocol=udp_handler.proto, src_ip=udp_handler.src_ip, dst_ip=udp_handler.dst_ip, sport=udp_handler.sport, dport=udp_handler.dport)
+                        packets.append(packet)
+
+                        hash_handler.set_file("/".join([upload_path, pcap_name]))
+                        # get the pcap object
+                        p = Pcap.objects.get(hash_value=hash_handler.get_hash())
+                        # update its packets
+                        p.packets = list(packets) # converting a queryset to list
+                        p.save()
+                        p_read_handler.close_file()
+
 
             # starting the bro related issues for the reassembled data
             output = traffic_detector_handler.detect_appproto(file_handler.file_path, upload_path)
@@ -161,7 +190,7 @@ def upload(request):
                 flow_ips = smtp_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
                 flow_detail_li = []
                 for detail in flow_ips:
-                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
+                    flow_detail, create = FlowDetails.objects.get_or_create(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="smtp", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save()
