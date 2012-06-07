@@ -38,6 +38,8 @@ class PacketDetails(models.Model):
 
 # save the ips at the applayerproto.log (http.log for ex)
 class FlowDetails(models.Model):
+    parent_hash_value = models.CharField(max_length=50)
+    session_key = models.CharField(max_length=100)
     src_ip = models.IPAddressField()
     dst_ip = models.IPAddressField()
     sport = models.IntegerField()
