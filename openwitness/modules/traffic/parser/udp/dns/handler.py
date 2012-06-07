@@ -30,6 +30,7 @@ class Handler():
     def get_flow_ips(self, **args):
         path = args['path']
         file_name = args['file_name']
+        # TODO: this handler should read the conn.log and get the flows there
         p_read_handler = PcapHandler()
         file_path = "/".join([path, file_name])
         p_read_handler.open_file(file_path)
