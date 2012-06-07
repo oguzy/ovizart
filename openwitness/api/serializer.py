@@ -14,6 +14,7 @@ class CustomJSONSerializer(Serializer):
         #data['requested_time'] = time.time()
         result = []
         protocol_dict = dict()
+        if not data.has_key('objects'): return {}
         for flow in data['objects']:
             if flow['protocol'] == "http":
                 # get the start and end time for this flow
@@ -87,7 +88,13 @@ class CustomJSONSerializer(Serializer):
             if type == "request":
                 description = " ".join([info.uri, "HTTP", str(info.version)])
             if type == "response":
-                description = " ".join([str(info.status), info.content_type, info.content_encoding])
+                description = ""
+                if info.status:
+                    description = " ".join([description, str(info.status)])
+                if info.content_type:
+                    description = " ".join([description, str(info.content_type)])
+                if info.content_encoding:
+                    description = " ".join([description, str(info.content_encoding)])
             return type, description
         return None, None
 
