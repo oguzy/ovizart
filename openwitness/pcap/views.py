@@ -1,6 +1,8 @@
 # Create your views here.
 
 import hashlib
+import urllib2
+import simplejson
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.conf import settings
@@ -202,3 +204,22 @@ def upload(request):
 
     return render_to_response("pcap/upload.html",
             context_instance=RequestContext(request, context))
+
+def summary(request):
+    #session_key = request.session.session_key
+    url = "".join([settings.BASE_URL, "/api/protocols/?format=json&session_key=", "3003981449cc81a75883443612258a1a"])
+    req = urllib2.Request(url, None)
+    opener = urllib2.build_opener()
+    f = None
+    try:
+        f = opener.open(req)
+        json_response = simplejson.load(f)
+        print json_response
+    except Exception, ex:
+        print ex
+
+
+
+
+
+
