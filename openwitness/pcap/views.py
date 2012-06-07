@@ -113,20 +113,19 @@ def upload(request):
                 flow_file.pcaps = pcap_list
                 flow_file.save()
 
+                packets  = []
                 for ts, buf in p_read_handler.get_reader():
                     udp = udp_handler.read_udp(ts, buf)
                     if udp:
-                        packets  = []
                         packet = PacketDetails.objects.create(ident=udp_handler.ident, timestamp=udp_handler.timestamp, protocol=udp_handler.proto, src_ip=udp_handler.src_ip, dst_ip=udp_handler.dst_ip, sport=udp_handler.sport, dport=udp_handler.dport)
                         packets.append(packet)
-
                         hash_handler.set_file("/".join([upload_path, pcap_name]))
                         # get the pcap object
-                        p = Pcap.objects.get(hash_value=hash_handler.get_hash())
-                        # update its packets
-                        p.packets = list(packets) # converting a queryset to list
-                        p.save()
-                        p_read_handler.close_file()
+                p = Pcap.objects.get(hash_value=hash_handler.get_hash())
+                # update its packets
+                p.packets = list(packets) # converting a queryset to list
+                p.save()
+                p_read_handler.close_file()
 
 
             # starting the bro related issues for the reassembled data
