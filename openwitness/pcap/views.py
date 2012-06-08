@@ -2,7 +2,10 @@
 
 import hashlib
 import urllib2
-import simplejson
+import tempfile
+import os
+from django.http import Http404
+from django.utils import simplejson as json
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.conf import settings
@@ -12,11 +15,16 @@ from openwitness.modules.traffic.pcap.handler import Handler as PcapHandler
 from openwitness.modules.traffic.flow.handler import Handler as FlowHandler
 from openwitness.modules.traffic.parser.tcp.handler import Handler as TcpHandler
 from openwitness.modules.traffic.parser.udp.handler import Handler as UDPHandler
+from openwitness.pcap.models import UserJSonFile
 from openwitness.modules.md5.handler import Handler as HashHandler
 
 from openwitness.pcap.models import Flow, Pcap, PacketDetails, FlowDetails
 
 from openwitness.modules.traffic.log.logger import Logger
+
+# for development purposes, when the login screen is defined this should be removed
+from openwitness.development import USER_ID, NAME, SURNAME
+from openwitness.api.constants import  IMPORTANCE, ICONS
 
 def upload(request):
     log = Logger("Upload form", "DEBUG")
@@ -27,6 +35,7 @@ def upload(request):
     if request.method == "POST":
         form = UploadPcapForm(request.POST, request.FILES)
         if form.is_valid():
+            user_id = USER_ID
             context['form'] = form
             file_handler = FileHandler()
             file_handler.create_dir()
@@ -42,7 +51,7 @@ def upload(request):
             hash_handler = HashHandler()
             hash_handler.set_file("/".join([pcap_name, upload_path]))
             hash_value = hash_handler.get_hash()
-            flow_file, created = Flow.objects.get_or_create(hash_value=hash_value,file_name=pcap_name, path=upload_path)
+            flow_file, created = Flow.objects.get_or_create(user_id=USER_ID, hash_value=hash_value,file_name=pcap_name, path=upload_path)
             request.session['uploaded_hash'] = hash_value
             request.session['uploaded_file_name'] = pcap_name
             # send the file to the defined protocol handler so that it can detect
@@ -149,7 +158,7 @@ def upload(request):
                 flow_ips = http_handler.get_flow_ips(path=upload_path)
                 flow_detail_li = []
                 for detail in flow_ips:
-                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], session_key=request.session.session_key, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
+                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save()
@@ -171,7 +180,7 @@ def upload(request):
                 flow_ips = dns_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
                 flow_detail_li = []
                 for detail in flow_ips:
-                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], session_key=request.session.session_key, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
+                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save()
@@ -191,7 +200,7 @@ def upload(request):
                 flow_ips = smtp_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
                 flow_detail_li = []
                 for detail in flow_ips:
-                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], session_key=request.session.session_key, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="smtp", timestamp = detail[4])
+                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="smtp", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 flow_file.details = flow_detail_li
                 flow_file.save()
@@ -206,17 +215,91 @@ def upload(request):
             context_instance=RequestContext(request, context))
 
 def summary(request):
+    # to get this work, runserver should be run as bin/django runserver 127.0.0.0:8001 and another instance should be run as
+    # bin/django runserver
+    log = Logger("Summary:", "DEBUG")
+    context = {
+        'page_title': 'Summary of the uploaded pcaps',
+    }
     #session_key = request.session.session_key
-    url = "".join([settings.BASE_URL, "/api/protocols/?format=json&session_key=", "3003981449cc81a75883443612258a1a"])
+    # TODO: i better keep the user id, login requirements is necessary in this case, for a temporary time use the development USER_ID definition
+    url = "".join([settings.BASE_URL, "/api/protocols/?format=json&user_id=", str(USER_ID)])
+    log.message("URL: %s" % (url))
     req = urllib2.Request(url, None)
     opener = urllib2.build_opener()
     f = None
     try:
         f = opener.open(req)
-        json_response = simplejson.load(f)
-        print json_response
+        json_response = json.load(f)
+        user_id = USER_ID
+        name = NAME
+        surname = SURNAME
+
+        result = []
+        response_dict = dict()
+
+        for response in json_response:
+            # indeed i have only one response for now, i decided to put all responses in one timeline instead of multiple timelines
+            response_dict["id"] = "".join([NAME, SURNAME, str(USER_ID)])
+            response_dict['title'] = "Summary For the Uploaded PCAPs"
+            response_dict['focus_date'] = None # will be fixed
+            response_dict['initial_zoom'] = "43"
+
+            # events creation starts here
+            events = []
+            for protocol, values in response.iteritems():
+                event_dict = dict()
+                count = 0
+                for value in values:
+                    event_dict['id'] = "-".join([response_dict["id"], protocol, str(count)])
+                    if value.has_key("type") and value['type']:
+                        event_dict['title'] = " ".join([protocol, value['type']])
+                    else:
+                        event_dict['title'] = protocol
+                    if value.has_key('description') and value['description']:
+                        event_dict['description'] = value['description']
+                    else:
+                        event_dict['description'] = "No description is set"
+                    event_dict['startdate'] = value['start']
+                    response_dict['focus_date'] = value['start']
+                    event_dict['enddate'] = value['end']
+                    event_dict['date_display'] = 'day'
+                    event_dict['importance'] = IMPORTANCE[protocol]
+                    event_dict['icon'] = ICONS[protocol]
+                    events.append(event_dict)
+                    count += 1
+            response_dict['events'] = events
+            result.append(response_dict)
+
+        json_data = json.dumps(result)
+        json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
+        json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
+
+        user_json_file = UserJSonFile.objects.filter(user_id=USER_ID)
+        if len(user_json_file) > 0:
+            user_json_file[0].delete()
+            file_path = os.path.join(settings.PROJECT_ROOT, "json_files", user_json_file[0].json_file_name)
+            try:
+                os.unlink(file_path)
+            except:
+                pass
+
+        file_name = json_file.name
+        # save the json data to the temporary file
+        json_file.write(json_data)
+        json_file.close()
+        user_json_file = UserJSonFile(user_id=USER_ID, json_type="summary", json_file_name=file_name)
+        user_json_file.save()
+        context['json_file'] = file_name
+        context['pcap_operation'] = "summary"
+
+        return render_to_response("pcap/summary.html",
+                context_instance=RequestContext(request, context))
+        #HttpResponse(json.dumps(response_dict))
+
     except Exception, ex:
-        print ex
+        log.message(ex)
+        raise Http404
 
 
 
