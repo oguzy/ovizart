@@ -284,13 +284,13 @@ def summary(request):
             except:
                 pass
 
-        file_name = json_file.name
+        file_name = os.path.basename(json_file.name)
         # save the json data to the temporary file
         json_file.write(json_data)
         json_file.close()
         user_json_file = UserJSonFile(user_id=USER_ID, json_type="summary", json_file_name=file_name)
         user_json_file.save()
-        context['json_file'] = file_name
+        context['json_file_url'] = os.path.join(settings.BASE_URL, "json_media", file_name)
         context['pcap_operation'] = "summary"
 
         return render_to_response("pcap/summary.html",
