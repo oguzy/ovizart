@@ -1,6 +1,6 @@
 from tastypie.serializers import Serializer
 from django.core.serializers import json
-import simplejson
+from django.utils import simplejson
 
 from openwitness.pcap.models import PacketDetails, HTTPDetails, DNSRequest, DNSResponse, SMTPDetails
 
@@ -31,7 +31,6 @@ class CustomJSONSerializer(Serializer):
                 else:
                     protocol_dict["http"] = [tmp]
 
-            # TODO: it doesn't return type and description somehow, check it
             if flow['protocol'] == "dns":
                 start, end = self.get_start_end(flow)
                 type, description = self.get_dns_info(flow)
