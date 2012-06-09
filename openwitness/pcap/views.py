@@ -237,6 +237,8 @@ def summary(request):
 
         result = []
         response_dict = dict()
+        legend = []
+        protocols_found = []
 
         for response in json_response:
             # indeed i have only one response for now, i decided to put all responses in one timeline instead of multiple timelines
@@ -264,11 +266,20 @@ def summary(request):
                     response_dict['focus_date'] = value['start']
                     event_dict['enddate'] = value['end']
                     event_dict['date_display'] = 'day'
-                    event_dict['importance'] = IMPORTANCE[protocol]
+                    event_dict['importance'] = repr(IMPORTANCE[protocol])
+                    if protocol not in protocols_found:
+                        protocols_found.append(protocol)
                     event_dict['icon'] = ICONS[protocol]
                     events.append(event_dict)
                     count += 1
             response_dict['events'] = events
+            for proto in protocols_found:
+                tmp = dict()
+                tmp['title'] = repr(proto)
+                tmp['icon'] = ICONS[proto]
+                legend.append(tmp)
+
+            response_dict['legend'] = legend
             result.append(response_dict)
 
         json_data = json.dumps(result)
@@ -290,7 +301,8 @@ def summary(request):
         json_file.close()
         user_json_file = UserJSonFile(user_id=USER_ID, json_type="summary", json_file_name=file_name)
         user_json_file.save()
-        context['json_file_url'] = os.path.join(settings.BASE_URL, "json_media", file_name)
+        context['json_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
+        context['icon_folder']  = os.path.join(settings.ALTERNATE_BASE_URL, "/site_media/jquery_widget/js/timeglider/icons/")
         context['pcap_operation'] = "summary"
 
         return render_to_response("pcap/summary.html",
