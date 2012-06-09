@@ -15,6 +15,7 @@ PROJECT_NAME = 'Network Analyzer'
 PROJECT_ROOT = os.path.dirname(__file__)
 
 BASE_URL = "http://127.0.0.1:8000"
+ALTERNATE_BASE_URL = "http://127.0.0.1:8001"
 
 # define the protocol detecter directory name
 # it should be under the modules/traffic/detector directory
