@@ -4,6 +4,7 @@ import hashlib
 import urllib2
 import tempfile
 import os
+import datetime
 from django.http import Http404
 from django.utils import simplejson as json
 from django.shortcuts import render_to_response
@@ -19,6 +20,7 @@ from openwitness.pcap.models import UserJSonFile
 from openwitness.modules.md5.handler import Handler as HashHandler
 
 from openwitness.pcap.models import Flow, Pcap, PacketDetails, FlowDetails
+from openwitness.modules.utils.handler import translate_time
 
 from openwitness.modules.traffic.log.logger import Logger
 
@@ -266,7 +268,9 @@ def summary(request):
                     response_dict['focus_date'] = value['start']
                     event_dict['enddate'] = value['end']
                     event_dict['date_display'] = 'day'
-                    event_dict['importance'] = repr(IMPORTANCE[protocol])
+                    ts = int(datetime.datetime.strptime(value['end'], "%Y-%m-%d %H:%M:%S").strftime("%s"))
+                    importance = repr(translate_time(ts))
+                    event_dict['importance'] = importance
                     if protocol not in protocols_found:
                         protocols_found.append(protocol)
                     event_dict['icon'] = ICONS[protocol]
