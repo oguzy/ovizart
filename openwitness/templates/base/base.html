@@ -29,6 +29,73 @@
           media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="/site_media/jquery_widget/js/timeglider/Timeglider.css" type="text/css"
           media="screen" title="no title" charset="utf-8">
+
+
+
+    <style type='text/css'>
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        #summary_info {
+            margin:32px;
+            margin-bottom:0;
+            height:300px;
+        }
+
+        #output {
+            font-size:10px;
+        }
+
+        .shadow-years .timeglider-event-title {
+            color:#F0F0F0;
+        }
+        .shadow-years .timeglider-event-spanner {
+            background-color:#4C5408;
+        }
+
+        .bibliocene .timeglider-event-title {
+            color:#F0F0F0;
+        }
+        .bibliocene .timeglider-event-spanner {
+            background-color:orange;
+        }
+
+        .js-era .timeglider-event-title {
+            color:#323230;
+        }
+        .js-era .timeglider-event-spanner {
+            background-color:#f0db4e;
+        }
+
+        .hawt .timeglider-event-title {
+            color:white;
+        }
+        .hawt .timeglider-event-spanner {
+            background-color:#CC106B;
+        }
+
+        .browserwars .timeglider-event-title {
+            color:black;
+        }
+        .browserwars .timeglider-event-spanner {
+            background-color:#CC0000;
+        }
+
+        .inception .timeglider-event-title {
+            color:green;
+        }
+        .inception .timeglider-event-spanner {
+            background-color:white;
+        }
+
+        .tg-timeline-envelope .titleBar {
+            opacity:.2;
+        }
+
+    </style>
+
     {% endifequal %}
 
 </head>
@@ -49,7 +116,7 @@
 <script src="/site_media/jquery_widget/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 <script src="/site_media/jquery_widget/js/underscore-min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/site_media/jquery_widget/js/backbone-min.js" type="text/javascript" charset="utf-8"></script>
-<script src="/site_media/jquery_widget/jquery_widget/js/jquery.tmpl.js" type="text/javascript" charset="utf-8"></script>
+<script src="/site_media/jquery_widget/js/jquery.tmpl.js" type="text/javascript" charset="utf-8"></script>
 <script src="/site_media/jquery_widget/js/ba-debug.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/site_media/jquery_widget/js/ba-tinyPubSub.js" type="text/javascript" charset="utf-8"></script>
 <script src="/site_media/jquery_widget/js/jquery.mousewheel.min.js" type="text/javascript" charset="utf-8"></script>
@@ -74,7 +141,8 @@
             "show_centerline":true,
             "data_source":"{{ json_file_url }}",
             "show_footer":true,
-            "display_zoom_level":true
+            "display_zoom_level":true,
+            "icon_folder": "{{ icon_folder }}"
         }).resizable({
                     stop:function(){
                         $(this).data("timeline").resize();
