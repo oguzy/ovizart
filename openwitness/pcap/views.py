@@ -23,11 +23,13 @@ from openwitness.pcap.models import Flow, Pcap, PacketDetails, FlowDetails
 from openwitness.modules.utils.handler import translate_time
 
 from openwitness.modules.traffic.log.logger import Logger
+from django.contrib.auth.decorators import login_required
 
 # for development purposes, when the login screen is defined this should be removed
 from openwitness.development import USER_ID, NAME, SURNAME
-from openwitness.api.constants import  IMPORTANCE, ICONS
+from openwitness.api.constants import  ICONS
 
+@login_required()
 def upload(request):
     log = Logger("Upload form", "DEBUG")
     context = {
