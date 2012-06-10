@@ -39,7 +39,7 @@ def upload(request):
     if request.method == "POST":
         form = UploadPcapForm(request.POST, request.FILES)
         if form.is_valid():
-            user_id = USER_ID
+            user_id = request.user.id
             context['form'] = form
             file_handler = FileHandler()
             file_handler.create_dir()
@@ -55,7 +55,7 @@ def upload(request):
             hash_handler = HashHandler()
             hash_handler.set_file("/".join([pcap_name, upload_path]))
             hash_value = hash_handler.get_hash()
-            flow_file, created = Flow.objects.get_or_create(user_id=USER_ID, hash_value=hash_value,file_name=pcap_name, path=upload_path)
+            flow_file, created = Flow.objects.get_or_create(user_id=user_id, hash_value=hash_value,file_name=pcap_name, path=upload_path)
             request.session['uploaded_hash'] = hash_value
             request.session['uploaded_file_name'] = pcap_name
             # send the file to the defined protocol handler so that it can detect
@@ -225,9 +225,10 @@ def summary(request):
     context = {
         'page_title': 'Summary of the uploaded pcaps',
     }
+    user_id = request.user.id
     #session_key = request.session.session_key
     # TODO: i better keep the user id, login requirements is necessary in this case, for a temporary time use the development USER_ID definition
-    url = "".join([settings.BASE_URL, "/api/protocols/?format=json&user_id=", str(USER_ID)])
+    url = "".join([settings.BASE_URL, "/api/protocols/?format=json&user_id=", str(user_id)])
     log.message("URL: %s" % (url))
     req = urllib2.Request(url, None)
     opener = urllib2.build_opener()
@@ -235,7 +236,7 @@ def summary(request):
     try:
         f = opener.open(req)
         json_response = json.load(f)
-        user_id = USER_ID
+        user_id = user_id
         name = NAME
         surname = SURNAME
 
@@ -246,7 +247,7 @@ def summary(request):
 
         for response in json_response:
             # indeed i have only one response for now, i decided to put all responses in one timeline instead of multiple timelines
-            response_dict["id"] = "".join([NAME, SURNAME, str(USER_ID)])
+            response_dict["id"] = "".join([NAME, SURNAME, str(user_id)])
             response_dict['title'] = "Summary For the Uploaded PCAPs"
             response_dict['focus_date'] = None # will be fixed
             response_dict['initial_zoom'] = "43"
@@ -305,7 +306,7 @@ def summary(request):
         # save the json data to the temporary file
         json_file.write(json_data)
         json_file.close()
-        user_json_file = UserJSonFile(user_id=USER_ID, json_type="summary", json_file_name=file_name)
+        user_json_file = UserJSonFile(user_id=user_id, json_type="summary", json_file_name=file_name)
         user_json_file.save()
         context['json_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
         context['icon_folder']  = os.path.join(settings.ALTERNATE_BASE_URL, "/site_media/jquery_widget/js/timeglider/icons/")
