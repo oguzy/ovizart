@@ -11,6 +11,8 @@ ADMINS = (
      ('Oğuz Yarımtepe', 'oguzyarimtepe@gmail.com'),
 )
 
+LOGIN_URL = "http://127.0.0.1:8001"
+
 PROJECT_NAME = 'Network Analyzer'
 PROJECT_ROOT = os.path.dirname(__file__)
 
