@@ -12,7 +12,7 @@ class AppProtocolResource(ModelResource):
         detail_allowed_methods = ['get']
         limit = 0 # unlimited
         filtering = {
-            'session_key': ALL,
+            'user_id': ALL,
         }
         serializer = CustomJSONSerializer()
 
