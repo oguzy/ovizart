@@ -1,0 +1,32 @@
+{% extends "base/layout-summary.html" %}
+
+
+{% block up %}
+<div class="span4 offset4">
+
+<form action="{% url login_page %}" method="post">{% csrf_token %}
+    <fieldset>
+    {% for field in form %}
+            <div class="control-group">
+                <label for="focusedInput" class="control-label">{{ field.label }}</label>
+                <div class="controls">
+                    {% ifequal field.html_name "password" %}
+                        <input type="password" name="{{ field.html_name }}" id="focusedInput" class="input-xlarge focused span3">
+                    {% else %}
+                        <input type="text" name="{{ field.html_name }}" id="focusedInput" class="input-xlarge focused span3">
+                    {% endifequal %}
+                    <span class="help-inline">{{ field.errors }}</span>
+                </div>
+            </div>
+    {% endfor %}
+    </fieldset>
+    <button type="submit" class="btn-large">Submit</button>
+</form>
+
+</div>
+
+{% endblock %}
+
+{% block down %}
+Down part
+{% endblock %}
