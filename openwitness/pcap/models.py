@@ -5,12 +5,12 @@ from djangotoolbox.fields import EmbeddedModelField, ListField
 # save the created json file name path
 # only one file for summary should be kept here
 class UserJSonFile(models.Model):
-    user_id = models.IntegerField()
+    user_id = models.CharField(max_length=100)
     json_type = models.CharField(max_length=10) # possible value is summary for the summary view
     json_file_name = models.CharField(max_length=100) # save the name of the already created file name on disk
 
 class Flow(models.Model):
-    user_id = models.IntegerField()
+    user_id = models.CharField(max_length=100)
     hash_value = models.CharField(max_length=50)
     file_name = models.CharField(max_length=50)
     path = models.FilePathField()
@@ -47,7 +47,7 @@ class PacketDetails(models.Model):
 # save the ips at the applayerproto.log (http.log for ex)
 class FlowDetails(models.Model):
     parent_hash_value = models.CharField(max_length=50)
-    user_id = models.IntegerField()
+    user_id = models.CharField(max_length=100)
     src_ip = models.IPAddressField()
     dst_ip = models.IPAddressField()
     sport = models.IntegerField()
