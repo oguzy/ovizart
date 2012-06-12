@@ -5,6 +5,7 @@ import urllib2
 import tempfile
 import os
 import datetime
+import cgi
 from django.http import Http404
 from django.utils import simplejson as json
 from django.shortcuts import render_to_response
@@ -26,7 +27,6 @@ from openwitness.modules.traffic.log.logger import Logger
 from django.contrib.auth.decorators import login_required
 
 # for development purposes, when the login screen is defined this should be removed
-from openwitness.development import USER_ID, NAME, SURNAME
 from openwitness.api.constants import  ICONS
 
 @login_required()
@@ -237,8 +237,6 @@ def summary(request):
         f = opener.open(req)
         json_response = json.load(f)
         user_id = user_id
-        name = NAME
-        surname = SURNAME
 
         result = []
         response_dict = dict()
@@ -247,29 +245,43 @@ def summary(request):
 
         for response in json_response:
             # indeed i have only one response for now, i decided to put all responses in one timeline instead of multiple timelines
-            response_dict["id"] = "".join([NAME, SURNAME, str(user_id)])
+            id = os.urandom(4)
+            response_dict["id"] = "".join([id.encode('hex'), str(user_id)])
             response_dict['title'] = "Summary For the Uploaded PCAPs"
             response_dict['focus_date'] = None # will be fixed
-            response_dict['initial_zoom'] = "43"
+            response_dict['initial_zoom'] = "37"
+
+            time_keeper = {'start': None, 'end': None}
 
             # events creation starts here
             events = []
             for protocol, values in response.iteritems():
-                event_dict = dict()
                 count = 0
                 for value in values:
+                    event_dict = dict()
                     event_dict['id'] = "-".join([response_dict["id"], protocol, str(count)])
                     if value.has_key("type") and value['type']:
-                        event_dict['title'] = " ".join([protocol, value['type']])
+                        event_dict['title'] = value['type']
                     else:
                         event_dict['title'] = protocol
                     if value.has_key('description') and value['description']:
-                        event_dict['description'] = value['description']
+                        event_dict['description'] = cgi.escape(value['description'])
                     else:
                         event_dict['description'] = "No description is set"
                     event_dict['startdate'] = value['start']
-                    response_dict['focus_date'] = value['start']
                     event_dict['enddate'] = value['end']
+
+                    dt_start = datetime.datetime.strptime(value['start'], "%Y-%m-%d %H:%M:%S")
+                    dt_end = datetime.datetime.strptime(value['end'], "%Y-%m-%d %H:%M:%S")
+                    if not time_keeper['start']:
+                        time_keeper['start'] = dt_start
+                    if dt_start <= time_keeper['start']:
+                        time_keeper['start'] = dt_start
+                    if not time_keeper['end']:
+                        time_keeper['end'] = dt_end
+                    if dt_end >= time_keeper['end']:
+                        time_keeper['end'] = dt_end
+
                     event_dict['date_display'] = 'day'
                     ts = int(datetime.datetime.strptime(value['end'], "%Y-%m-%d %H:%M:%S").strftime("%s"))
                     importance = repr(translate_time(ts))
@@ -280,6 +292,10 @@ def summary(request):
                     events.append(event_dict)
                     count += 1
             response_dict['events'] = events
+            # calculate the middle of the time
+            mid_point = time_keeper['start'] + ((time_keeper['end'] - time_keeper['start']) / 2)
+            response_dict['focus_date'] = mid_point.isoformat(sep=" ")
+
             for proto in protocols_found:
                 tmp = dict()
                 tmp['title'] = repr(proto)
@@ -293,7 +309,7 @@ def summary(request):
         json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
         json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
 
-        user_json_file = UserJSonFile.objects.filter(user_id=USER_ID)
+        user_json_file = UserJSonFile.objects.filter(user_id=user_id)
         if len(user_json_file) > 0:
             user_json_file[0].delete()
             file_path = os.path.join(settings.PROJECT_ROOT, "json_files", user_json_file[0].json_file_name)
