@@ -252,6 +252,7 @@ def summary(request):
             response_dict['initial_zoom'] = "37"
 
             time_keeper = {'start': None, 'end': None}
+            importance_keeper = []
 
             # events creation starts here
             events = []
@@ -286,6 +287,7 @@ def summary(request):
                     ts = int(datetime.datetime.strptime(value['end'], "%Y-%m-%d %H:%M:%S").strftime("%s"))
                     importance = repr(translate_time(ts))
                     event_dict['importance'] = importance
+                    importance_keeper.append(int(importance))
                     if protocol not in protocols_found:
                         protocols_found.append(protocol)
                     event_dict['icon'] = ICONS[protocol]
@@ -295,6 +297,9 @@ def summary(request):
             # calculate the middle of the time
             mid_point = time_keeper['start'] + ((time_keeper['end'] - time_keeper['start']) / 2)
             response_dict['focus_date'] = mid_point.isoformat(sep=" ")
+
+            # calculate initial zoom
+            response_dict['initial_zoom'] = repr(int((importance_keeper[0]+importance_keeper[-1])/2))
 
             for proto in protocols_found:
                 tmp = dict()
