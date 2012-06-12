@@ -14,7 +14,7 @@ ADMINS = (
 LOGIN_URL = "http://127.0.0.1:8001"
 
 PROJECT_NAME = 'Network Analyzer'
-PROJECT_ROOT = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 BASE_URL = "http://127.0.0.1:8000"
 ALTERNATE_BASE_URL = "http://127.0.0.1:8001"
