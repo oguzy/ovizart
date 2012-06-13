@@ -60,6 +60,10 @@ def login_user(request):
             context_instance=RequestContext(request))
 
 def logout_user(request):
+    if request.session.has_key('uploaded_hash'):
+        del request.session['uploaded_hash']
+    if request.session.has_key('uploaded_file_name'):
+        del request.session['uploaded_file_name']
     logout(request)
     return HttpResponseRedirect(reverse('login_page'))
 
