@@ -333,6 +333,33 @@ def summary(request):
         context['icon_folder']  = os.path.join(settings.ALTERNATE_BASE_URL, "/site_media/jquery_widget/js/timeglider/icons/")
         context['pcap_operation'] = "summary"
 
+        # get the summary query infos
+        flow = Flow.objects.filter(user_id=request.user.id)
+        context['flow'] = flow
+
+        flow_details = FlowDetails.objects.filter(user_id=request.user.id)
+        flow_details_dict = dict()
+
+        f_d = dict()
+        for flow_detail in flow_details:
+            if not flow_details_dict.has_key(flow_detail.protocol):
+                flow_details_dict[flow_detail.protocol] = dict()
+                f_d = flow_details_dict[flow_detail.protocol]
+                f_d['count'] = 0
+                f_d['timestamps'] = []
+            else:
+                f_d['count'] += 1
+                f_d['timestamps'].append(flow_detail.timestamp)
+
+        for key, value in flow_details_dict.items():
+            ts = flow_details_dict[key]['timestamps']
+            ts.sort()
+            flow_details_dict[key]['start'] = ts[0]
+            flow_details_dict[key]['end'] = ts[-1]
+
+        context['flow_details'] = flow_details_dict
+
+
         return render_to_response("pcap/summary.html",
                 context_instance=RequestContext(request, context))
         #HttpResponse(json.dumps(response_dict))
