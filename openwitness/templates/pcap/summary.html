@@ -9,5 +9,65 @@
 {% endblock %}
 
 {% block down %}
-Down part
+        <div class="span4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Uploaded PCAP File</th>
+                        <th>MD5 Sum</th>
+                        <th>Created Flow PCAPs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for f in flow %}
+                    <tr>
+
+                            <td>{{ f.file_name }}</td>
+                            <td>{{ f.hash_value }}</td>
+                            <td>
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Pcap File Name</th>
+                                        <tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for pcap in f.pcaps %}
+                                        <tr>
+                                            <td>{{ pcap.file_name }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="span4 offset4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Protocol</th>
+                        <th>Number of unique connections</th>
+                        <th>Start time of the flow</th>
+                        <th>End time of the flow</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for protocol, details in flow_details.items %}
+                        <tr>
+                            <td> {{ protocol }} </td>
+                            <td> {{ details.count }} </td>
+                            <td> {{details.start }} </td>
+                            <td> {{details.end }} </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 {% endblock %}
