@@ -105,7 +105,11 @@ def upload(request):
                         if tcp:
                             tcp_list.append((tcp, tcp_handler.ident))
                         else: continue
-                        packet = PacketDetails.objects.create(ident=tcp_handler.ident, timestamp=tcp_handler.timestamp, protocol=tcp_handler.proto, src_ip=tcp_handler.src_ip, dst_ip=tcp_handler.dst_ip, sport=tcp_handler.sport, dport=tcp_handler.dport)
+                        packet = PacketDetails.objects.create(ident=tcp_handler.ident, timestamp=tcp_handler.timestamp,
+                                                                length=tcp_handler.length, protocol=tcp_handler.proto,
+                                                                src_ip=tcp_handler.src_ip,
+                                                                dst_ip=tcp_handler.dst_ip, sport=tcp_handler.sport,
+                                                                dport=tcp_handler.dport)
                         packets.append(packet)
                     hash_handler.set_file("/".join([upload_path, f]))
                     # get the pcap object
@@ -132,7 +136,10 @@ def upload(request):
                 for ts, buf in p_read_handler.get_reader():
                     udp = udp_handler.read_udp(ts, buf)
                     if udp:
-                        packet = PacketDetails.objects.create(ident=udp_handler.ident, timestamp=udp_handler.timestamp, protocol=udp_handler.proto, src_ip=udp_handler.src_ip, dst_ip=udp_handler.dst_ip, sport=udp_handler.sport, dport=udp_handler.dport)
+                        packet = PacketDetails.objects.create(ident=udp_handler.ident, timestamp=udp_handler.timestamp,
+                                                            length = udp_handler.length,
+                                                            protocol=udp_handler.proto, src_ip=udp_handler.src_ip,
+                                                            dst_ip=udp_handler.dst_ip, sport=udp_handler.sport, dport=udp_handler.dport)
                         packets.append(packet)
                         hash_handler.set_file("/".join([upload_path, pcap_name]))
                         # get the pcap object
@@ -218,6 +225,7 @@ def upload(request):
     return render_to_response("pcap/upload.html",
             context_instance=RequestContext(request, context))
 
+@login_required()
 def summary(request):
     # to get this work, runserver should be run as bin/django runserver 127.0.0.0:8001 and another instance should be run as
     # bin/django runserver
@@ -368,6 +376,8 @@ def summary(request):
         log.message(ex)
         raise Http404
 
+def visualize(request):
+    pass
 
 
 
