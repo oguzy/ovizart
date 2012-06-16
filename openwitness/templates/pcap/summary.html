@@ -61,7 +61,7 @@
                 <tbody>
                     {% for protocol, details in flow_details.items %}
                         <tr>
-                            <td> {{ protocol }} </td>
+                            <td> <a href="{% url login_page %}pcap/visualize/{{ protocol }}">{{ protocol }} </td>
                             <td> {{ details.count }} </td>
                             <td> {{details.start }} </td>
                             <td> {{details.end }} </td>
