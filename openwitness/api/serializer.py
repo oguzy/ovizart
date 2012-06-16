@@ -2,7 +2,7 @@ from tastypie.serializers import Serializer
 from django.core.serializers import json
 from django.utils import simplejson
 
-from openwitness.pcap.models import PacketDetails, HTTPDetails, DNSRequest, DNSResponse, SMTPDetails
+from openwitness.pcap.models import Flow, PacketDetails, HTTPDetails, DNSRequest, DNSResponse, SMTPDetails
 
 class CustomJSONSerializer(Serializer):
     def to_json(self, data, options=None):
@@ -123,3 +123,77 @@ class CustomJSONSerializer(Serializer):
             description = " ".join(["FROM:", info.msg_from, "TO:", info.rcpt_to])
             return type, description
         return None, None
+
+class AppProtocolPacketSizeCustomJSONSerializer(Serializer):
+    def to_json(self, data, options=None):
+        options = options or {}
+
+        data = self.to_simple(data, options)
+
+        result = dict()
+        if not data.has_key('objects'): return {}
+        for flow in data['objects']:
+            flow_dict = dict()
+            src_ip = flow['src_ip']
+            sport = flow['sport']
+            s_combined = ":".join([src_ip, str(sport)])
+            dst_ip = flow['dst_ip']
+            dport = flow['dport']
+            d_combined = ":".join([dst_ip, str(dport)])
+            hash_value = flow['parent_hash_value']
+            parent_flow = Flow.objects.get(hash_value=hash_value)
+            if not result.has_key(parent_flow.file_name):
+                result['name'] = parent_flow.file_name
+            if not result.has_key('children'):
+                result['children'] = []
+            flow_dict['name'] = "-".join([s_combined, d_combined])
+            packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
+            flow_dict['children'] = []
+            for p in packets:
+                flow_dict['children'].append({'name': p.timestamp, 'size':p.length})
+            result['children'].append(flow)
+
+        data = result
+        return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
+
+    def from_json(self, content):
+        data = simplejson.loads(content)
+
+        return data
+
+class AppProtocolPacketCountCustomJSONSerializer(Serializer):
+    def to_json(self, data, options=None):
+        options = options or {}
+
+        data = self.to_simple(data, options)
+
+        result = dict()
+        if not data.has_key('objects'): return {}
+        for flow in data['objects']:
+            flow_dict = dict()
+            src_ip = flow['src_ip']
+            sport = flow['sport']
+            s_combined = ":".join([src_ip, str(sport)])
+            dst_ip = flow['dst_ip']
+            dport = flow['dport']
+            d_combined = ":".join([dst_ip, str(dport)])
+            hash_value = flow['parent_hash_value']
+            parent_flow = Flow.objects.get(hash_value=hash_value)
+            if not result.has_key(parent_flow.file_name):
+                result['name'] = parent_flow.file_name
+            if not result.has_key('children'):
+                result['children'] = []
+            flow_dict['name'] = "-".join([s_combined, d_combined])
+            packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
+            flow_dict['children'] = []
+            flow_dict['children'].append({'name': packets[0].timestamp, 'size':len(packets)})
+            result['children'].append(flow)
+
+        data = result
+        return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
+
+    def from_json(self, content):
+        data = simplejson.loads(content)
+
+        return data
+
