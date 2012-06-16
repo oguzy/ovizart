@@ -15,6 +15,7 @@ class Handler(object):
         self.sport = None
         self.dport = None
         self.ident = None
+        self.length = None
         self.log = Logger("TCP Protocol Handler", "DEBUG")
         self.log.message("TCP protocol handler called")
 
@@ -38,6 +39,7 @@ class Handler(object):
 
     def get_ip(self, eth):
         ip = eth.data
+        self.length = ip.len
         if ip.p != dpkt.ip.IP_PROTO_TCP:
             return False
         else:
