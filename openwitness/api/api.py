@@ -19,7 +19,7 @@ class AppProtocolResource(ModelResource):
 class AppProtocolVisualizePacketSizeResource(ModelResource):
     class Meta:
         queryset = FlowDetails.objects.all()
-        resource_name = 'protocol'
+        resource_name = 'protocol_size'
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
         limit = 0 # unlimited
@@ -32,7 +32,7 @@ class AppProtocolVisualizePacketSizeResource(ModelResource):
 class AppProtocolVisualizePacketCountResource(ModelResource):
     class Meta:
         queryset = FlowDetails.objects.all()
-        resource_name = 'protocol'
+        resource_name = 'protocol_count'
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
         limit = 0 # unlimited
