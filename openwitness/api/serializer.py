@@ -150,8 +150,11 @@ class AppProtocolPacketSizeCustomJSONSerializer(Serializer):
             packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
             flow_dict['children'] = []
             for p in packets:
-                flow_dict['children'].append({'name': p.timestamp, 'size':p.length})
-            result['children'].append(flow)
+                #src_id = ":".join([p.src_ip, str(p.sport)])
+                #dst_id = ":".join([p.dst_ip, str(p.dport)])
+                #id = "-".join([src_id, dst_id])
+                flow_dict['children'].append({'name': str(p.ident), 'size':p.length})
+            result['children'].append(flow_dict)
 
         data = result
         return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
@@ -186,8 +189,8 @@ class AppProtocolPacketCountCustomJSONSerializer(Serializer):
             flow_dict['name'] = "-".join([s_combined, d_combined])
             packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
             flow_dict['children'] = []
-            flow_dict['children'].append({'name': packets[0].timestamp, 'size':len(packets)})
-            result['children'].append(flow)
+            flow_dict['children'].append({'name': str(packets[0].ident), 'size':len(packets)})
+            result['children'].append(flow_dict)
 
         data = result
         return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
