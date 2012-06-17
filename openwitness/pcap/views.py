@@ -236,7 +236,7 @@ def summary(request):
     user_id = request.user.id
     #session_key = request.session.session_key
     # TODO: i better keep the user id, login requirements is necessary in this case, for a temporary time use the development USER_ID definition
-    url = "".join([settings.BASE_URL, "/api/protocols/?format=json&user_id=", str(user_id)])
+    url = "".join([settings.BASE_URL, "/api/rest/protocols/?format=json&user_id=", str(user_id)])
     log.message("URL: %s" % (url))
     req = urllib2.Request(url, None)
     opener = urllib2.build_opener()
@@ -322,7 +322,7 @@ def summary(request):
         json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
         json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
 
-        user_json_file = UserJSonFile.objects.filter(user_id=user_id)
+        user_json_file = UserJSonFile.objects.filter(user_id=user_id, json_type="summary")
         if len(user_json_file) > 0:
             user_json_file[0].delete()
             file_path = os.path.join(settings.PROJECT_ROOT, "json_files", user_json_file[0].json_file_name)
@@ -376,8 +376,106 @@ def summary(request):
         log.message(ex)
         raise Http404
 
-def visualize(request):
-    pass
+def visualize(request, protocol, type="size"):
+    if type == "size":
+        # to get this work, runserver should be run as bin/django runserver 127.0.0.0:8001 and another instance should be run as
+        # bin/django runserver
+        log = Logger("Visualize:", "DEBUG")
+        context = {
+            'page_title': 'Packet Sizes of the uploaded pcaps',
+            }
+        user_id = request.user.id
+        url = "".join([settings.BASE_URL, "/api/rest/protocol_size/?format=json&user_id=", str(user_id), "&protocol=", protocol])
+        log.message("URL: %s" % (url))
+        req = urllib2.Request(url, None)
+        opener = urllib2.build_opener()
+        f = None
+        try:
+            f = opener.open(req)
+            json_response = json.load(f)
+            json_data = json.dumps(json_response)
+
+            context['children'] = json_response['children']
+            context['flow_details'] = json_response
+            context['pcap_operation'] = "summary-size"
+
+            json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
+            json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
+
+            user_json_file = UserJSonFile.objects.filter(user_id=user_id, json_type="summary-size")
+            if len(user_json_file) > 0:
+                user_json_file[0].delete()
+                file_path = os.path.join(settings.PROJECT_ROOT, "json_files", user_json_file[0].json_file_name)
+                try:
+                    os.unlink(file_path)
+                except:
+                    pass
+
+            file_name = os.path.basename(json_file.name)
+            # save the json data to the temporary file
+            json_file.write(json_data)
+            json_file.close()
+            user_json_file = UserJSonFile(user_id=user_id, json_type="summary-size", json_file_name=file_name)
+            user_json_file.save()
+            context['json_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
+
+            context['measure'] = 'size'
+
+            return render_to_response("pcap/summary-size.html",
+        context_instance=RequestContext(request, context))
+
+        except:
+            # return html template
+            pass
+    else:
+        # to get this work, runserver should be run as bin/django runserver 127.0.0.0:8001 and another instance should be run as
+        # bin/django runserver
+        log = Logger("Visualize:", "DEBUG")
+        context = {
+            'page_title': 'Packet Sizes of the uploaded pcaps',
+            }
+        user_id = request.user.id
+        url = "".join([settings.BASE_URL, "/api/rest/protocol_count/?format=json&user_id=", str(user_id), "&protocol=", protocol], )
+        log.message("URL: %s" % (url))
+        req = urllib2.Request(url, None)
+        opener = urllib2.build_opener()
+        f = None
+        try:
+            f = opener.open(req)
+            json_response = json.load(f)
+
+            json_data = json.dumps(json_response)
+            context['children'] = json_response['children']
+            context['flow_details'] = json_response
+            context['pcap_operation'] = "summary-size"
+
+            json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
+            json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
+
+            user_json_file = UserJSonFile.objects.filter(user_id=user_id, json_type="summary-size")
+            if len(user_json_file) > 0:
+                user_json_file[0].delete()
+                file_path = os.path.join(settings.PROJECT_ROOT, "json_files", user_json_file[0].json_file_name)
+                try:
+                    os.unlink(file_path)
+                except:
+                    pass
+
+            file_name = os.path.basename(json_file.name)
+            # save the json data to the temporary file
+            json_file.write(json_data)
+            json_file.close()
+            user_json_file = UserJSonFile(user_id=user_id, json_type="summary-size", json_file_name=file_name)
+            user_json_file.save()
+            context['json_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
+
+            return render_to_response("pcap/summary-size.html",
+                context_instance=RequestContext(request, context))
+
+        except:
+            # return html template
+            pass
+
 
 
 
