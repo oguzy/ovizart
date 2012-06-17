@@ -1,9 +1,17 @@
 
 from django.conf.urls.defaults import *
 from django.conf import settings
-from openwitness.api.api import AppProtocolResource
+from tastypie.api import Api
+from openwitness.api.api import AppProtocolResource, AppProtocolVisualizePacketSizeResource, AppProtocolVisualizePacketCountResource
 
-app_protocol_resource = AppProtocolResource()
+rest_api = Api(api_name='rest')
+rest_api.register(AppProtocolResource())
+rest_api.register(AppProtocolVisualizePacketSizeResource())
+rest_api.register(AppProtocolVisualizePacketCountResource())
+
+#app_protocol_resource = AppProtocolResource()
+#app_protocol_size_resource = AppProtocolVisualizePacketSizeResource()
+#app_protocol_count_resource = AppProtocolVisualizePacketCountResource()
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -15,7 +23,7 @@ urlpatterns = patterns('',
     url(r'^$', 'openwitness.main.views.login_user', name='login_page'),
     url(r'^logout/', 'openwitness.main.views.logout_user', name='logout_page'),
     (r'^pcap/', include('openwitness.pcap.urls')),
-    (r'^api/', include(app_protocol_resource.urls)),
+    (r'^api/', include(rest_api.urls)),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
