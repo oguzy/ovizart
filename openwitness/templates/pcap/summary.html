@@ -22,7 +22,7 @@
                 {% for f in flow %}
                     <tr>
 
-                            <td>{{ f.file_name }}</td>
+                            <td><a href="/uploads/{{ f.get_upload_path }}/{{ f.file_name }}">{{ f.file_name }}</a></td>
                             <td>{{ f.hash_value }}</td>
                             <td>
 
@@ -35,7 +35,7 @@
                                     <tbody>
                                     {% for pcap in f.pcaps %}
                                         <tr>
-                                            <td>{{ pcap.file_name }}</td>
+                                            <td><a href="/uploads/{{ pcap.get_upload_path }}/{{ pcap.file_name }}">{{ pcap.file_name }}</a></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
