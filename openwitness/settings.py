@@ -74,6 +74,8 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
 
 #json_file directory path
 JSON_ROOT = os.path.join(PROJECT_ROOT, "json_files")
+#json_file directory path
+UPLOAD_ROOT = os.path.join(PROJECT_ROOT, "uploads")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
