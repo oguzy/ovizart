@@ -1,5 +1,6 @@
 from django.db import models
 from djangotoolbox.fields import EmbeddedModelField, ListField
+import os
 
 # Create your models here.
 # save the created json file name path
@@ -20,6 +21,11 @@ class Flow(models.Model):
     def __unicode__(self):
         return u'%s/%s' % (self.path, self.file_name)
 
+    def get_upload_path(self):
+        hash_dir = os.path.basename(self.path)
+        root = os.path.basename(os.path.dirname(self.path))
+        return os.path.join(root, hash_dir)
+
 class Pcap(models.Model):
     hash_value = models.CharField(max_length=100)
     file_name = models.FileField(upload_to="uploads", null=True, blank=True)
@@ -28,6 +34,11 @@ class Pcap(models.Model):
 
     def __unicode__(self):
         return u'%s/%s' % (self.path, self.file_name)
+
+    def get_upload_path(self):
+        hash_dir = os.path.basename(self.path)
+        root = os.path.basename(os.path.dirname(self.path))
+        return os.path.join(root, hash_dir)
 
 # there should be also a table of fields that kepts the traffic bytes related with communication
 
