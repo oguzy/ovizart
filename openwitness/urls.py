@@ -38,6 +38,8 @@ if settings.DEBUG:
         (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
              {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
         (r'^json_media/(?P<path>.*)$', 'django.views.static.serve',
-             {'document_root': settings.JSON_ROOT, 'show_indexes': True})
+             {'document_root': settings.JSON_ROOT, 'show_indexes': True}),
+        (r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
+             {'document_root': settings.UPLOAD_ROOT, 'show_indexes': True}),
     )
 
