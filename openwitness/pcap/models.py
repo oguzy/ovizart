@@ -110,3 +110,16 @@ class SMTPDetails(models.Model):
     msgdata = models.TextField(null=True, blank=True)
     attachment_path = ListField(null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
+
+    def get_path_dict(self):
+        #/home/oguz/git/openwitness/openwitness/uploads/16-06-12/a6a6defb7253043a55281d01aa66538a/smtp-messages/1/part-001.ksh
+        result = []
+        for path in self.attachment_path:
+            tmp = dict()
+            r = path.split("uploads")
+            file_name = os.path.basename(r[1])
+            tmp['file_name'] = file_name
+            tmp['path'] = r[1]
+            result.append(tmp)
+
+        return result
