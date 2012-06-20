@@ -21,6 +21,7 @@ class CustomJSONSerializer(Serializer):
                 start, end = self.get_start_end(flow)
                 type, description = self.get_http_info(flow)
                 tmp = dict()
+                tmp['flow_id'] = flow['id']
                 tmp["start"] = start
                 tmp["end"] = end
                 if type and description:
@@ -35,6 +36,7 @@ class CustomJSONSerializer(Serializer):
                 start, end = self.get_start_end(flow)
                 type, description = self.get_dns_info(flow)
                 tmp = dict()
+                tmp['flow_id'] = flow['id']
                 tmp["start"] = start
                 tmp["end"] = end
                 if type and description:
@@ -49,6 +51,7 @@ class CustomJSONSerializer(Serializer):
                 start, end = self.get_start_end(flow)
                 type, description = self.get_smtp_info(flow)
                 tmp = dict()
+                tmp['flow_id'] = flow['id']
                 tmp["start"] = start
                 tmp["end"] = end
                 if type and description:
