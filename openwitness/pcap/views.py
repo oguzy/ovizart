@@ -9,6 +9,7 @@ import cgi
 from django.http import Http404
 from django.utils import simplejson as json
 from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
 from django.template.context import RequestContext
 from django.conf import settings
 from openwitness.pcap.forms import UploadPcapForm
@@ -20,7 +21,7 @@ from openwitness.modules.traffic.parser.udp.handler import Handler as UDPHandler
 from openwitness.pcap.models import UserJSonFile
 from openwitness.modules.md5.handler import Handler as HashHandler
 
-from openwitness.pcap.models import Flow, Pcap, PacketDetails, FlowDetails
+from openwitness.pcap.models import Flow, Pcap, PacketDetails, FlowDetails, HTTPDetails, DNSRequest, DNSResponse, SMTPDetails
 from openwitness.modules.utils.handler import translate_time
 
 from openwitness.modules.traffic.log.logger import Logger
@@ -269,6 +270,7 @@ def summary(request):
                 for value in values:
                     event_dict = dict()
                     event_dict['id'] = "-".join([response_dict["id"], protocol, str(count)])
+                    event_dict['link'] = reverse('flow_details', args=(value['flow_id'],))
                     if value.has_key("type") and value['type']:
                         event_dict['title'] = value['type']
                     else:
@@ -476,8 +478,94 @@ def visualize(request, protocol, type="size"):
             # return html template
             pass
 
+def flow_details(request, flow_id):
+    flow_details = FlowDetails.objects.get(id=flow_id)
+
+    result = []
+
+    if flow_details.protocol == "http":
+        http_details = filter(lambda x: x.flow_details.id == flow_details.id, HTTPDetails.objects.all())
+        for http_detail in http_details:
+            http_dict = dict()
+
+            http_dict['protocol'] = 'HTTP'
+            if http_detail.http_type:
+                http_dict['http_type'] = http_detail.http_type
+            if http_detail.method:
+                http_dict['method'] = http_detail.method
+            if http_detail.uri:
+                http_dict['uri'] = http_detail.uri
+            if http_detail.headers:
+                headers = http_detail.headers
+                content = headers[1:-1]
+                human_readable_header = content.split(",")
+                http_dict['headers'] = human_readable_header
+            if http_detail.version:
+                http_dict['version'] = http_detail.version
+            if http_detail.reason:
+                http_dict['reason'] = http_detail.reason
+            if http_detail.status:
+                http_dict['status'] = http_detail.status
+            if http_detail.body:
+                http_dict['body'] = http_detail.body
+            if http_detail.content_type:
+                http_dict['content_type'] = http_detail.content_type
+            if http_detail.content_encoding:
+                http_dict['content_encoding'] = http_detail.content_encoding
+            if http_detail.files:
+                http_dict['files'] = http_detail.files
+
+            result.append(http_dict)
+
+    if flow_details.protocol == "dns":
+        dns_request= filter(lambda x: x.flow_details.id == flow_details.id, DNSRequest.objects.all())
+        for dns_req in dns_request:
+            dns_req_dict = dict()
+            dns_req_dict['protocol'] = 'DNS Request'
+            if dns_req.human_readable_type:
+                dns_req_dict['human_readable_type'] = dns_req.human_readable_type
+            if dns_req.value:
+                dns_req_dict['value'] = dns_req.value
+
+            result.append(dns_req_dict)
+
+        dns_response= filter(lambda x: x.flow_details.id == flow_details.id, DNSResponse.objects.all())
+        for dns_res in dns_response:
+            dns_res_dict = dict()
+            dns_res_dict['protocol'] = 'DNS Request'
+            if dns_res.human_readable_type:
+                dns_res_dict['human_readable_type'] = dns_res.human_readable_type
+            if dns_res.value:
+                dns_res_dict['value'] = dns_res.value
+
+            result.append(dns_res_dict)
 
 
+    if flow_details.protocol == "smtp":
+        smtp_details= filter(lambda x: x.flow_details.id == flow_details.id, SMTPDetails.objects.all())
+        for smtp_detail in smtp_details:
+            smtp_dict = dict()
+            smtp_dict['protocol'] = 'SMTP'
+            if smtp_detail.login_data:
+                smtp_dict['login_data'] = smtp_detail.login_data
+            if smtp_detail.msg_from:
+                smtp_dict['msg_from'] = smtp_detail.msg_from
+            if smtp_detail.rcpt_to:
+                smtp_dict['rcpt_to'] = smtp_detail.rcpt_to
+            if smtp_detail.raw:
+                smtp_dict['raw'] = smtp_detail.raw
+            if smtp_detail.msgdata:
+                data = smtp_detail.msgdata[1:-1]
+                content = data.split(",")
+                smtp_dict['msgdata'] = content
+            if smtp_detail.attachment_path:
+                smtp_dict['attachment_path'] = smtp_detail.attachment_path
+                smtp_dict['get_path_dict'] = smtp_detail.get_path_dict()
 
+            result.append(smtp_dict)
 
-
+    context = dict()
+    context['flow_details'] = result
+    context['page_title'] = "Flow Details"
+    return render_to_response("pcap/flow_details.html",
+            context_instance=RequestContext(request, context))
