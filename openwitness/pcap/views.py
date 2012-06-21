@@ -177,7 +177,6 @@ def upload(request):
                 # then call functions that will save request and responses that will parse dat files, save the headers and files
                 http_handler.save_request(path=upload_path, hash_value=request.session['uploaded_hash'])
                 http_handler.save_response(path=upload_path, hash_value=request.session['uploaded_hash'])
-                # should save the file names to db also
 
             # dns realted issues starts here
             if "dns" in output:
@@ -512,8 +511,16 @@ def flow_details(request, flow_id):
                 http_dict['content_type'] = http_detail.content_type
             if http_detail.content_encoding:
                 http_dict['content_encoding'] = http_detail.content_encoding
-            if http_detail.files:
-                http_dict['files'] = http_detail.files
+            if http_detail.file_path:
+                # i don't keep the file names at the db but at the directories created according to the flow information
+                flow_details = http_detail.flow_details
+                src_info = ":".join([flow_details.src_ip, str(flow_details.sport)])
+                dst_info = ":".join([flow_details.dst_ip, str(flow_details.dport)])
+                file_dir = "-".join([src_info, dst_info])
+                files = dict()
+                files['path'] = os.path.join(http_detail.file_path.split('uploads')[1], file_dir)
+                files['file_list'] = os.listdir(os.path.join(http_detail.file_path, os.path.basename(files['path'])))
+                http_dict['files'] = files
 
             result.append(http_dict)
 
