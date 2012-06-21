@@ -88,7 +88,9 @@ class HTTPDetails(models.Model):
     # response ends
     # i might need files also
     files = ListField(null=True, blank=True)
+    file_path = models.CharField(max_length=200, null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
+
 
 class DNSRequest(models.Model):
     type = models.IntegerField()
