@@ -298,10 +298,21 @@ class Handler(TcpHandler):
                             if filter(lambda x: "gzip" in x, info):
                                 content_encoding = "gzip"
 
-                        try:
-                            http_details = HTTPDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
-                        except Exception, ex:# encoding error is occuring at the embedded field, dont know why now
-                            http_details = HTTPDetails(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
+
+                        http_li = filter(lambda x: x.flow_details.id == detail.id, HTTPDetails.objects.filter(http_type="response",
+                            version=version, headers=header, status=status,
+                            content_type=content_type, content_encoding=content_encoding))
+                        #http_details = HTTPDetails.objects.get(http_type="response", version=version, headers=header, status=status, content_type=content_type, content_encoding=content_encoding, flow_details=detail)
+                        if len(http_li) == 1:
+                            http_details = http_li[0]
+                            file_path = os.path.join(path, "html-files")
+                            http_details.file_path = file_path
+                            http_details.save()
+                        else: # encoding error is fixed
+                            file_path = os.path.join(path, "html-files")
+                            http_details = HTTPDetails(http_type="response", version=version, headers=header,
+                                            status=status, content_type=content_type, content_encoding=content_encoding,
+                                            file_path=file_path, flow_details=detail)
                             http_details.save()
 
             return True
