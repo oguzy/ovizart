@@ -24,7 +24,8 @@ def login_user(request):
                 if user.is_active:
                     login(request, user)
                     context = {
-                        'page_title': 'Welcome to %s' % settings.PROJECT_NAME
+                        'page_title': 'Welcome to %s' % settings.PROJECT_NAME,
+                        'pcap_operation': "welcome"
                     }
                     return render_to_response("main/welcome.html", context,
                             context_instance=RequestContext(request))
