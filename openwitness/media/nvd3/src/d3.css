@@ -1,0 +1,488 @@
+
+/********************
+ * HTML CSS 
+ */
+
+
+.chartWrap {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.nvd3.background {
+  fill: none;
+  pointer-events: none;
+}
+
+
+/********************
+ * TOOLTIP CSS 
+ */
+
+.nvtooltip {
+  position: absolute;
+  background-color: rgba(255,255,255,1);
+  padding: 10px;
+  border: 1px solid #ddd;
+  z-index: 10000;
+
+  font-family: Arial;
+  font-size: 13px;
+
+  transition: opacity 500ms linear;
+  -moz-transition: opacity 500ms linear;
+  -webkit-transition: opacity 500ms linear;
+
+  transition-delay: 500ms;
+  -moz-transition-delay: 500ms;
+  -webkit-transition-delay: 500ms;
+
+  -moz-box-shadow: 4px 4px 12px rgba(0,0,0,.5);
+  -webkit-box-shadow: 4px 4px 12px rgba(0,0,0,.5);
+  box-shadow: 4px 4px 12px rgba(0,0,0,.5);
+
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+
+  pointer-events: none;
+}
+
+.nvtooltip h3 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.nvtooltip p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.nvtooltip span {
+  display: inline-block;
+  margin: 2px 0;
+}
+
+
+/********************
+ * SVG CSS 
+ */
+
+
+svg {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Trying to get SVG to act like a greedy block in all browsers */
+  display: block;
+  width:100%;
+}
+
+
+svg text {
+  font: 12px sans-serif;
+}
+
+svg .title {
+ font: bold 14px Arial;
+}
+
+/**********
+*  Brush
+*/
+
+.brush .extent {
+  stroke: #666;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+
+
+/**********
+*  Legend
+*/
+
+.nvd3 .legend .series {
+  cursor: pointer;
+}
+
+.nvd3 .legend .disabled circle {
+  fill-opacity: 0;
+}
+
+
+
+/**********
+*  Axes
+*/
+
+.nvd3 .axis path {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .75;
+  shape-rendering: crispEdges;
+}
+
+.nvd3 .axis path.domain {
+  stroke-opacity: .75;
+}
+
+.nvd3 .axis line {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .25;
+  shape-rendering: crispEdges;
+}
+
+.nvd3 .axis line.zero {
+  stroke-opacity: .75;
+}
+
+.nvd3 .axis .axisMaxMin text {
+  font-weight: bold;
+}
+
+
+/**********
+*  Brush
+*/
+
+.brush .resize path {
+  fill: #eee;
+  stroke: #666;
+}
+
+
+
+/**********
+*  Bars
+*/
+
+.nvd3 .bars .negative rect {
+    zfill: brown;
+    cursor: pointer;
+}
+
+.nvd3 .bars rect {
+  zfill: steelblue;
+  cursor: pointer;
+  fill-opacity: .75;
+
+  transition: fill-opacity 250ms linear;
+  -moz-transition: fill-opacity 250ms linear;
+  -webkit-transition: fill-opacity 250ms linear;
+}
+
+.nvd3 .bars rect:hover {
+  fill-opacity: 1;
+}
+
+.nvd3 .bars .hover rect {
+  fill: lightblue;
+}
+
+.nvd3 .bars text {
+  fill: rgba(0,0,0,0);
+}
+
+.nvd3 .bars .hover text {
+  fill: rgba(0,0,0,1);
+}
+
+.nvd3 .x.axis text {
+  transform: rotate(90);
+}
+
+
+/**********
+*  Bars
+*/
+
+.nvd3 .multibar .groups rect,
+.nvd3 .multibarHorizontal .groups rect,
+.nvd3 .discretebar .groups rect {
+  stroke-opacity: 0;
+
+  transition: fill-opacity 250ms linear;
+  -moz-transition: fill-opacity 250ms linear;
+  -webkit-transition: fill-opacity 250ms linear;
+}
+
+.nvd3 .multibar .groups rect:hover,
+.nvd3 .multibarHorizontal .groups rect:hover,
+.nvd3 .discretebar .groups rect:hover {
+  fill-opacity: 1;
+}
+
+.nvd3 .discretebar .groups text,
+.nvd3 .multibarHorizontal .groups text {
+  font-weight: bold;
+  fill: rgba(0,0,0,1);
+  stroke: rgba(0,0,0,0);
+}
+
+/***********
+*  Pie Chart
+*/
+
+.nvd3 .pie .hover path {
+    fill: lightblue;
+}
+
+/**********
+* Lines 
+*/
+
+.nvd3 .groups path.line {
+  fill: none;
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+  shape-rendering: geometricPrecision;
+
+  /*
+  transition: stroke-width 250ms linear;
+  -moz-transition: stroke-width 250ms linear;
+  -webkit-transition: stroke-width 250ms linear;
+
+  transition-delay: 250ms
+  -moz-transition-delay: 250ms;
+  -webkit-transition-delay: 250ms;
+  */
+}
+
+.nvd3 .line.hover path {
+  stroke-width: 6px;
+}
+
+/*
+.nvd3.scatter .groups .point {
+  fill-opacity: 0.1;
+  stroke-opacity: 0.1;
+}
+  */
+
+.nvd3.line .nvd3.scatter .groups .point {
+  fill-opacity: 0;
+  stroke-opacity: 0;
+}
+
+
+.nvd3 .groups .point {
+  transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+  -moz-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+  -webkit-transition: stroke-width 250ms linear, stroke-opacity 250ms linear;
+}
+
+.nvd3.scatter .groups .point.hover,
+.nvd3 .groups .point.hover {
+  stroke-width: 20px;
+  fill-opacity: .5 !important;
+  stroke-opacity: .5 !important;
+}
+
+
+.nvd3 .point-paths path {
+  stroke: #aaa;
+  stroke-opacity: 0;
+  fill: #eee;
+  fill-opacity: 0;
+}
+
+
+
+.nvd3 .indexLine {
+  cursor: ew-resize;
+}
+
+
+/**********
+* Distribution 
+*/
+
+.nvd3 .distribution {
+  pointer-events: none;
+}
+
+
+
+/**********
+*  Scatter 
+*/
+
+.nvd3 .groups .point.hover {
+  stroke-width: 20px;
+  stroke-opacity: .5;
+}
+
+.nvd3 .scatter .point.hover {
+  fill-opacity: 1;
+}
+
+/*
+.group.hover .point {
+  fill-opacity: 1;
+}
+*/
+
+
+/**********
+*  Stacked Area
+*/
+
+.nvd3 .stackedarea path.area {
+  fill-opacity: .7;
+  /*
+  stroke-opacity: .65;
+  fill-opacity: 1;
+  */
+  stroke-opacity: 0;
+
+  transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
+  -moz-transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
+  -webkit-transition: fill-opacity 250ms linear, stroke-opacity 250ms linear;
+
+  /*
+  transition-delay: 500ms;
+  -moz-transition-delay: 500ms;
+  -webkit-transition-delay: 500ms;
+  */
+
+}
+
+.nvd3 .stackedarea path.area.hover {
+  fill-opacity: .9;
+  /*
+  stroke-opacity: .85;
+  */
+}
+/*
+.d3stackedarea .groups path {
+  stroke-opacity: 0;
+}
+  */
+
+
+
+.nvd3.stackedarea .groups .point {
+  stroke-opacity: 0;
+  fill-opacity: 0;
+}
+
+.nvd3.stackedarea .groups .point.hover {
+  stroke-width: 20px;
+  stroke-opacity: .75;
+  fill-opacity: 1;
+}
+
+
+
+/**********
+*  Line Plus Bar
+*/
+
+.nvd3 .linePlusBar .bar rect {
+  fill-opacity: .75;
+}
+
+.nvd3 .linePlusBar .bar rect:hover {
+  fill-opacity: 1;
+}
+
+
+/**********
+*  Bullet
+*/
+
+.nvd3.bullet { font: 10px sans-serif; cursor: pointer; }
+.nvd3.bullet rect { fill-opacity: .6; }
+.nvd3.bullet rect:hover { fill-opacity: 1; }
+.nvd3.bullet .marker { stroke: #000; stroke-width: 2px; }
+.nvd3.bullet .markerTriangle { stroke: #000; fill: #fff; stroke-width: 1.5px; }
+.nvd3.bullet .tick line { stroke: #666; stroke-width: .5px; }
+.nvd3.bullet .range.s0 { fill: #eee; }
+.nvd3.bullet .range.s1 { fill: #ddd; }
+.nvd3.bullet .range.s2 { fill: #ccc; }
+.nvd3.bullet .measure.s0 { fill: steelblue; }
+.nvd3.bullet .measure.s1 { fill: darkblue; }
+.nvd3.bullet .title { font-size: 14px; font-weight: bold; }
+.nvd3.bullet .subtitle { fill: #999; }
+
+
+
+
+/**********
+* Sparkline plus 
+*/
+
+.nvd3 .sparklineplus .hoverValue line {
+  stroke: #f44;
+  stroke-width: 1.5px;
+ }
+
+.nvd3 .sparklineplus,
+.nvd3 .sparklineplus g {
+  pointer-events: all;
+}
+
+.nvd3 .hoverArea {
+  fill-opacity: 0;
+  stroke-opacity: 0;
+}
+
+.nvd3 .sparklineplus .xValue,
+.nvd3 .sparklineplus .yValue {
+  stroke: #666;
+  font-size: .5em;
+  font-weight: normal;
+}
+
+.nvd3 .sparklineplus .yValue {
+  stroke: #f66;
+}
+
+
+
+/**********
+* Indented Tree
+*/
+
+
+.indentedtree .name {
+  margin-left: 5px;
+}
+
+.indentedtree .childrenCount {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.indentedtree .treeicon {
+  cursor: pointer;
+  /*
+  cursor: n-resize;
+  */
+}
+
+.indentedtree .treeicon.folded {
+  cursor: pointer;
+  /*
+  cursor: s-resize;
+  */
+}
+
+.nvd3.indentedtree .clickable {
+  color: #08C;
+  cursor: pointer;
+}
+
+.nvd3.indentedtree span.clickable:hover {
+  color: #005580;
+  text-decoration: underline;
+}
+
