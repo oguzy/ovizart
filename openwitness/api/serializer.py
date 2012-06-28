@@ -1,6 +1,7 @@
 from tastypie.serializers import Serializer
 from django.core.serializers import json
 from django.utils import simplejson
+import datetime
 
 from openwitness.pcap.models import Flow, PacketDetails, HTTPDetails, DNSRequest, DNSResponse, SMTPDetails
 
@@ -203,3 +204,71 @@ class AppProtocolPacketCountCustomJSONSerializer(Serializer):
 
         return data
 
+class AllProtocolsJSONSerializer(Serializer):
+    def to_json(self, data, options=None):
+        options = options or {}
+
+        data = self.to_simple(data, options)
+
+        result = []
+        protocol_dict = dict()
+        if not data.has_key('objects'): return {}
+        for flow in data['objects']:
+            protocol = flow['protocol']
+            ts = int(datetime.datetime.strptime(flow['timestamp'], "%Y"))
+            #{ 2011: {'http': 11} }
+            if protocol_dict.has_key(ts):
+                if protocol_dict[ts].has_key(protocol):
+                    protocol_dict[ts][protocol] += 1
+                else:
+                    protocol_dict[ts] = {protocol: 0}
+
+            for year, v in protocol_dict.items():
+                for proto, count in v.items():
+                    d = dict()
+                    d['key'] = proto
+                    if not d.has_key('values'):
+                        d['values'] = []
+                    values = dict()
+                    values['x'] = year
+                    values['y'] = count
+                    values['size'] = count
+                    values['shape'] = 'circle'
+                    d['values'].append(values)
+
+                    result.append(d)
+
+        # lets also check TCP and UPD statistics
+        protocol_dict = dict()
+        packets = PacketDetails.objects.all()
+        for packet in packets:
+            ts = int(datetime.datetime.strptime(packet.timestamp, "%Y"))
+            protocol = packet.protocol
+            if protocol_dict.has_key(ts):
+                if protocol_dict[ts].has_key(protocol):
+                    protocol_dict[ts][protocol] += 1
+                else:
+                    protocol_dict[ts] = {protocol: 0}
+
+            for year, v in protocol_dict.items():
+                for proto, count in v.items():
+                    d = dict()
+                    d['key'] = proto
+                    if not d.has_key('values'):
+                        d['values'] = []
+                    values = dict()
+                    values['x'] = year
+                    values['y'] = count
+                    values['size'] = count
+                    values['shape'] = 'circle'
+                    d['values'].append(values)
+
+                    result.append(d)
+
+        data = result
+        return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
+
+    def from_json(self, content):
+        data = simplejson.loads(content)
+
+        return data
