@@ -4,6 +4,7 @@ from django.utils import simplejson
 import datetime
 
 from openwitness.pcap.models import Flow, PacketDetails, HTTPDetails, DNSRequest, DNSResponse, SMTPDetails
+from openwitness.modules.utils.handler import translate_value
 
 class CustomJSONSerializer(Serializer):
     def to_json(self, data, options=None):
@@ -215,7 +216,9 @@ class AllProtocolsJSONSerializer(Serializer):
         if not data.has_key('objects'): return {}
         for flow in data['objects']:
             protocol = flow['protocol']
-            ts = int(datetime.datetime.strptime(flow['timestamp'], "%Y"))
+            dt = flow['timestamp'].split(".")[0]
+            dt_object = datetime.datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S')
+            ts = int(dt_object.year)
             #{ 2011: {'http': 11} }
             if protocol_dict.has_key(ts):
                 if protocol_dict[ts].has_key(protocol):
@@ -223,47 +226,65 @@ class AllProtocolsJSONSerializer(Serializer):
                 else:
                     protocol_dict[ts] = {protocol: 0}
 
-            for year, v in protocol_dict.items():
-                for proto, count in v.items():
-                    d = dict()
-                    d['key'] = proto
-                    if not d.has_key('values'):
-                        d['values'] = []
-                    values = dict()
-                    values['x'] = year
-                    values['y'] = count
-                    values['size'] = count
-                    values['shape'] = 'circle'
-                    d['values'].append(values)
+            else:
+                protocol_dict[ts] = dict()
 
-                    result.append(d)
+        min_max_count = []
+        for year, v in protocol_dict.items():
+            for proto, count in v.items():
+                min_max_count.append(count)
+        min_max_count.sort()
+        for year, v in protocol_dict.items():
+            for proto, count in v.items():
+                d = dict()
+                d['key'] = proto
+                if not d.has_key('values'):
+                    d['values'] = []
+                values = dict()
+                values['x'] = year
+                values['y'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # let the y between 1 - 50
+                values['size'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # lets map the size between 1 and 50 by taking into consideration the count
+                values['shape'] = 'circle'
+                d['values'].append(values)
+
+                result.append(d)
 
         # lets also check TCP and UPD statistics
         protocol_dict = dict()
         packets = PacketDetails.objects.all()
+        protocol_no = {6: 'TCP', 17: 'UDP'}
         for packet in packets:
-            ts = int(datetime.datetime.strptime(packet.timestamp, "%Y"))
-            protocol = packet.protocol
+            ts = int(packet.timestamp.year)
+            protocol = protocol_no[packet.protocol]
             if protocol_dict.has_key(ts):
                 if protocol_dict[ts].has_key(protocol):
                     protocol_dict[ts][protocol] += 1
                 else:
                     protocol_dict[ts] = {protocol: 0}
 
-            for year, v in protocol_dict.items():
-                for proto, count in v.items():
-                    d = dict()
-                    d['key'] = proto
-                    if not d.has_key('values'):
-                        d['values'] = []
-                    values = dict()
-                    values['x'] = year
-                    values['y'] = count
-                    values['size'] = count
-                    values['shape'] = 'circle'
-                    d['values'].append(values)
+            else:
+                protocol_dict[ts] = dict()
 
-                    result.append(d)
+
+        min_max_count = []
+        for year, v in protocol_dict.items():
+            for proto, count in v.items():
+                min_max_count.append(count)
+        min_max_count.sort()
+        for year, v in protocol_dict.items():
+            for proto, count in v.items():
+                d = dict()
+                d['key'] = proto
+                if not d.has_key('values'):
+                    d['values'] = []
+                values = dict()
+                values['x'] = year
+                values['y'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # let the y between 1 - 50
+                values['size'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # lets map the size between 1 and 50 by taking into consideration the count
+                values['shape'] = 'circle'
+                d['values'].append(values)
+
+                result.append(d)
 
         data = result
         return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
