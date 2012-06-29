@@ -33,3 +33,15 @@ def translate_time(value, leftMin=MIN_TS, leftMax=MAX_TS, rightMin=1, rightMax=1
 
     # Convert the range into a value in the right range.
     return int(math.floor(rightMin + (valueScaled * rightSpan)))
+
+# translate function for all protocols
+def translate_value(value, leftMin=MIN_TS, leftMax=MAX_TS, rightMin=1, rightMax=50):
+    # Figure out how 'wide' each range is
+    leftSpan = leftMax - leftMin
+    rightSpan = rightMax - rightMin
+
+    # Convert the left range into a 0-1 range (float)
+    valueScaled = float(value - leftMin) / float(leftSpan)
+
+    # Convert the range into a value in the right range.
+    return int(math.floor(rightMin + (valueScaled * rightSpan)))
