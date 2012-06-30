@@ -238,41 +238,61 @@ function cell() {
 
 
     //Format A
-    nv.addGraph(function() {
-        var chart = nv.models.scatterChart()
-                .showDistX(true)
-                .showDistY(true)
-            //.height(500)
-                .color(d3.scale.category10().range());
+//    nv.addGraph(function() {
+//        var chart = nv.models.scatterChart()
+//                .showDistX(true)
+//                .showDistY(true)
+//            //.height(500)
+//                .color(d3.scale.category10().range());
+//
+//        chart.xAxis.tickFormat(d3.format('.02f'))
+//        chart.yAxis.tickFormat(d3.format('.02f'))
+//
+//        d3.select('#chart svg')
+//                .datum(getData())
+//                .transition().duration(500)
+//                .call(chart);
+//
+//        nv.utils.windowResize(chart.update);
+//
+//        return chart;
+//    });
 
-        chart.xAxis.tickFormat(d3.format('.02f'))
-        chart.yAxis.tickFormat(d3.format('.02f'))
 
-        d3.select('#chart svg')
-                .datum(getData())
-                .transition().duration(500)
-                .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-    });
-
-
-    function getData() {
+    //function getData() {
 
         d3.json('{{ json_file_url }}', function(jsondata) {
             console.log("jsondata");
             console.log(jsondata);
             //alert(JSON.stringify(data));
-            g_data=jsondata;
+            nv.addGraph(function() {
+                var chart = nv.models.scatterChart()
+                        .showDistX(true)
+                        .showDistY(true)
+                    //.height(500)
+                        .color(d3.scale.category10().range());
+
+                chart.xAxis.tickFormat(d3.format('.02f'))
+                chart.yAxis.tickFormat(d3.format('.02f'))
+
+                d3.select('#chart svg')
+                        .datum(jsondata)
+                        .transition().duration(500)
+                        .call(chart);
+
+                nv.utils.windowResize(chart.update);
+
+                return chart;
+            });
+
+            console.log("chart is added");
 
         });
 
-        console.log("data is set")
-        console.log(g_data);
-        return g_data;
-    }
+    //    console.log("data is set")
+    //    console.log(g_data);
+    //    return g_data;
+    //}
 
     function randomData(groups, points) { //# groups,# points per group
         var data = [],
