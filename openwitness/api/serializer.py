@@ -279,7 +279,7 @@ class AllProtocolsJSONSerializer(Serializer):
                     d['values'] = []
                 values = dict()
                 values['x'] = year
-                values['y'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # let the y between 1 - 50
+                values['y'] = count #translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # let the y between 1 - 50
                 values['size'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # lets map the size between 1 and 50 by taking into consideration the count
                 values['shape'] = 'circle'
                 d['values'].append(values)
