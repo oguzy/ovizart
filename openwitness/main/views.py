@@ -61,7 +61,8 @@ def login_user(request):
                     context = {
                         'page_title': 'Welcome to %s' % settings.PROJECT_NAME,
                         'pcap_operation': "welcome",
-                        'json_file_url': os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
+                        'json_file_url': os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name),
+                        'json_response': json_response
                     }
 
                     return render_to_response("main/welcome.html", context,
