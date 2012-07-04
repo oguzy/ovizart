@@ -377,6 +377,7 @@ def summary(request):
         log.message(ex)
         raise Http404
 
+@login_required()
 def visualize(request, protocol, type="size"):
     if type == "size":
         # to get this work, runserver should be run as bin/django runserver 127.0.0.0:8001 and another instance should be run as
