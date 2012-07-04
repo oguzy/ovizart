@@ -22,16 +22,33 @@ import os
 def login_user(request):
     log = Logger("Login form", "DEBUG")
     form = None
-    if request.method == "POST":
+    logged = False
+    if request.session.has_key('logged_in'):
+        logged = True
+    if logged or request.method == "POST":
         form = LoginForm(request.POST)
-        if form.is_valid():
-            username = request.POST['username']
-            email = request.POST['user_email']
-            password = request.POST['password']
+        if logged or form.is_valid():
+            user = username = email = password = None
+            if request.session.has_key('username'):
+                username = request.session['username']
+            else:
+                username = request.POST['username']
+                request.session['username'] = username
+            if request.session.has_key('user_email'):
+                email = request.session['user_email']
+            else:
+                email = request.POST['user_email']
+                request.session['user_email'] = email
+            if request.session.has_key('password'):
+                password = request.session['password']
+            else:
+                password = request.POST['password']
+                request.session['password'] = password
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    request.session['logged_in'] = True
                     user_id = request.user.id
                     url = "".join([settings.BASE_URL, "/api/rest/all_protocols/?format=json"])
                     log.message("URL: %s" % (url))
