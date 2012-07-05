@@ -242,8 +242,17 @@ class AllProtocolsJSONSerializer(Serializer):
                     d['values'] = []
                 values = dict()
                 values['x'] = year
-                values['y'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # let the y between 1 - 50
-                values['size'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # lets map the size between 1 and 50 by taking into consideration the count
+                left_min = 0
+                left_max = 0
+                if len(min_max_count) == 1:
+                    left_min = 0
+                    left_max = min_max_count[0]
+                else:
+                    left_min = min_max_count[0]
+                    left_max = min_max_count[-1]
+
+                values['y'] = count #translate_value(count, left_min, left_max, 1, 50) # let the y between 1 - 50
+                values['size'] = translate_value(count, left_min, left_max, 1, 100) # lets map the size between 1 and 50 by taking into consideration the count
                 values['shape'] = 'circle'
                 d['values'].append(values)
 
@@ -280,8 +289,14 @@ class AllProtocolsJSONSerializer(Serializer):
                 values = dict()
                 values['x'] = year
                 values['y'] = count #translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # let the y between 1 - 50
-                values['size'] = translate_value(count, min_max_count[0], min_max_count[-1], 1, 50) # lets map the size between 1 and 50 by taking into consideration the count
-                values['shape'] = 'circle'
+                if len(min_max_count) == 1:
+                    left_min = 0
+                    left_max = min_max_count[0]
+                else:
+                    left_min = min_max_count[0]
+                    left_max = min_max_count[-1]
+                values['size'] = translate_value(count, left_min, left_max, 1, 100) # lets map the size between 1 and 50 by taking into consideration the count
+                values['shape'] = 'triangle-up'
                 d['values'].append(values)
 
                 result.append(d)
