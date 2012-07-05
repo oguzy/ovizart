@@ -520,7 +520,8 @@ def flow_details(request, flow_id):
                 file_dir = "-".join([src_info, dst_info])
                 files = dict()
                 files['path'] = os.path.join(http_detail.file_path.split('uploads')[1], file_dir)
-                files['file_list'] = os.listdir(os.path.join(http_detail.file_path, os.path.basename(files['path'])))
+                #files['file_list'] = os.listdir(os.path.join(http_detail.file_path, os.path.basename(files['path'])))
+                files['file_list'] = http_detail.files
                 http_dict['files'] = files
 
             result.append(http_dict)
