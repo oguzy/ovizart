@@ -435,6 +435,16 @@ class Handler(TcpHandler):
                     w.write(f)
                     w.close()
 
+                # saving the hachoir saved binaries to the db with the created txt files
+                if detail.protocol == "http":
+                    http_files = os.listdir(output)
+                    #http_files = filter(lambda x: x.split(".")[-1] != 'txt', http_files) # no need to take the txt files
+                    if len(http_files) > 0:
+                        http_li = filter(lambda x: x.flow_details.id == detail.id, HTTPDetails.objects.all())
+                        for http in http_li:
+                            http.files = http_files
+                            http.save()
+
             return True
 
         except Exception, ex:
