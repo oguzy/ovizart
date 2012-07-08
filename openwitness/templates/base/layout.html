@@ -1,0 +1,47 @@
+{% extends "base/base.html" %}
+
+{% block navigation %}
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="{% url login_page %}">Network Analyzer</a>
+            {% if user.is_authenticated %}
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">PCAP<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url upload_pcap %}">Upload</a></li>
+                            <li><a href="{% url summary_pcap %}">Summary View</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav pull-right">
+                    <li><a href="{% url logout_page %}">Logout</a></li>
+                </ul>
+            </div>
+             {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="span8 ">
+            {% block left %} {% endblock %}
+        </div>
+        <div class="span4">
+            {% block right %} {% endblock %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

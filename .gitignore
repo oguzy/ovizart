@@ -1,0 +1,14 @@
+# Compiled source #
+###################
+*.pyc
+*.pcap
+tests/*
+summary.txt
+.name
+.installed.cfg
+.idea/*
+bin/
+eggs/
+develop-eggs/
+parts/
+requirements/

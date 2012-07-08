@@ -1,0 +1,56 @@
+{% extends "base/layout-summary.html" %}
+
+
+{% block up %}
+
+<h2>Summary for the uploaded pcaps</h2>
+<div id='summary_size_info'></div>
+
+{% endblock %}
+
+{% block down %}
+
+<div class="span8">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Flow Info<th>
+            <th>Packets</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for f in children %}
+        <tr>
+
+            <td>{{ f.name }}</td>
+            <td>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Packet ID</th>
+                        <th>Packet {% ifequal measure "size" %}Size{% else %}Count{% endifequal %}</th>
+                    <tr>
+                    </thead>
+                    <tbody>
+                    {% for pcap in f.children %}
+                    <tr>
+                        <td>{{ pcap.name }}</td>
+                        <td>{{ pcap.size }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="span4">
+
+</div>
+
+{% endblock %}

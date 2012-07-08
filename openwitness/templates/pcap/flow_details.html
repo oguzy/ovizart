@@ -1,0 +1,192 @@
+{% extends "base/layout-summary.html" %}
+
+{% block up %}
+        {% for flow in flow_details %}
+            {% ifequal flow.protocol "HTTP" %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>HTTP Type</th>
+                            <th>Method</th>
+                            <th>URI</th>
+                            <th>Headers</th>
+                            <th>Version</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Content Type</th>
+                            <th>Content Encoding</th>
+                            <th>Files</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% if flow.http_type %}
+                                <td>{{ flow.http_type }}</td>
+                            {% else %}
+                                <td> - </td>
+                            {% endif %}
+
+                            {% if flow.method %}
+                            <td>{{ flow.method }}</td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                            {% if flow.uri %}
+                            <td>{{ flow.uri }}</td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                            {% if flow.headers %}
+                            <td>
+                                {% for header in flow.headers %}
+                                    {{ header }}<br/>
+                                {% endfor %}
+                            </td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                            {% if flow.version %}
+                            <td>{{ flow.version }}</td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                            {% if flow.reason %}
+                            <td>{{ flow.reason }}</td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                            {% if flow.status %}
+                            <td>{{ flow.status }}</td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                            {% if flow.content_type %}
+                            <td>{{ flow.content_type }}</td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                            {% if flow.content_encoding %}
+                            <td>{{ flow.content_encoding }}</td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                            {% if flow.files %}
+                            <td>
+                                {% for f in flow.files.file_list %}
+                                <p><a href="/uploads{{ flow.files.path }}/{{ f }}">{{ f }}</a></p>
+                                {% endfor %}
+                            </td>
+                            {% else %}
+                            <td> - </td>
+                            {% endif %}
+
+                        </tr>
+                    </tbody>
+                </table>
+            {% endifequal %}
+
+            {% if "DNS" in flow.protocol %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>DNS Type</th>
+                        <th>Humam readable type</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td>{{ flow.protocol }}</td>
+
+                        {% if flow.human_readable_type %}
+                        <td>{{ flow.human_readable_type }}</td>
+                        {% else %}
+                        <td> - </td>
+                        {% endif %}
+
+                        {% if flow.value %}
+                        <td>{{ flow.value }}</td>
+                        {% else %}
+                        <td> - </td>
+                        {% endif %}
+
+                    </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+
+
+            {% ifequal flow.protocol "SMTP" %}
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Login Data</th>
+                        <th>MSG From</th>
+                        <th>RCPT To</th>
+                        <th>MSG Data</th>
+                        <th>Attachment</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        {% if flow.login_data %}
+                        <td>
+                            {% for data in flow.login_data %}
+                            {{ data }}<br/>
+                            {% endfor %}
+                        </td>
+                        {% else %}
+                        <td> - </td>
+                        {% endif %}
+
+                        {% if flow.msg_from %}
+                        <td>{{ flow.msg_from }}</td>
+                        {% else %}
+                        <td> - </td>
+                        {% endif %}
+
+                        {% if flow.rcpt_to %}
+                        <td>{{ flow.rcpt_to }}</td>
+                        {% else %}
+                        <td> - </td>
+                        {% endif %}
+
+                        {% if flow.msgdata %}
+                        <td>
+                            {% for data in flow.msgdata %}
+                            {{ data }}<br/>
+                            {% endfor %}
+                        </td>
+                        {% else %}
+                        <td> - </td>
+                        {% endif %}
+
+                        {% if flow.attachment_path %}
+                        <td>
+                            {% for f in flow.get_path_dict %}
+                                <a href="/uploads{{ f.path }}">{{ f.file_name }}</a><br/>
+                            {% endfor %}
+                        </td>
+                        {% else %}
+                        <td> - </td>
+                        {% endif %}
+
+                    </tr>
+                    </tbody>
+                </table>
+
+            {% endifequal %}
+        {% endfor %}
+
+{% endblock %}
