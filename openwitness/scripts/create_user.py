@@ -29,13 +29,13 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'openwitness.settings'
 from django.contrib.auth.models import User
 from main.models import *
 
-u, created = User.objects.get_or_create(username='some_user_name_here')
+u, created = User.objects.get_or_create(username='oguz')
 
-u.set_password("some_password_here")
+u.set_password("ozyy4r12")
 u.save()
 
-hashlib.sha1()
 h = hashlib.sha1()
-h.update("some_email_here")
+h.update(u'oguzyarimtepe@gmail.com')
 
 profile, create = UserProfile.objects.get_or_create(user=u, user_email=h.hexdigest())
+print "USerProfile create status: %s" % created
