@@ -224,7 +224,7 @@ class AllProtocolsJSONSerializer(Serializer):
                 if protocol_dict[ts].has_key(protocol):
                     protocol_dict[ts][protocol] += 1
                 else:
-                    protocol_dict[ts] = {protocol: 0}
+                    protocol_dict[ts] = {protocol: 1}
 
             else:
                 protocol_dict[ts] = dict()

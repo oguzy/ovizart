@@ -1,0 +1,38 @@
+{% extends "base/layout-summary.html" %}
+
+
+{% block up %}
+
+<h2>Summary for the flow</h2>
+
+    <table class="table">
+    <thead>
+    <tr>
+        <th>Source Port</th>
+        <th>Source Address</th>
+        <th>Destination Port</th>
+        <th>Destination Address</th>
+        <th>Timestamp</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for summary in flow_summary %}
+    <tr>
+            <td>{{ summary.src_ip}}</td>
+            <td>{{ summary.sport }}</td>
+            <td>{{ summary.dst_ip }}</td>
+            <td>{{ summary.dport }}</td>
+            <td>{{ summary.timestamp }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+
+
+
+{% endblock %}
+
+{% block down %}
+
+{% endblock %}

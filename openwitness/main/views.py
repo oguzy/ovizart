@@ -14,6 +14,8 @@ from openwitness.pcap.models import UserJSonFile
 from django.utils import simplejson as json
 from openwitness.modules.traffic.log.logger import Logger
 
+from openwitness.pcap.models import FlowDetails
+
 import urllib2
 import tempfile
 import os
@@ -132,3 +134,15 @@ def welcome(request):
             context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect(reverse('login_page'))
+
+
+def flow_protocol_summary(request, protocol, date):
+    summaries = FlowDetails.objects.filter(protocol=protocol)
+    flow_summary = filter(lambda x: x.timestamp.year == int(date), summaries)
+    context = {
+        'page_title': 'Protocol Summary',
+        'flow_summary': flow_summary
+
+    }
+    return render_to_response("main/flow_summary.html", context,
+            context_instance=RequestContext(request))
