@@ -24,7 +24,9 @@ urlpatterns = patterns('',
     url(r'^$', 'openwitness.main.views.login_user', name='login_page'),
     url(r'^logout/', 'openwitness.main.views.logout_user', name='logout_page'),
     (r'^pcap/', include('openwitness.pcap.urls')),
+    (r'^main/', include('openwitness.main.urls')),
     (r'^api/', include(rest_api.urls)),
+
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
