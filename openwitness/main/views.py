@@ -14,7 +14,7 @@ from openwitness.pcap.models import UserJSonFile
 from django.utils import simplejson as json
 from openwitness.modules.traffic.log.logger import Logger
 
-from openwitness.pcap.models import FlowDetails
+from openwitness.pcap.models import FlowDetails, PacketDetails
 
 import urllib2
 import tempfile
@@ -137,11 +137,15 @@ def welcome(request):
 
 
 def flow_protocol_summary(request, protocol, date):
-    summaries = FlowDetails.objects.filter(protocol=protocol)
-    flow_summary = filter(lambda x: x.timestamp.year == int(date), summaries)
+    if protocol not in ['UDP', 'TCP']:
+        summaries = FlowDetails.objects.filter(protocol=protocol)
+    else:
+        proto_dict = {'TCP': 6, 'UDP': 17}
+        summaries = PacketDetails.objects.filter(protocol=proto_dict[protocol])
+    summary = filter(lambda x: x.timestamp.year == int(date), summaries)
     context = {
         'page_title': 'Protocol Summary',
-        'flow_summary': flow_summary
+        'flow_summary': summary
 
     }
     return render_to_response("main/flow_summary.html", context,
