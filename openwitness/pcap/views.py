@@ -175,8 +175,9 @@ def upload(request):
                 flow_file.details = flow_detail_li
                 flow_file.save()
                 # then call functions that will save request and responses that will parse dat files, save the headers and files
-                http_handler.save_request(path=upload_path, hash_value=request.session['uploaded_hash'])
-                http_handler.save_response(path=upload_path, hash_value=request.session['uploaded_hash'])
+                #http_handler.save_request(path=upload_path, hash_value=request.session['uploaded_hash'])
+                #http_handler.save_response(path=upload_path, hash_value=request.session['uploaded_hash'])
+                http_handler.save_request_response(path=upload_path, hash_value=request.session['uploaded_hash'])
 
             # dns realted issues starts here
             if "dns" in output:
@@ -217,6 +218,12 @@ def upload(request):
                 flow_file.save()
 
                 smtp_handler.save_request_response(upload_path=upload_path)
+
+
+
+            else:
+                log.message("protocol detected: %s" % "Unknown")
+
 
     else:
         form = UploadPcapForm()
