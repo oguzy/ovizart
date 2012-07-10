@@ -219,10 +219,22 @@ def upload(request):
 
                 smtp_handler.save_request_response(upload_path=upload_path)
 
-
-
             else:
                 log.message("protocol detected: %s" % "Unknown")
+                unknown_protocol_handler = settings.UNKNOWN_HANDLER
+                package = "openwitness.modules.traffic.parser.unknown"
+                module_name = ".".join([package, unknown_protocol_handler])
+                unknown_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+                unknown_handler = unknown_handler_module.Handler()
+                flow_ips = unknown_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
+                flow_detail_li = []
+                for detail in flow_ips:
+                    flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="unknown", timestamp = detail[4])
+                    flow_detail_li.append(flow_detail)
+
+                flow_file.details = flow_detail_li #TODO: this shouldn't be like a single assign but maybe an append indeed
+                flow_file.save()
+
 
 
     else:
