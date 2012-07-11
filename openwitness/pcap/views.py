@@ -83,7 +83,10 @@ def upload(request):
 
                 # save the flow pcap names to the mongo db
                 pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([upload_path, x])).hexdigest(), file_name=x, path=upload_path), files.values()[0])
-                flow_file.pcaps = pcap_list
+                if flow_file.pcaps:
+                    flow_file.pcaps.append(pcap_list)
+                else:
+                    flow_file.pcaps = pcap_list
                 flow_file.save()
 
                 p_read_handler.close_file()
@@ -130,7 +133,10 @@ def upload(request):
                 udp_handler = UDPHandler()
                 pcap = Pcap.objects.create(hash_value=hashlib.md5("/".join([upload_path, pcap_name])).hexdigest(), file_name=pcap_name, path=upload_path)
                 pcap_list = list([pcap])
-                flow_file.pcaps = pcap_list
+                if flow_file.pcaps:
+                    flow_file.pcaps.append(pcap_list)
+                else:
+                    flow_file.pcaps = pcap_list
                 flow_file.save()
 
                 packets  = []
@@ -172,7 +178,10 @@ def upload(request):
                 for detail in flow_ips:
                     flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
-                flow_file.details = flow_detail_li
+                if flow_file.details:
+                    flow_file.details.append(flow_detail_li)
+                else:
+                    flow_file.details = flow_detail_li
                 flow_file.save()
                 # then call functions that will save request and responses that will parse dat files, save the headers and files
                 #http_handler.save_request(path=upload_path, hash_value=request.session['uploaded_hash'])
@@ -194,7 +203,10 @@ def upload(request):
                 for detail in flow_ips:
                     flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
-                flow_file.details = flow_detail_li
+                if flow_file.details:
+                    flow_file.details.append(flow_detail_li)
+                else:
+                    flow_file.details = flow_detail_li
                 flow_file.save()
 
                 dns_handler.save_request_response()
@@ -214,7 +226,10 @@ def upload(request):
                 for detail in flow_ips:
                     flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="smtp", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
-                flow_file.details = flow_detail_li
+                if flow_file.details:
+                    flow_file.details.append(flow_detail_li)
+                else:
+                    flow_file.details = flow_detail_li
                 flow_file.save()
 
                 smtp_handler.save_request_response(upload_path=upload_path)
@@ -232,7 +247,10 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="unknown", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
 
-                flow_file.details = flow_detail_li #TODO: this shouldn't be like a single assign but maybe an append indeed
+                if flow_file.details:
+                    flow_file.details.append(flow_detail_li)
+                else:
+                    flow_file.details = flow_detail_li
                 flow_file.save()
 
 
