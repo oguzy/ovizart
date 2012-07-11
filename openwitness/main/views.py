@@ -31,19 +31,15 @@ def login_user(request):
         form = LoginForm(request.POST)
         if logged or form.is_valid():
             user = username = email = password = None
-            if request.session.has_key('username'):
+            if logged:
                 username = request.session['username']
+                email = request.session['user_email']
+                password = request.session['password']
             else:
                 username = request.POST['username']
                 request.session['username'] = username
-            if request.session.has_key('user_email'):
-                email = request.session['user_email']
-            else:
                 email = request.POST['user_email']
                 request.session['user_email'] = email
-            if request.session.has_key('password'):
-                password = request.session['password']
-            else:
                 password = request.POST['password']
                 request.session['password'] = password
             user = authenticate(username=username, password=password)
