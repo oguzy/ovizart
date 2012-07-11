@@ -84,7 +84,9 @@ def upload(request):
                 # save the flow pcap names to the mongo db
                 pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([upload_path, x])).hexdigest(), file_name=x, path=upload_path), files.values()[0])
                 if flow_file.pcaps:
-                    flow_file.pcaps.append(pcap_list)
+                    pre_li = flow_file.pcaps
+                    pre_li.extend(pcap_list)
+                    flow_file.pcaps = pre_li
                 else:
                     flow_file.pcaps = pcap_list
                 flow_file.save()
@@ -134,7 +136,9 @@ def upload(request):
                 pcap = Pcap.objects.create(hash_value=hashlib.md5("/".join([upload_path, pcap_name])).hexdigest(), file_name=pcap_name, path=upload_path)
                 pcap_list = list([pcap])
                 if flow_file.pcaps:
-                    flow_file.pcaps.append(pcap_list)
+                    pre_li = flow_file.pcaps
+                    pre_li.extend(pcap_list)
+                    flow_file.pcaps = pre_li
                 else:
                     flow_file.pcaps = pcap_list
                 flow_file.save()
@@ -179,7 +183,9 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="http", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 if flow_file.details:
-                    flow_file.details.append(flow_detail_li)
+                    pre_li = flow_file.details
+                    pre_li.extend(flow_detail_li)
+                    flow_file.details = pre_li
                 else:
                     flow_file.details = flow_detail_li
                 flow_file.save()
@@ -204,7 +210,9 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 if flow_file.details:
-                    flow_file.details.append(flow_detail_li)
+                    pre_li = flow_file.details
+                    pre_li.extend(flow_detail_li)
+                    flow_file.details = pre_li
                 else:
                     flow_file.details = flow_detail_li
                 flow_file.save()
@@ -227,7 +235,9 @@ def upload(request):
                     flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="smtp", timestamp = detail[4])
                     flow_detail_li.append(flow_detail)
                 if flow_file.details:
-                    flow_file.details.append(flow_detail_li)
+                    pre_li = flow_file.details
+                    pre_li.extend(flow_detail_li)
+                    flow_file.details = pre_li
                 else:
                     flow_file.details = flow_detail_li
                 flow_file.save()
@@ -237,18 +247,21 @@ def upload(request):
             else:
                 log.message("protocol detected: %s" % "Unknown")
                 unknown_protocol_handler = settings.UNKNOWN_HANDLER
-                package = "openwitness.modules.traffic.parser.unknown"
+                package = "openwitness.modules.traffic.parser"
                 module_name = ".".join([package, unknown_protocol_handler])
                 unknown_handler_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
                 unknown_handler = unknown_handler_module.Handler()
-                flow_ips = unknown_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'])
+                flow_ips = unknown_handler.get_flow_ips(path=upload_path, file_name=request.session['uploaded_file_name'], parent_hash_value=request.session['uploaded_hash'], user_id=user_id)
                 flow_detail_li = []
                 for detail in flow_ips:
                     flow_detail, create = FlowDetails.objects.get_or_create(parent_hash_value=request.session['uploaded_hash'], user_id=user_id, src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="unknown", timestamp = detail[4])
-                    flow_detail_li.append(flow_detail)
+                    if created:
+                        flow_detail_li.append(flow_detail)
 
                 if flow_file.details:
-                    flow_file.details.append(flow_detail_li)
+                    pre_li = flow_file.details
+                    pre_li.extend(flow_detail_li)
+                    flow_file.details = pre_li
                 else:
                     flow_file.details = flow_detail_li
                 flow_file.save()
@@ -391,8 +404,8 @@ def summary(request):
             if not flow_details_dict.has_key(flow_detail.protocol):
                 flow_details_dict[flow_detail.protocol] = dict()
                 f_d = flow_details_dict[flow_detail.protocol]
-                f_d['count'] = 0
-                f_d['timestamps'] = []
+                f_d['count'] = 1
+                f_d['timestamps'] = [flow_detail.timestamp]
             else:
                 f_d['count'] += 1
                 f_d['timestamps'].append(flow_detail.timestamp)
