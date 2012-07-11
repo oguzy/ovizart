@@ -63,6 +63,22 @@ class CustomJSONSerializer(Serializer):
                     protocol_dict["smtp"].append(tmp)
                 else:
                     protocol_dict["smtp"] = [tmp]
+
+            if flow['protocol'] == "unknown":
+                start, end = self.get_start_end(flow)
+                type, description = "unknown", ""
+                tmp = dict()
+                tmp['flow_id'] = flow['id']
+                tmp["start"] = start
+                tmp["end"] = end
+                if type and description:
+                    tmp["type"] = type
+                    tmp["description"] = description
+                if protocol_dict.has_key("unknown"):
+                    protocol_dict["unknown"].append(tmp)
+                else:
+                    protocol_dict["unknown"] = [tmp]
+
         result.append(protocol_dict)
         data = result
         return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
@@ -224,10 +240,11 @@ class AllProtocolsJSONSerializer(Serializer):
                 if protocol_dict[ts].has_key(protocol):
                     protocol_dict[ts][protocol] += 1
                 else:
-                    protocol_dict[ts] = {protocol: 1}
+                    protocol_dict[ts][protocol] =  1
 
             else:
                 protocol_dict[ts] = dict()
+                protocol_dict[ts] = {protocol: 1}
 
         min_max_count = []
         for year, v in protocol_dict.items():
@@ -269,10 +286,11 @@ class AllProtocolsJSONSerializer(Serializer):
                 if protocol_dict[ts].has_key(protocol):
                     protocol_dict[ts][protocol] += 1
                 else:
-                    protocol_dict[ts] = {protocol: 0}
+                    protocol_dict[ts][protocol] = 1
 
             else:
                 protocol_dict[ts] = dict()
+                protocol_dict[ts] = {protocol: 1}
 
 
         min_max_count = []
