@@ -44,8 +44,8 @@ Requirements for Bro installation
 
 * Bro is used both for protocol detection and TCP reassembly. To let Bro handle assemble the contents, a file should be changed. If you installed Bro to /usr/local/bro/ then edit the file /usr/local/bro/share/bro/base/protocols/conn/contents.bro as below
 
-	# If this variable is set to ``T``, then all contents of all connections
-	# will be  extracted.
+	\#\# If this variable is set to ``T``, then all contents of all connections
+	\#\# will be  extracted.
 	const default_extract = T &redef;
 
 * tshark is required for an alternative method to detect application layer protocols where bro fails
