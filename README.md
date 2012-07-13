@@ -44,37 +44,49 @@ Requirements for Bro installation
 
 * Bro is used both for protocol detection and TCP reassembly. To let Bro handle assemble the contents, a file should be changed. If you installed Bro to /usr/local/bro/ then edit the file /usr/local/bro/share/bro/base/protocols/conn/contents.bro as below
 
-	\#\# If this variable is set to ``T``, then all contents of all connections
-	\#\# will be  extracted.
-	const default_extract = T &redef;
+	\#\# If this variable is set to ``T``, then all contents of all connections  
+
+	\#\# will be  extracted.  
+
+	const default_extract = T &redef;  
+
 
 * tshark is required for an alternative method to detect application layer protocols where bro fails
 
-	$ sudo apt-get install tshark
+	$ sudo apt-get install tshark  
+
 
 Django related issues
 ---------------------
 
 * make a directory named *uploads* where the setting.py file is. 
 
-	$ mkdir uploads
-	$ chown a+w uploads
+	$ mkdir uploads  
+
+	$ chown a+w uploads  
+
 
 * If you got backend errors like *django.core.exceptions.ImproperlyConfigured: 'django_mongodb_engine' isn't an available database backend.*
 install the django-mongodb backend manually
 
-	$ pip install hg+https://bitbucket.org/wkornewald/django-nonrel
-	$ pip install hg+https://bitbucket.org/wkornewald/djangotoolbox
-	$ pip install git+https://github.com/django-nonrel/mongodb-engine
+	$ pip install hg+https://bitbucket.org/wkornewald/django-nonrel  
+
+	$ pip install hg+https://bitbucket.org/wkornewald/djangotoolbox  
+
+	$ pip install git+https://github.com/django-nonrel/mongodb-engine  
+
 
 Django projects requires a table creation first
 
-	$ bin/django syncdb
+	$ bin/django syncdb  
+
 
 The project uses hachoir Python library, install them also
 
-	$ sudo apt-get install python-hachoir-* (i should add this part to the buildout configuration also)
+	$ sudo apt-get install python-hachoir-* (i should add this part to the buildout configuration also)  
+
 
 * to handle smtp, it is required to install tcpflow. After checking the results of Bro and Tcpflow, for smtp, the created flows files seem more manageable.
 
-	$ sudo apt-get install tcpflow
+	$ sudo apt-get install tcpflow  
+
