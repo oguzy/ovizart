@@ -62,9 +62,8 @@ Django related issues
 * make a directory named *uploads* where the setting.py file is. 
 
 	$ mkdir uploads  
-
-	$ chown a+w uploads  
-
+	$ chmod a+w uploads  
+	$ chmod a+w json_files  
 
 * If you got backend errors like *django.core.exceptions.ImproperlyConfigured: 'django_mongodb_engine' isn't an available database backend.*
 install the django-mongodb backend manually
