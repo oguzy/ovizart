@@ -34,7 +34,7 @@ Requirements for Bro installation
 
 The commands are testet under Kubuntu 12.04. At Debian Squeeze, swig2.0 should be removed from the command line.
 
-	$ sudo apt-get install libmagic-dev libgeoip-dev libpcap-dev libssl-dev libncurses5-dev g++ bison flex cmake swig2.0 make gcc g++ python-dev swig zlib1g-dev
+	$ sudo apt-get install libmagic-dev libgeoip-dev libpcap-dev libssl-dev libncurses5-dev g++ bison flex cmake swig2.0 make gcc g++ python-dev zlib1g-dev
 	$ ./configure --enable-debug
 	$ make
 	$ sudo make install
