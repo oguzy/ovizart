@@ -6,7 +6,7 @@ Installation
 
 At Ubuntu this is done via the command below
 
-	$ sudo apt-get install python-zc.build
+	$ sudo apt-get install python-zc.build, mercurial, python-pip
 
 * Run the buildout command to initialize and install the requirements
 
