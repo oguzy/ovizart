@@ -272,8 +272,14 @@ function cell() {
                     //.height(500)
                         .color(d3.scale.category10().range());
 
-                chart.xAxis.tickFormat(d3.format('.02f'))
-                chart.yAxis.tickFormat(d3.format('.02f'))
+                //chart.xAxis.tickFormat(d3.format('.02f'))
+                //chart.yAxis.tickFormat(d3.format('.02f'))
+                chart.xAxis.tickFormat(d3.format('r'))
+                chart.yAxis.tickFormat(d3.format('r'))
+
+                //labeling
+                chart.xAxis.axisLabel('Year')
+                chart.yAxis.axisLabel('Number of Packets')
 
                 d3.select('#chart svg')
                         .datum(jsondata)
