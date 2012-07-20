@@ -6,7 +6,7 @@ import tempfile
 import os
 import datetime
 import cgi
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.utils import simplejson as json
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
@@ -417,6 +417,7 @@ def summary(request):
             flow_details_dict[key]['end'] = ts[-1]
 
         context['flow_details'] = flow_details_dict
+        context['ALTERNATE_BASE_URL'] = settings.ALTERNATE_BASE_URL
 
 
         return render_to_response("pcap/summary.html",
@@ -628,3 +629,8 @@ def flow_details(request, flow_id):
     context['page_title'] = "Flow Details"
     return render_to_response("pcap/flow_details.html",
             context_instance=RequestContext(request, context))
+
+def get_pcap_url(request, id):
+    pcap = Pcap.objects.get(id=id)
+    html = "".join(["<a href=\"/uploads/", pcap.get_upload_path(), "/", str(pcap.file_name), "\"", ">", str(pcap.file_name), "</a>"])
+    return HttpResponse(html)
