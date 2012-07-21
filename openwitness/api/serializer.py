@@ -155,6 +155,7 @@ class AppProtocolPacketSizeCustomJSONSerializer(Serializer):
         if not data.has_key('objects'): return {}
         for flow in data['objects']:
             flow_dict = dict()
+            flow_id = flow['id']
             src_ip = flow['src_ip']
             sport = flow['sport']
             s_combined = ":".join([src_ip, str(sport)])
@@ -168,6 +169,7 @@ class AppProtocolPacketSizeCustomJSONSerializer(Serializer):
             if not result.has_key('children'):
                 result['children'] = []
             flow_dict['name'] = "-".join([s_combined, d_combined])
+            flow_dict['flow_id'] = flow_id
             packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
             flow_dict['children'] = []
             for p in packets:
@@ -195,6 +197,7 @@ class AppProtocolPacketCountCustomJSONSerializer(Serializer):
         if not data.has_key('objects'): return {}
         for flow in data['objects']:
             flow_dict = dict()
+            flow_id = flow['id']
             src_ip = flow['src_ip']
             sport = flow['sport']
             s_combined = ":".join([src_ip, str(sport)])
@@ -208,6 +211,7 @@ class AppProtocolPacketCountCustomJSONSerializer(Serializer):
             if not result.has_key('children'):
                 result['children'] = []
             flow_dict['name'] = "-".join([s_combined, d_combined])
+            flow_dict['flow_id'] = flow_id
             packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
             flow_dict['children'] = []
             flow_dict['children'].append({'name': str(packets[0].ident), 'size':len(packets)})
