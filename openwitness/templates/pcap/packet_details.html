@@ -1,0 +1,33 @@
+{% extends "base/layout-summary.html" %}
+
+{% block up %}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Length</th>
+                <th>Protocol</th>
+                <th>Source IP</th>
+                 <th>Source port</th>
+                <th>Destination IP</th>
+                <th>Destination port</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ packet_details.timestamp }}</td>
+                <td>{{ packet_details.length }}</td>
+                <td>{% ifequal packet_details.protocol 6 %}TCP{% else %}UDP{% endifequal%}</td>
+                <td>{{ packet_details.src_ip }}</td>
+                <td>{{ packet_details.sport }}</td>
+                <td>{{ packet_details.dst_ip }}</td>
+                <td>{{ packet_details.dport }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+{% endblock %}
