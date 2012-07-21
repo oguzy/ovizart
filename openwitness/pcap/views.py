@@ -485,7 +485,7 @@ def visualize(request, protocol, type="size"):
         # bin/django runserver
         log = Logger("Visualize:", "DEBUG")
         context = {
-            'page_title': 'Packet Sizes of the uploaded pcaps',
+            'page_title': 'Packet counts of the uploaded pcaps',
             }
         user_id = request.user.id
         url = "".join([settings.BASE_URL, "/api/rest/protocol_count/?format=json&user_id=", str(user_id), "&protocol=", protocol], )
@@ -634,3 +634,13 @@ def get_pcap_url(request, id):
     pcap = Pcap.objects.get(id=id)
     html = "".join(["<a href=\"/uploads/", pcap.get_upload_path(), "/", str(pcap.file_name), "\"", ">", str(pcap.file_name), "</a>"])
     return HttpResponse(html)
+
+#TODO: i should display the packet payload data as well
+def get_packet_info(request, packet_ident):
+    packet = PacketDetails.objects.get(ident=packet_ident)
+    context = dict()
+    context['packet_details'] = packet
+    context['page_title'] = "Packet Details"
+    return render_to_response("pcap/packet_details.html",
+        context_instance=RequestContext(request, context))
+
