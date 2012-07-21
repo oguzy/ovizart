@@ -35,7 +35,7 @@
                     <tbody>
                     {% for pcap in f.children %}
                     <tr>
-                        <td>{{ pcap.name }}</td>
+                        <td><a name="{{ pcap.name }}"></a><a href="{% url packet_info pcap.name %}">{{ pcap.name }}</a></td>
                         <td>{{ pcap.size }}</td>
                     </tr>
                     {% endfor %}
