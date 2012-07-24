@@ -11,5 +11,8 @@ class Handler:
         self._file_name = file_name
 
     def get_hash(self):
-        md5 = hashlib.md5(self._file_name)
+        md5 = hashlib.md5()
+        with open(self._file_name, 'rb') as f:
+            for chunk in iter(lambda: f.read(8192), b''):
+                md5.update(chunk)
         return md5.hexdigest()
