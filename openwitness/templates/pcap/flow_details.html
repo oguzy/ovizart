@@ -80,8 +80,11 @@
 
                             {% if flow.files %}
                             <td>
-                                {% for f in flow.files.file_list %}
+                                {% for f,p in flow.files.file_list.items %}
                                 <p><a href="/uploads{{ flow.files.path }}/{{ f }}">{{ f }}</a></p>
+                                {% if p %}
+                                    <p><a href="{{ p }}">Virus Total Scan Result</a></p>
+                                {% endif %}
                                 {% endfor %}
                             </td>
                             {% else %}
