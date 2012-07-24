@@ -572,8 +572,32 @@ def flow_details(request, flow_id):
                 files = dict()
                 files['path'] = os.path.join(http_detail.file_path.split('uploads')[1], file_dir)
                 #files['file_list'] = os.listdir(os.path.join(http_detail.file_path, os.path.basename(files['path'])))
-                files['file_list'] = http_detail.files
+                #files['file_list'] = http_detail.files
                 http_dict['files'] = files
+
+                protocol_handler = settings.VIRUS_HANDLER
+                package = "openwitness.modules.malware"
+                module_name = ".".join([package, protocol_handler])
+                virus_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+                virus_handler = virus_module.Handler()
+
+                malware_dict = dict()
+                for f in http_detail.files:
+                    path = os.path.join(http_detail.file_path, file_dir, f)
+                    rescan_result = virus_handler.rescan(str(path))
+                    permalink = ""
+                    if rescan_result and rescan_result['response_code'] == 1:
+                        permalink = rescan_result['permalink']
+                    else:
+                        scan_result = virus_handler.scan(str(path))
+                        if scan_result and scan_result['response_code'] == 1:
+                            report_result = virus_handler.get_report(str(path))
+                            if report_result and report_result['response_code'] == 1:
+                                permalink = report_result['permalink']
+
+                    malware_dict[f] = permalink
+
+                files['file_list'] = malware_dict
 
             result.append(http_dict)
 
