@@ -32,6 +32,7 @@ HTTP_HANDLER = "http"
 DNS_HANDLER = "dns"
 SMTP_HANDLER = "smtp"
 UNKNOWN_HANDLER = "unknown"
+VIRUS_HANDLER = "virustotal"
 
 MANAGERS = ADMINS
 
