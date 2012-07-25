@@ -549,7 +549,8 @@ def flow_details(request, flow_id):
             if http_detail.headers:
                 headers = http_detail.headers
                 content = headers[1:-1]
-                human_readable_header = content.split(",")
+                clean_content = map(lambda x: x.replace("'", "").replace("\\r", "").strip(), content.split(","))
+                human_readable_header = map(lambda x: str(x), clean_content)
                 http_dict['headers'] = human_readable_header
             if http_detail.version:
                 http_dict['version'] = http_detail.version
