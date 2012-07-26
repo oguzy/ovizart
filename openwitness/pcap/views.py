@@ -679,6 +679,32 @@ def flow_details(request, flow_id):
                 smtp_dict['attachment_path'] = smtp_detail.attachment_path
                 smtp_dict['get_path_dict'] = smtp_detail.get_path_dict()
 
+                protocol_handler = settings.VIRUS_HANDLER
+                package = "openwitness.modules.malware"
+                module_name = ".".join([package, protocol_handler])
+                virus_module = getattr(__import__(module_name, fromlist=["handler"]), "handler")
+                virus_handler = virus_module.Handler()
+
+
+                for path in smtp_detail.attachment_path:
+                    rescan_result = virus_handler.rescan(str(path))
+                    permalink = ""
+                    if rescan_result and rescan_result['response_code'] == 1:
+                        permalink = rescan_result['permalink']
+                    else:
+                        scan_result = virus_handler.scan(str(path))
+                        if scan_result and scan_result['response_code'] == 1:
+                            report_result = virus_handler.get_report(str(path))
+                            if report_result and report_result['response_code'] == 1:
+                                permalink = report_result['permalink']
+
+                    base_path = os.path.basename(path)
+
+                    for content in smtp_dict['get_path_dict']:
+                        if content['file_name'] == base_path:
+                            content['virus_total_link'] = permalink
+
+
             result.append(smtp_dict)
 
     context = dict()
