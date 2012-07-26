@@ -54,8 +54,7 @@ def upload(request):
             upload_path = file_handler.upload_dir
             # evey pcap file is saved as a flow container, there may or may not be flows, the pcaps colon will give the flow pcaps
             hash_handler = HashHandler()
-            hash_handler.set_file("/".join([pcap_name, upload_path]))
-            hash_value = hash_handler.get_hash()
+            hash_value = hash_handler.get_hash(os.path.join(upload_path, pcap_name))
             flow_file, created = Flow.objects.get_or_create(user_id=user_id, hash_value=hash_value,file_name=pcap_name, path=upload_path)
             request.session['uploaded_hash'] = hash_value
             request.session['uploaded_file_name'] = pcap_name
@@ -82,7 +81,7 @@ def upload(request):
                 files = f_handler.save_flow(flow, p_write_handler, save_path=upload_path)
 
                 # save the flow pcap names to the mongo db
-                pcap_list = map(lambda x: Pcap.objects.create(hash_value=hashlib.md5("/".join([upload_path, x])).hexdigest(), file_name=x, path=upload_path), files.values()[0])
+                pcap_list = map(lambda x: Pcap.objects.create(hash_value=hash_handler.get_hash(os.path.join(upload_path, x)), file_name=x, path=upload_path), files.values()[0])
                 if flow_file.pcaps:
                     pre_li = flow_file.pcaps
                     pre_li.extend(pcap_list)
@@ -98,7 +97,7 @@ def upload(request):
                 for f in files.values()[0]:
                     packets  = []
                     # better to save tcp level information to db here
-                    full_path = "/".join([upload_path, f])
+                    full_path = os.path.join(upload_path, f)
                     p_read_handler.open_file(full_path)
                     p_read_handler.open_pcap()
                     pcap = p_read_handler.get_pcap()
@@ -111,15 +110,41 @@ def upload(request):
                         if tcp:
                             tcp_list.append((tcp, tcp_handler.ident))
                         else: continue
+                        tcp_data = u"."
+                        if tcp_handler.data:
+                            tcp_data = tcp_handler.data
+                            # some requests include hexadecimal info, most probably some binary info that can not be
+                            # converted to the utf8, for now i better remove them, #TODO should handle them, though
+                            # try with 4, tcp.data has binary request
+                            # def get_tcp(n):
+                            #    count = 1
+                            #    f = file("milliyet.pcap", "rb")
+                            #    reader = dpkt.pcap.Reader(f)
+                            #    for ts, buf in reader:
+                            #        if count == n:
+                            #            f.close()
+                            #            return buf
+                            #        count += 1
+
+                            data_li = tcp_data.split("\r\n")
+                            tmp = []
+                            for data in data_li:
+                                try:
+                                    data.encode("utf-8")
+                                    tmp.append(data)
+                                except:
+                                    tmp.append("data that can not be encoded to utf-8")
+
+                            tcp_data = "<br/>".join(tmp)
+
                         packet = PacketDetails.objects.create(ident=tcp_handler.ident, timestamp=tcp_handler.timestamp,
                                                                 length=tcp_handler.length, protocol=tcp_handler.proto,
                                                                 src_ip=tcp_handler.src_ip,
                                                                 dst_ip=tcp_handler.dst_ip, sport=tcp_handler.sport,
-                                                                dport=tcp_handler.dport)
+                                                                dport=tcp_handler.dport, data=str(tcp_data))
                         packets.append(packet)
-                    hash_handler.set_file("/".join([upload_path, f]))
                     # get the pcap object
-                    p = Pcap.objects.get(hash_value=hash_handler.get_hash())
+                    p = Pcap.objects.get(hash_value=hash_handler.get_hash(os.path.join(upload_path, f)))
                     log.message("pcap for packet update detected: %s" % p)
                     # update its packets
                     p.packets = list(packets) # converting a queryset to list
@@ -129,11 +154,11 @@ def upload(request):
             if "udp" in output:
                 log.message("protocol detected: %s" % "UDP")
                 p_read_handler = PcapHandler()
-                file_path = "/".join([upload_path, pcap_name])
+                file_path = os.path.join(upload_path, pcap_name)
                 p_read_handler.open_file(file_path)
                 p_read_handler.open_pcap()
                 udp_handler = UDPHandler()
-                pcap = Pcap.objects.create(hash_value=hashlib.md5("/".join([upload_path, pcap_name])).hexdigest(), file_name=pcap_name, path=upload_path)
+                pcap = Pcap.objects.create(hash_value=hash_handler.get_hash(os.path.join(upload_path, pcap_name)), file_name=pcap_name, path=upload_path)
                 pcap_list = list([pcap])
                 if flow_file.pcaps:
                     pre_li = flow_file.pcaps
@@ -147,14 +172,21 @@ def upload(request):
                 for ts, buf in p_read_handler.get_reader():
                     udp = udp_handler.read_udp(ts, buf)
                     if udp:
+                        udp_data = u"."
+                        if udp_handler.data:
+                            udp_data = udp_handler.data
+                            try:
+                                udp_data = udp_data.encode("utf-8")
+                            except:
+                                udp_data = "data that can not be encoded to utf-8"
                         packet = PacketDetails.objects.create(ident=udp_handler.ident, timestamp=udp_handler.timestamp,
                                                             length = udp_handler.length,
                                                             protocol=udp_handler.proto, src_ip=udp_handler.src_ip,
-                                                            dst_ip=udp_handler.dst_ip, sport=udp_handler.sport, dport=udp_handler.dport)
+                                                            dst_ip=udp_handler.dst_ip, sport=udp_handler.sport,
+                                                            dport=udp_handler.dport, data=str(udp_data))
                         packets.append(packet)
-                        hash_handler.set_file("/".join([upload_path, pcap_name]))
                         # get the pcap object
-                p = Pcap.objects.get(hash_value=hash_handler.get_hash())
+                p = Pcap.objects.get(hash_value=hash_handler.get_hash(os.path.join(upload_path, pcap_name)))
                 # update its packets
                 p.packets = list(packets) # converting a queryset to list
                 p.save()
