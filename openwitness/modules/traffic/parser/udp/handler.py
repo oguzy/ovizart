@@ -16,6 +16,7 @@ class Handler(object):
         self.dport = None
         self.ident = None
         self.length = None
+        self.data = None
         self.log = Logger("TCP Protocol Handler", "DEBUG")
         self.log.message("TCP protocol handler called")
 
@@ -53,5 +54,6 @@ class Handler(object):
         self.ident = ip.id
         self.sport = udp.sport
         self.dport = udp.dport
+        self.data = udp.data
         return udp
 
