@@ -13,6 +13,7 @@
                  <th>Source port</th>
                 <th>Destination IP</th>
                 <th>Destination port</th>
+                <th>Payload</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
                 <td>{{ packet_details.sport }}</td>
                 <td>{{ packet_details.dst_ip }}</td>
                 <td>{{ packet_details.dport }}</td>
+                <td>{{ packet_details.data|linebreaksbr }}</td>
             </tr>
         </tbody>
     </table>
