@@ -52,6 +52,7 @@ class PacketDetails(models.Model):
     dst_ip = models.IPAddressField()
     sport = models.IntegerField()
     dport = models.IntegerField()
+    data = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return u'(%s, %s, %s, %s, %s)' % (self.protocol, self.src_ip, self.sport, self.dst_ip, self.dport)
