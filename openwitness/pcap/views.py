@@ -135,7 +135,7 @@ def upload(request):
                                 except:
                                     tmp.append("data that can not be encoded to utf-8")
 
-                            tcp_data = "<br/>".join(tmp)
+                            tcp_data = " \n".join(tmp)
 
                         packet = PacketDetails.objects.create(ident=tcp_handler.ident, timestamp=tcp_handler.timestamp,
                                                                 length=tcp_handler.length, protocol=tcp_handler.proto,
