@@ -6,6 +6,7 @@ import tempfile
 import os
 import datetime
 import cgi
+import magic
 from django.http import Http404, HttpResponse
 from django.utils import simplejson as json
 from django.shortcuts import render_to_response
@@ -679,6 +680,13 @@ def flow_details(request, flow_id):
                 smtp_dict['attachment_path'] = smtp_detail.attachment_path
                 smtp_dict['get_path_dict'] = smtp_detail.get_path_dict()
 
+                attachment_type  = dict()
+                # detect the file type for SMTP
+                for attachment in smtp_detail.attachment_path:
+                    mime = magic.open(magic.MAGIC_MIME)
+                    mime.load()
+                    attachment_type[os.path.basename(attachment)] = mime.file(attachment)
+
                 protocol_handler = settings.VIRUS_HANDLER
                 package = "openwitness.modules.malware"
                 module_name = ".".join([package, protocol_handler])
@@ -703,6 +711,7 @@ def flow_details(request, flow_id):
                     for content in smtp_dict['get_path_dict']:
                         if content['file_name'] == base_path:
                             content['virus_total_link'] = permalink
+                            content['file_type'] = attachment_type[base_path]
 
 
             result.append(smtp_dict)
