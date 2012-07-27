@@ -178,7 +178,7 @@
                         {% if flow.attachment_path %}
                         <td>
                             {% for f in flow.get_path_dict %}
-                                <a href="/uploads{{ f.path }}">{{ f.file_name }}</a><br/>
+                                <a href="/uploads{{ f.path }}">{{ f.file_name }} ({{ f.file_type }})</a><br/>
                                 {% if f.virus_total_link %}
                                     <p><a href="{{ f.virus_total_link }}">Virus Total Scan Result</a></p>
                                 {% endif %}
