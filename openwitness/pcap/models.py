@@ -1,5 +1,6 @@
 from django.db import models
 from djangotoolbox.fields import EmbeddedModelField, ListField
+from django_mongodb_engine.contrib import MongoDBManager
 import os
 
 # Create your models here.
@@ -92,6 +93,9 @@ class HTTPDetails(models.Model):
     file_path = models.CharField(max_length=200, null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
 
+    #for raw_qeuries, filtering according to flow_details will be possible
+    objects = MongoDBManager()
+
 
 class DNSRequest(models.Model):
     type = models.IntegerField()
@@ -99,11 +103,15 @@ class DNSRequest(models.Model):
     value = models.CharField(max_length=50, null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
 
+    objects = MongoDBManager()
+
 class DNSResponse(models.Model):
     type = models.IntegerField()
     human_readable_type = models.CharField(max_length=50)
     value = ListField(null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
+
+    objects = MongoDBManager()
 
 class SMTPDetails(models.Model):
     login_data = ListField(null=True, blank=True)
@@ -113,6 +121,8 @@ class SMTPDetails(models.Model):
     msgdata = models.TextField(null=True, blank=True)
     attachment_path = ListField(null=True, blank=True)
     flow_details = EmbeddedModelField('FlowDetails', null=True, blank=True)
+
+    objects = MongoDBManager()
 
     def get_path_dict(self):
         #/home/oguz/git/openwitness/openwitness/uploads/16-06-12/a6a6defb7253043a55281d01aa66538a/smtp-messages/1/part-001.ksh
