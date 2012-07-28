@@ -99,8 +99,9 @@ class CustomJSONSerializer(Serializer):
 
 
     def get_http_info(self, flow):
-        http_all = HTTPDetails.objects.all()
-        flow_details = filter(lambda x: x.flow_details.id == flow['id'], http_all) # this should be returning only one
+        #http_all = HTTPDetails.objects.all()
+        #flow_details = filter(lambda x: x.flow_details.id == flow['id'], http_all) # this should be returning only one
+        flow_details = HTTPDetails.objects.raw_query({'flow_details.id': flow['id']})
         if len(flow_details) > 0:
             info = flow_details[0]
             type = info.http_type
@@ -119,15 +120,17 @@ class CustomJSONSerializer(Serializer):
         return None, None
 
     def get_dns_info(self, flow):
-        dns_request_all = DNSRequest.objects.all()
-        flow_details = filter(lambda x: x.flow_details.id == flow['id'], dns_request_all)
+        #dns_request_all = DNSRequest.objects.all()
+        #flow_details = filter(lambda x: x.flow_details.id == flow['id'], dns_request_all)
+        flow_details = DNSRequest.objects.raw_query({'flow_details.id': flow['id']})
         if len(flow_details) > 0:
             info = flow_details[0]
             type = "DNS Request"
             description = " ".join([info.human_readable_type, info.value])
             return type, description
-        dns_response_all = DNSResponse.objects.all()
-        flow_details = filter(lambda x: x.flow_details.id == flow['id'], dns_response_all)
+        #dns_response_all = DNSResponse.objects.all()
+        #flow_details = filter(lambda x: x.flow_details.id == flow['id'], dns_response_all)
+        flow_details = DNSResponse.objects.raw_query({'flow_details.id': flow['id']})
         if len(flow_details) > 0:
             info = flow_details[0]
             type = "DNS Response"
@@ -136,8 +139,9 @@ class CustomJSONSerializer(Serializer):
         return None, None
 
     def get_smtp_info(self, flow):
-        smtp_details_all = SMTPDetails.objects.all()
-        flow_details = filter(lambda x: x.flow_details.id == flow['id'], smtp_details_all)
+        #smtp_details_all = SMTPDetails.objects.all()
+        #flow_details = filter(lambda x: x.flow_details.id == flow['id'], smtp_details_all)
+        flow_details = SMTPDetails.objects.raw_query({'flow_details.id': flow['id']})
         if len(flow_details) > 0:
             info = flow_details[0]
             type = "SMTP"
