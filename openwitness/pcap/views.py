@@ -7,6 +7,7 @@ import os
 import datetime
 import cgi
 import magic
+#import random
 from django.http import Http404, HttpResponse
 from django.utils import simplejson as json
 from django.shortcuts import render_to_response
@@ -340,7 +341,7 @@ def summary(request):
             response_dict["id"] = "".join([id.encode('hex'), str(user_id)])
             response_dict['title'] = "Summary For the Uploaded PCAPs"
             response_dict['focus_date'] = None # will be fixed
-            response_dict['initial_zoom'] = "37"
+            response_dict['initial_zoom'] = "38"
 
             time_keeper = {'start': None, 'end': None}
             importance_keeper = []
@@ -376,9 +377,11 @@ def summary(request):
                         time_keeper['end'] = dt_end
 
                     event_dict['date_display'] = 'day'
-                    ts = int(datetime.datetime.strptime(value['end'], "%Y-%m-%d %H:%M:%S").strftime("%s"))
-                    importance = repr(translate_time(ts))
+                    ts = int(datetime.datetime.strptime(value['start'], "%Y-%m-%d %H:%M:%S").strftime("%s"))
+                    importance = translate_time(ts)
+                    #importance = random.randrange(1, 100)
                     event_dict['importance'] = importance
+                    event_dict['high_threshold'] = int(importance) + 5
                     importance_keeper.append(int(importance))
                     if protocol not in protocols_found:
                         protocols_found.append(protocol)
