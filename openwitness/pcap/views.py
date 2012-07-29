@@ -198,7 +198,7 @@ def upload(request):
             # starting the bro related issues for the reassembled data
             output = traffic_detector_handler.detect_appproto(file_handler.file_path, upload_path)
             log.message("protocol detected: %s" % output)
-            if "http" in output:
+            if output and "http" in output:
                 log.message("protocol detected: %s" % "HTTP")
                 # save the reassembled http session IPs to FlowDetails
 
@@ -229,7 +229,7 @@ def upload(request):
                 http_handler.save_request_response(path=upload_path, hash_value=request.session['uploaded_hash'])
 
             # dns realted issues starts here
-            if "dns" in output:
+            if output and "dns" in output:
                 log.message("protocol detected: %s" % "DNS")
                 dns_protocol_handler = settings.DNS_HANDLER
                 package = "openwitness.modules.traffic.parser.udp"
@@ -253,7 +253,7 @@ def upload(request):
 
                 dns_handler.save_request_response()
 
-            if "smtp" in output:
+            if output and "smtp" in output:
                 log.message("protocol detected: %s" % "SMTP")
                 smtp_protocol_handler = settings.SMTP_HANDLER
                 package = "openwitness.modules.traffic.parser.tcp"
