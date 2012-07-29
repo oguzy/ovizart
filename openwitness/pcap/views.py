@@ -34,6 +34,7 @@ from openwitness.api.constants import  ICONS
 
 @login_required()
 def upload(request):
+    raise Http404
     log = Logger("Upload form", "DEBUG")
     context = {
         'page_title': 'Upload your pcap file here',
