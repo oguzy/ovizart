@@ -16,6 +16,7 @@ class Handler(object):
         self.dport = None
         self.ident = None
         self.length = None
+        self.data = None
         self.log = Logger("TCP Protocol Handler", "DEBUG")
         self.log.message("TCP protocol handler called")
 
@@ -53,7 +54,6 @@ class Handler(object):
         self.ident = ip.id
         self.sport = tcp.sport
         self.dport = tcp.dport
+        self.data = tcp.data
         return tcp
 
-    def close_file(self):
-        self.f.close()

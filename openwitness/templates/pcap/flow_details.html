@@ -80,8 +80,11 @@
 
                             {% if flow.files %}
                             <td>
-                                {% for f in flow.files.file_list %}
+                                {% for f,p in flow.files.file_list.items %}
                                 <p><a href="/uploads{{ flow.files.path }}/{{ f }}">{{ f }}</a></p>
+                                {% if p %}
+                                    <p><a href="{{ p }}">Virus Total Scan Result</a></p>
+                                {% endif %}
                                 {% endfor %}
                             </td>
                             {% else %}
@@ -98,7 +101,7 @@
                     <thead>
                     <tr>
                         <th>DNS Type</th>
-                        <th>Humam readable type</th>
+                        <th>Human readable type</th>
                         <th>Value</th>
                     </tr>
                     </thead>
@@ -175,8 +178,12 @@
                         {% if flow.attachment_path %}
                         <td>
                             {% for f in flow.get_path_dict %}
-                                <a href="/uploads{{ f.path }}">{{ f.file_name }}</a><br/>
+                                <a href="/uploads{{ f.path }}">{{ f.file_name }} ({{ f.file_type }})</a><br/>
+                                {% if f.virus_total_link %}
+                                    <p><a href="{{ f.virus_total_link }}">Virus Total Scan Result</a></p>
+                                {% endif %}
                             {% endfor %}
+
                         </td>
                         {% else %}
                         <td> - </td>

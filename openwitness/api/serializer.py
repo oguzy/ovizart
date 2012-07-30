@@ -63,6 +63,22 @@ class CustomJSONSerializer(Serializer):
                     protocol_dict["smtp"].append(tmp)
                 else:
                     protocol_dict["smtp"] = [tmp]
+
+            if flow['protocol'] == "unknown":
+                start, end = self.get_start_end(flow)
+                type, description = "unknown", ""
+                tmp = dict()
+                tmp['flow_id'] = flow['id']
+                tmp["start"] = start
+                tmp["end"] = end
+                if type and description:
+                    tmp["type"] = type
+                    tmp["description"] = description
+                if protocol_dict.has_key("unknown"):
+                    protocol_dict["unknown"].append(tmp)
+                else:
+                    protocol_dict["unknown"] = [tmp]
+
         result.append(protocol_dict)
         data = result
         return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
@@ -83,8 +99,9 @@ class CustomJSONSerializer(Serializer):
 
 
     def get_http_info(self, flow):
-        http_all = HTTPDetails.objects.all()
-        flow_details = filter(lambda x: x.flow_details.id == flow['id'], http_all) # this should be returning only one
+        #http_all = HTTPDetails.objects.all()
+        #flow_details = filter(lambda x: x.flow_details.id == flow['id'], http_all) # this should be returning only one
+        flow_details = HTTPDetails.objects.raw_query({'flow_details.id': flow['id']})
         if len(flow_details) > 0:
             info = flow_details[0]
             type = info.http_type
@@ -103,15 +120,17 @@ class CustomJSONSerializer(Serializer):
         return None, None
 
     def get_dns_info(self, flow):
-        dns_request_all = DNSRequest.objects.all()
-        flow_details = filter(lambda x: x.flow_details.id == flow['id'], dns_request_all)
+        #dns_request_all = DNSRequest.objects.all()
+        #flow_details = filter(lambda x: x.flow_details.id == flow['id'], dns_request_all)
+        flow_details = DNSRequest.objects.raw_query({'flow_details.id': flow['id']})
         if len(flow_details) > 0:
             info = flow_details[0]
             type = "DNS Request"
             description = " ".join([info.human_readable_type, info.value])
             return type, description
-        dns_response_all = DNSResponse.objects.all()
-        flow_details = filter(lambda x: x.flow_details.id == flow['id'], dns_response_all)
+        #dns_response_all = DNSResponse.objects.all()
+        #flow_details = filter(lambda x: x.flow_details.id == flow['id'], dns_response_all)
+        flow_details = DNSResponse.objects.raw_query({'flow_details.id': flow['id']})
         if len(flow_details) > 0:
             info = flow_details[0]
             type = "DNS Response"
@@ -120,8 +139,9 @@ class CustomJSONSerializer(Serializer):
         return None, None
 
     def get_smtp_info(self, flow):
-        smtp_details_all = SMTPDetails.objects.all()
-        flow_details = filter(lambda x: x.flow_details.id == flow['id'], smtp_details_all)
+        #smtp_details_all = SMTPDetails.objects.all()
+        #flow_details = filter(lambda x: x.flow_details.id == flow['id'], smtp_details_all)
+        flow_details = SMTPDetails.objects.raw_query({'flow_details.id': flow['id']})
         if len(flow_details) > 0:
             info = flow_details[0]
             type = "SMTP"
@@ -139,6 +159,7 @@ class AppProtocolPacketSizeCustomJSONSerializer(Serializer):
         if not data.has_key('objects'): return {}
         for flow in data['objects']:
             flow_dict = dict()
+            flow_id = flow['id']
             src_ip = flow['src_ip']
             sport = flow['sport']
             s_combined = ":".join([src_ip, str(sport)])
@@ -152,6 +173,7 @@ class AppProtocolPacketSizeCustomJSONSerializer(Serializer):
             if not result.has_key('children'):
                 result['children'] = []
             flow_dict['name'] = "-".join([s_combined, d_combined])
+            flow_dict['flow_id'] = flow_id
             packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
             flow_dict['children'] = []
             for p in packets:
@@ -179,6 +201,7 @@ class AppProtocolPacketCountCustomJSONSerializer(Serializer):
         if not data.has_key('objects'): return {}
         for flow in data['objects']:
             flow_dict = dict()
+            flow_id = flow['id']
             src_ip = flow['src_ip']
             sport = flow['sport']
             s_combined = ":".join([src_ip, str(sport)])
@@ -192,6 +215,7 @@ class AppProtocolPacketCountCustomJSONSerializer(Serializer):
             if not result.has_key('children'):
                 result['children'] = []
             flow_dict['name'] = "-".join([s_combined, d_combined])
+            flow_dict['flow_id'] = flow_id
             packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
             flow_dict['children'] = []
             flow_dict['children'].append({'name': str(packets[0].ident), 'size':len(packets)})
@@ -224,10 +248,11 @@ class AllProtocolsJSONSerializer(Serializer):
                 if protocol_dict[ts].has_key(protocol):
                     protocol_dict[ts][protocol] += 1
                 else:
-                    protocol_dict[ts] = {protocol: 1}
+                    protocol_dict[ts][protocol] =  1
 
             else:
                 protocol_dict[ts] = dict()
+                protocol_dict[ts] = {protocol: 1}
 
         min_max_count = []
         for year, v in protocol_dict.items():
@@ -269,10 +294,11 @@ class AllProtocolsJSONSerializer(Serializer):
                 if protocol_dict[ts].has_key(protocol):
                     protocol_dict[ts][protocol] += 1
                 else:
-                    protocol_dict[ts] = {protocol: 0}
+                    protocol_dict[ts][protocol] = 1
 
             else:
                 protocol_dict[ts] = dict()
+                protocol_dict[ts] = {protocol: 1}
 
 
         min_max_count = []

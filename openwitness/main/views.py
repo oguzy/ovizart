@@ -16,6 +16,8 @@ from openwitness.modules.traffic.log.logger import Logger
 
 from openwitness.pcap.models import FlowDetails, PacketDetails
 
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
+
 import urllib2
 import tempfile
 import os
@@ -31,19 +33,15 @@ def login_user(request):
         form = LoginForm(request.POST)
         if logged or form.is_valid():
             user = username = email = password = None
-            if request.session.has_key('username'):
+            if logged:
                 username = request.session['username']
+                email = request.session['user_email']
+                password = request.session['password']
             else:
                 username = request.POST['username']
                 request.session['username'] = username
-            if request.session.has_key('user_email'):
-                email = request.session['user_email']
-            else:
                 email = request.POST['user_email']
                 request.session['user_email'] = email
-            if request.session.has_key('password'):
-                password = request.session['password']
-            else:
                 password = request.POST['password']
                 request.session['password'] = password
             user = authenticate(username=username, password=password)
@@ -138,14 +136,36 @@ def welcome(request):
 
 def flow_protocol_summary(request, protocol, date):
     if protocol not in ['UDP', 'TCP']:
+        summary_type = "flow"
+        summary_protocol = protocol
         summaries = FlowDetails.objects.filter(protocol=protocol)
     else:
         proto_dict = {'TCP': 6, 'UDP': 17}
+        summary_type = "packets"
+        summary_protocol = protocol
         summaries = PacketDetails.objects.filter(protocol=proto_dict[protocol])
+
     summary = filter(lambda x: x.timestamp.year == int(date), summaries)
+
+    paginator = Paginator(summary, 15)
+    # Make sure page request is an int. If not, deliver first page.
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+        page_summary = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        page_summary = paginator.page(paginator.num_pages)
+
+
     context = {
         'page_title': 'Protocol Summary',
-        'flow_summary': summary
+        'page_summary': page_summary,
+        'summary_type': summary_type,
+        'summary_protocol': summary_protocol
 
     }
     return render_to_response("main/flow_summary.html", context,

@@ -33,11 +33,21 @@
                                         <tr>
                                     </thead>
                                     <tbody>
-                                    {% for pcap in f.pcaps %}
+
                                         <tr>
-                                            <td><a href="/uploads/{{ pcap.get_upload_path }}/{{ pcap.file_name }}">{{ pcap.file_name }}</a></td>
+                                            <td>
+                                                <select name="select_pcap_file_{{ f.pcaps.0.id }}" id="select_pcap_file_{{ f.pcaps.0.id }}" onchange="update_link('select_pcap_file_{{ f.pcaps.0.id }}')">
+                                                    {% for pcap in f.pcaps %}
+                                                    <option value="{{ pcap.id }}">{{ pcap.file_name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <div id="pcap_file_link_{{ f.pcaps.0.id }}" name="pcap_file_link_{{ f.pcaps.0.id }}">
+                                                    <a href="/uploads/{{ f.pcaps.0.get_upload_path }}/{{ f.pcaps.0.file_name }}">{{ f.pcaps.0.file_name }}</a>
+                                                 </div>
+                                                <!-- <a href="/uploads/{{ pcap.get_upload_path }}/{{ pcap.file_name }}">{{ pcap.file_name }}</a> -->
+                                            </td>
                                         </tr>
-                                    {% endfor %}
+
                                     </tbody>
                                 </table>
 

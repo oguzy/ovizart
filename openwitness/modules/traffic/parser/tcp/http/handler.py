@@ -509,4 +509,6 @@ class Handler(TcpHandler):
         self.save_response_files(path, hash_value)
         self.convert_gzip_files(path, hash_value)
 
-
+    def save_request_response(self, **args):
+        self.save_request(**args)
+        self.save_response(**args)
