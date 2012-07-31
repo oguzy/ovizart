@@ -71,7 +71,7 @@ def upload(request):
             traffic_detector_handler.create_reassemble_information(file_handler.file_path, upload_path)
             output = traffic_detector_handler.detect_proto(file_handler.file_path, upload_path)
 
-            if not output:
+            if output == False:
                 request.session['message'] = "Error occured. Please try again."
                 return redirect('/pcap/upload')
 
