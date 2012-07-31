@@ -21,13 +21,17 @@ class Handler(BaseHandler):
         cmd = " ".join([self.bro_cmd, "-r", file_path])
         self.log.message("Bro command: %s" % cmd)
         # this command will create dat files for each contents and log for each communication level data
-        subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+        return output
 
     def detect_proto(self, file_path, file_dir):
         cmd = " ".join(["cat conn.log", "|", self.bro_cut_cmd, "proto"])
         self.log.message("Bro-cut command: %s" % cmd)
-        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
-        return output.split("\n")
+        try:
+            output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, cwd=file_dir).communicate()[0]
+            return output.split("\n")
+        except:
+            return False
 
     def detect_appproto(self, file_path, file_dir):
         #check whether there exists any of the following log files is so return it

@@ -11,6 +11,7 @@ import magic
 from django.http import Http404, HttpResponse
 from django.utils import simplejson as json
 from django.shortcuts import render_to_response
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.template.context import RequestContext
 from django.conf import settings
@@ -37,7 +38,8 @@ def upload(request):
     log = Logger("Upload form", "DEBUG")
     context = {
         'page_title': 'Upload your pcap file here',
-        'upload_status': False
+        'upload_status': False,
+        'message': request.session.get('message', False)
     }
     if request.method == "POST":
         form = UploadPcapForm(request.POST, request.FILES)
@@ -57,7 +59,6 @@ def upload(request):
             # evey pcap file is saved as a flow container, there may or may not be flows, the pcaps colon will give the flow pcaps
             hash_handler = HashHandler()
             hash_value = hash_handler.get_hash(os.path.join(upload_path, pcap_name))
-            flow_file, created = Flow.objects.get_or_create(user_id=user_id, hash_value=hash_value,file_name=pcap_name, path=upload_path)
             request.session['uploaded_hash'] = hash_value
             request.session['uploaded_file_name'] = pcap_name
             # send the file to the defined protocol handler so that it can detect
@@ -69,6 +70,13 @@ def upload(request):
             traffic_detector_handler = traffic_detector_module.Handler()
             traffic_detector_handler.create_reassemble_information(file_handler.file_path, upload_path)
             output = traffic_detector_handler.detect_proto(file_handler.file_path, upload_path)
+
+            if not output:
+                request.session['message'] = "Error occured. Please try again."
+                return redirect('/pcap/upload')
+
+            flow_file, created = Flow.objects.get_or_create(user_id=user_id, hash_value=hash_value,file_name=pcap_name, path=upload_path)
+
             if "tcp" in output:
                 log.message("protocol detected: %s" % "TCP")
                 # run tcp flow extractor
@@ -306,6 +314,7 @@ def upload(request):
         form = UploadPcapForm()
         context['form'] = form
 
+    request.session['message'] = False
     return render_to_response("pcap/upload.html",
             context_instance=RequestContext(request, context))
 
