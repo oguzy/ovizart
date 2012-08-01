@@ -21,7 +21,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Example:
     # (r'^{{ project_name }}/', include('{{ project_name }}.foo.urls')),
-    url(r'^$', 'openwitness.main.views.login_user', name='login_page'),
+    #url(r'^$', 'openwitness.main.views.login_user', name='login_page'),
+    url(r'^$', 'openwitness.main.views.main', name='main_page'),
     url(r'^logout/', 'openwitness.main.views.logout_user', name='logout_page'),
     (r'^pcap/', include('openwitness.pcap.urls')),
     (r'^main/', include('openwitness.main.urls')),
