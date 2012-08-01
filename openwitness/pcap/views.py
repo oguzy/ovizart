@@ -25,7 +25,7 @@ from openwitness.pcap.models import UserJSonFile
 from openwitness.modules.md5.handler import Handler as HashHandler
 
 from openwitness.pcap.models import Flow, Pcap, PacketDetails, FlowDetails, HTTPDetails, DNSRequest, DNSResponse, SMTPDetails
-from openwitness.modules.utils.handler import translate_time
+from openwitness.modules.utils.handler import translate_time, get_file_type, get_file_size
 
 from openwitness.modules.traffic.log.logger import Logger
 from django.contrib.auth.decorators import login_required
@@ -75,7 +75,12 @@ def upload(request):
                 request.session['message'] = "Error occured. Please try again."
                 return redirect('/pcap/upload')
 
-            flow_file, created = Flow.objects.get_or_create(user_id=user_id, hash_value=hash_value,file_name=pcap_name, path=upload_path)
+
+            file_type = get_file_type(file_handler.file_path)
+            file_size = get_file_size(file_handler.file_path)
+            flow_file, created = Flow.objects.get_or_create(user_id=user_id, hash_value=hash_value,file_name=pcap_name,
+                                                            path=upload_path, upload_time=datetime.datetime.now(),
+                                                            file_type=file_type, file_size=file_size)
 
             if "tcp" in output:
                 log.message("protocol detected: %s" % "TCP")
@@ -695,9 +700,7 @@ def flow_details(request, flow_id):
                 attachment_type  = dict()
                 # detect the file type for SMTP
                 for attachment in smtp_detail.attachment_path:
-                    mime = magic.open(magic.MAGIC_MIME)
-                    mime.load()
-                    attachment_type[os.path.basename(attachment)] = mime.file(attachment)
+                    attachment_type[os.path.basename(attachment)] = get_file_type(attachment)
 
                 protocol_handler = settings.VIRUS_HANDLER
                 package = "openwitness.modules.malware"
