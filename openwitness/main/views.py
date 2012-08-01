@@ -14,7 +14,7 @@ from openwitness.pcap.models import UserJSonFile
 from django.utils import simplejson as json
 from openwitness.modules.traffic.log.logger import Logger
 
-from openwitness.pcap.models import FlowDetails, PacketDetails
+from openwitness.pcap.models import Flow, FlowDetails, PacketDetails
 
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
@@ -169,4 +169,13 @@ def flow_protocol_summary(request, protocol, date):
 
     }
     return render_to_response("main/flow_summary.html", context,
+            context_instance=RequestContext(request))
+
+def main(request):
+    flows = Flow.objects.all().order_by("-upload_time")
+    context = {
+        'page_title': 'Latest uploads',
+        'flows': flows
+    }
+    return render_to_response("main/main.html", context,
             context_instance=RequestContext(request))
