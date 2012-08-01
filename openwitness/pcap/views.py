@@ -1,12 +1,11 @@
 # Create your views here.
 
-import hashlib
+
 import urllib2
 import tempfile
 import os
 import datetime
 import cgi
-import magic
 #import random
 from django.http import Http404, HttpResponse
 from django.utils import simplejson as json
@@ -750,4 +749,7 @@ def get_packet_info(request, packet_ident):
     context['page_title'] = "Packet Details"
     return render_to_response("pcap/packet_details.html",
         context_instance=RequestContext(request, context))
+
+def flow_pcap_details(request, flow_pcap_md5):
+    pass
 
