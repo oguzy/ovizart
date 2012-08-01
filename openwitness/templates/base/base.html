@@ -212,6 +212,27 @@
 
 {% endifequal %}
 
+{% ifequal pcap_operation "file_details" %}
+<!-- javascript issue for select box change function -->
+<script type='text/javascript'>
+    function update_link(id){
+        var select_id = id;
+        var select_id_selected =  "'" + select_id+ "'";
+        var select_str = "\"" + "[name=" + select_id_selected + "]" + " "+":selected" + "\"";
+        var selected = $(select_str).val();
+        var url = "{{ ALTERNATE_BASE_URL }}" + "/pcap" + "/get_pcap_url/" + selected;
+
+        var id_array = select_id.split('_')
+        var div_id = "pcap_file_link_" + id_array[3];
+        var div_area = $("div").find("#" + div_id);
+        $.get(url, function(data) {
+            div_area.html(data);
+        });
+
+    }
+</script>
+{% endifequal %}
+
 {% ifequal pcap_operation "summary-size" %}
 <script type='text/javascript'>
 var width = 960,
