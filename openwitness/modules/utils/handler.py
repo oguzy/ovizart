@@ -8,6 +8,8 @@ import time
 import hashlib
 import datetime
 import math
+import magic
+import os
 
 MIN_DT = "1970-01-01 00:00:00"
 MAX_DT = "2038-01-01 00:00:00"
@@ -45,3 +47,12 @@ def translate_value(value, leftMin=MIN_TS, leftMax=MAX_TS, rightMin=1, rightMax=
 
     # Convert the range into a value in the right range.
     return int(math.floor(rightMin + (valueScaled * rightSpan)))
+
+def get_file_type(file_path):
+    mime = magic.open(magic.MAGIC_MIME)
+    mime.load()
+    return mime.file(file_path)
+
+def get_file_size(file_path):
+    stat = os.stat(file_path)
+    return int(stat.st_size)
