@@ -751,5 +751,11 @@ def get_packet_info(request, packet_ident):
         context_instance=RequestContext(request, context))
 
 def flow_pcap_details(request, flow_pcap_md5):
-    pass
-
+    flow = Flow.objects.get(hash_value=flow_pcap_md5)
+    context = {
+        'page_title': "".join([flow.file_name, "Details"]),
+        'flow': flow,
+        'pcap_operation': "file_details"
+    }
+    return render_to_response("pcap/file_details.html",
+        context_instance=RequestContext(request, context))
