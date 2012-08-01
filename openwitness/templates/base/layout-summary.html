@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="{% url login_page %}">Network Analyzer</a>
+            <a class="brand" href="{% url main_page %}">Network Analyzer</a>
             {% if user.is_authenticated %}
             <div class="nav-collapse collapse">
                 <ul class="nav">
@@ -28,6 +28,13 @@
                 </ul>
 
             </div>
+
+            {% else %}
+
+                <ul class="nav pull-right">
+                    <li><a href="{% url login_page %}">Login</a></li>
+                </ul>
+
             {% endif %}
         </div>
     </div>
