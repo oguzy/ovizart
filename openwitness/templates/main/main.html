@@ -1,0 +1,37 @@
+{% extends "base/layout-summary.html" %}
+
+
+{% block up %}
+<div class="span12">
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Upload time</th>
+                <th>MD5</th>
+                <th>File Name</th>
+                <th>File Type</th>
+                <th>File Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flow in flows %}
+            <tr>
+                <td>{{ flow.upload_time|date:"r" }}</td>
+                <td>{{ flow.hash_value }}</td>
+                <td>{{ flow.file_name }}</td>
+                <td>{{ flow.file_type }}</td>
+                <td>{{ flow.file_size|filesizeformat }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
+
+{% block down %}
+put some pagination here
+{% endblock %}
