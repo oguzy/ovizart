@@ -119,6 +119,19 @@
     <script src="/site_media/nvd3/src/models/scatterChart.js"></script>
     {% endifequal %}
 
+    {% ifequal pcap_operation "file_details" %}
+    <link href="/site_media/nvd3/src/d3.css" rel="stylesheet" type="text/css">
+    <script src="/site_media/nvd3/lib/d3.v2.js"></script>
+    <script src="/site_media/nvd3/lib/fisheye.js"></script>
+    <script src="/site_media/nvd3/nv.d3.js"></script>
+    <script src="/site_media/nvd3/src/tooltip.js"></script>
+    <script src="/site_media/nvd3/src/models/legend.js"></script>
+    <script src="/site_media/nvd3/src/models/axis.js"></script>
+    <script src="/site_media/nvd3/src/models/distribution.js"></script>
+    <script src="/site_media/nvd3/src/models/scatter.js"></script>
+    <script src="/site_media/nvd3/src/models/scatterChart.js"></script>
+    {% endifequal %}
+
 </head>
 
 <body>
@@ -334,6 +347,108 @@ function cell() {
             console.log("chart is added");
 
         });
+
+    //    console.log("data is set")
+    //    console.log(g_data);
+    //    return g_data;
+    //}
+
+    function randomData(groups, points) { //# groups,# points per group
+        var data = [],
+                shapes = ['circle', 'cross', 'triangle-up', 'triangle-down', 'diamond', 'square'],
+                random = d3.random.normal();
+
+        for (i = 0; i < groups; i++) {
+            data.push({
+                key: 'Group ' + i,
+                values: []
+            });
+
+            for (j = 0; j < points; j++) {
+                data[i].values.push({
+                    x: random(),
+                    y: random(),
+                    size: Math.random(),
+                    shape: shapes[j % 6]
+                });
+            }
+        }
+
+        //alert(JSON.stringify(data));
+        return data;
+    }
+
+
+
+</script>
+{% endifequal %}
+
+
+{% ifequal pcap_operation "file_details" %}
+<script>
+
+
+    var g_data = [];
+
+
+
+    //Format A
+    //    nv.addGraph(function() {
+    //        var chart = nv.models.scatterChart()
+    //                .showDistX(true)
+    //                .showDistY(true)
+    //            //.height(500)
+    //                .color(d3.scale.category10().range());
+    //
+    //        chart.xAxis.tickFormat(d3.format('.02f'))
+    //        chart.yAxis.tickFormat(d3.format('.02f'))
+    //
+    //        d3.select('#chart svg')
+    //                .datum(getData())
+    //                .transition().duration(500)
+    //                .call(chart);
+    //
+    //        nv.utils.windowResize(chart.update);
+    //
+    //        return chart;
+    //    });
+
+
+    //function getData() {
+
+    d3.json('{{ json_file_url }}', function(jsondata) {
+        console.log("jsondata");
+        console.log(jsondata);
+        //alert(JSON.stringify(data));
+        nv.addGraph(function() {
+            var chart = nv.models.scatterChart()
+                    .showDistX(true)
+                    .showDistY(true)
+                //.height(500)
+                    .color(d3.scale.category10().range());
+
+            //chart.xAxis.tickFormat(d3.format('.02f'))
+            //chart.yAxis.tickFormat(d3.format('.02f'))
+            chart.xAxis.tickFormat(d3.format('r'))
+            chart.yAxis.tickFormat(d3.format('r'))
+
+            //labeling
+            chart.xAxis.axisLabel('Year')
+            chart.yAxis.axisLabel('Number of Packets')
+
+            d3.select('#chart svg')
+                    .datum(jsondata)
+                    .transition().duration(500)
+                    .call(chart);
+
+            nv.utils.windowResize(chart.update);
+
+            return chart;
+        });
+
+        console.log("chart is added");
+
+    });
 
     //    console.log("data is set")
     //    console.log(g_data);

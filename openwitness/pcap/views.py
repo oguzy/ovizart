@@ -751,11 +751,30 @@ def get_packet_info(request, packet_ident):
         context_instance=RequestContext(request, context))
 
 def flow_pcap_details(request, flow_pcap_md5):
+    log = Logger("Pcap file details", "DEBUG")
     flow = Flow.objects.get(hash_value=flow_pcap_md5)
+
+    url = "".join([settings.BASE_URL, "/api/rest/all_protocols/?format=json"])
+    log.message("URL: %s" % (url))
+    req = urllib2.Request(url, None)
+    opener = urllib2.build_opener()
+    f = opener.open(req)
+    json_response = json.load(f)
+    json_data = json.dumps(json_response)
+    json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
+    json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
+
+    file_name = os.path.basename(json_file.name)
+    # save the json data to the temporary file
+    json_file.write(json_data)
+    json_file.close()
+
     context = {
-        'page_title': "".join([flow.file_name, "Details"]),
+        'page_title': " ".join([flow.file_name, "Details"]),
         'flow': flow,
-        'pcap_operation': "file_details"
+        'pcap_operation': "file_details",
+        'json_file_url': os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name),
+        'json_response': json_response
     }
     return render_to_response("pcap/file_details.html",
         context_instance=RequestContext(request, context))
