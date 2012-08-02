@@ -49,6 +49,7 @@ class Pcap(models.Model):
 class PacketDetails(models.Model):
     #datetime.datetime.fromtimestamp(float("1286715787.71")).strftime('%Y-%m-%d %H:%M:%S')
     ident = models.IntegerField()
+    flow_hash = models.CharField(max_length=50)
     timestamp = models.DateTimeField()
     length = models.IntegerField()
     protocol = models.IntegerField()

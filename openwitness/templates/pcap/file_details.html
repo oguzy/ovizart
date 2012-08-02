@@ -115,7 +115,7 @@
                 <tbody>
                 {% for json in json_response %}
                 <tr>
-                    <td><a href="{% url flow_protocol_summary json.key json.values.0.x %}">{{ json.key }}</a></td>
+                    <td><a href="{% url file_protocol_summary hash_value json.key json.values.0.x %}">{{ json.key }}</a></td>
 
                     <td>
 

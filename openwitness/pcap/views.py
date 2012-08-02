@@ -32,6 +32,8 @@ from django.contrib.auth.decorators import login_required
 # for development purposes, when the login screen is defined this should be removed
 from openwitness.api.constants import  ICONS
 
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
+
 @login_required()
 def upload(request):
     log = Logger("Upload form", "DEBUG")
@@ -151,7 +153,7 @@ def upload(request):
 
                             tcp_data = " \n".join(tmp)
 
-                        packet = PacketDetails.objects.create(ident=tcp_handler.ident, timestamp=tcp_handler.timestamp,
+                        packet = PacketDetails.objects.create(ident=tcp_handler.ident, flow_hash=hash_value, timestamp=tcp_handler.timestamp,
                                                                 length=tcp_handler.length, protocol=tcp_handler.proto,
                                                                 src_ip=tcp_handler.src_ip,
                                                                 dst_ip=tcp_handler.dst_ip, sport=tcp_handler.sport,
@@ -193,7 +195,7 @@ def upload(request):
                                 udp_data = udp_data.encode("utf-8")
                             except:
                                 udp_data = "data that can not be encoded to utf-8"
-                        packet = PacketDetails.objects.create(ident=udp_handler.ident, timestamp=udp_handler.timestamp,
+                        packet = PacketDetails.objects.create(ident=udp_handler.ident, flow_hash=hash_value, timestamp=udp_handler.timestamp,
                                                             length = udp_handler.length,
                                                             protocol=udp_handler.proto, src_ip=udp_handler.src_ip,
                                                             dst_ip=udp_handler.dst_ip, sport=udp_handler.sport,
@@ -774,7 +776,46 @@ def flow_pcap_details(request, flow_pcap_md5):
         'flow': flow,
         'pcap_operation': "file_details",
         'json_file_url': os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name),
-        'json_response': json_response
+        'json_response': json_response,
+        'hash_value': flow_pcap_md5
     }
     return render_to_response("pcap/file_details.html",
         context_instance=RequestContext(request, context))
+
+
+def file_protocol_summary(request, hash_value, protocol, date):
+    if protocol not in ['UDP', 'TCP']:
+        summary_type = "flow"
+        summary_protocol = protocol
+        summaries = FlowDetails.objects.filter(protocol=protocol, parent_hash_value=hash_value)
+    else:
+        proto_dict = {'TCP': 6, 'UDP': 17}
+        summary_type = "packets"
+        summary_protocol = protocol
+        summaries = PacketDetails.objects.filter(protocol=proto_dict[protocol], flow_hash=hash_value)
+
+    summary = filter(lambda x: x.timestamp.year == int(date), summaries)
+
+    paginator = Paginator(summary, 15)
+    # Make sure page request is an int. If not, deliver first page.
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+        page_summary = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        page_summary = paginator.page(paginator.num_pages)
+
+
+    context = {
+        'page_title': 'Protocol Summary',
+        'page_summary': page_summary,
+        'summary_type': summary_type,
+        'summary_protocol': summary_protocol
+
+    }
+    return render_to_response("main/flow_summary.html", context,
+        context_instance=RequestContext(request))
