@@ -819,3 +819,7 @@ def file_protocol_summary(request, hash_value, protocol, date):
     }
     return render_to_response("main/flow_summary.html", context,
         context_instance=RequestContext(request))
+
+
+def file_pcap_summary(request, hash_value):
+    pass
