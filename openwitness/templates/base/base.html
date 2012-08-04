@@ -26,7 +26,7 @@
     </style>
 
     <!-- settings for jquery timeline widget-->
-    {% ifequal pcap_operation "summary" %}
+    {% if pcap_operation in summary_li %}
     <link rel="stylesheet" href="/site_media/jquery_widget/css/aristo/jquery-ui-1.8.5.custom.css" type="text/css"
           media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="/site_media/jquery_widget/js/timeglider/Timeglider.css" type="text/css"
@@ -98,7 +98,7 @@
 
     </style>
 
-    {% endifequal %}
+    {% endif %}
 
     {% ifequal pcap_operation "summary-size" %}
     <script src="/site_media/d3/js/d3.v2.js"></script>
@@ -146,7 +146,7 @@
 <script src="/site_media/bootstrap/js/bootstrap.js" type="text/javascript"></script>
 
 <!-- js files for pcap summary -->
-{% ifequal pcap_operation "summary" %}
+{% if pcap_operation in summary_li %}
 <script src="/site_media/jquery_widget/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 <script src="/site_media/jquery_widget/js/underscore-min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/site_media/jquery_widget/js/backbone-min.js" type="text/javascript" charset="utf-8"></script>
@@ -203,7 +203,9 @@
 
 </script>
 
+{% endif %}
 
+{% if pcap_operation in select_update_li %}
 <!-- javascript issue for select box change function -->
 <script type='text/javascript'>
     function update_link(id){
@@ -222,29 +224,7 @@
 
     }
 </script>
-
-{% endifequal %}
-
-{% ifequal pcap_operation "file_details" %}
-<!-- javascript issue for select box change function -->
-<script type='text/javascript'>
-    function update_link(id){
-        var select_id = id;
-        var select_id_selected =  "'" + select_id+ "'";
-        var select_str = "\"" + "[name=" + select_id_selected + "]" + " "+":selected" + "\"";
-        var selected = $(select_str).val();
-        var url = "{{ ALTERNATE_BASE_URL }}" + "/pcap" + "/get_pcap_url/" + selected;
-
-        var id_array = select_id.split('_')
-        var div_id = "pcap_file_link_" + id_array[3];
-        var div_area = $("div").find("#" + div_id);
-        $.get(url, function(data) {
-            div_area.html(data);
-        });
-
-    }
-</script>
-{% endifequal %}
+{% endif %}
 
 {% ifequal pcap_operation "summary-size" %}
 <script type='text/javascript'>
