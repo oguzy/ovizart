@@ -442,6 +442,7 @@ def summary(request):
         context['json_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
         context['icon_folder']  = os.path.join(settings.ALTERNATE_BASE_URL, "/site_media/jquery_widget/js/timeglider/icons/")
         context['pcap_operation'] = "summary"
+        context['summary_li'] = ["summary", "file_summary"]
 
         # get the summary query infos
         flow = Flow.objects.filter(user_id=request.user.id)
@@ -479,17 +480,16 @@ def summary(request):
         log.message(ex)
         raise Http404
 
-@login_required()
-def visualize(request, protocol, type="size"):
+def visualize(request, flow_pcap_md5, protocol, type="size"):
     if type == "size":
         # to get this work, runserver should be run as bin/django runserver 127.0.0.0:8001 and another instance should be run as
         # bin/django runserver
         log = Logger("Visualize:", "DEBUG")
         context = {
-            'page_title': 'Packet Sizes of the uploaded pcaps',
+            'page_title': 'Packet Sizes',
             }
-        user_id = request.user.id
-        url = "".join([settings.BASE_URL, "/api/rest/protocol_size/?format=json&user_id=", str(user_id), "&protocol=", protocol])
+        #user_id = request.user.id will use them is user is logged_ib
+        url = "".join([settings.BASE_URL, "/api/rest/protocol_size_by_hash/?format=json&parent_hash_value=", flow_pcap_md5, "&protocol=", protocol])
         log.message("URL: %s" % (url))
         req = urllib2.Request(url, None)
         opener = urllib2.build_opener()
@@ -506,21 +506,10 @@ def visualize(request, protocol, type="size"):
             json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
             json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
 
-            user_json_file = UserJSonFile.objects.filter(user_id=user_id, json_type="summary-size")
-            if len(user_json_file) > 0:
-                user_json_file[0].delete()
-                file_path = os.path.join(settings.PROJECT_ROOT, "json_files", user_json_file[0].json_file_name)
-                try:
-                    os.unlink(file_path)
-                except:
-                    pass
-
             file_name = os.path.basename(json_file.name)
             # save the json data to the temporary file
             json_file.write(json_data)
             json_file.close()
-            user_json_file = UserJSonFile(user_id=user_id, json_type="summary-size", json_file_name=file_name)
-            user_json_file.save()
             context['json_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
 
             context['measure'] = 'size'
@@ -539,7 +528,7 @@ def visualize(request, protocol, type="size"):
             'page_title': 'Packet counts of the uploaded pcaps',
             }
         user_id = request.user.id
-        url = "".join([settings.BASE_URL, "/api/rest/protocol_count/?format=json&user_id=", str(user_id), "&protocol=", protocol], )
+        url = "".join([settings.BASE_URL, "/api/rest/protocol_count_by_hash/?format=json&parent_hash_value=", flow_pcap_md5, "&protocol=", protocol], )
         log.message("URL: %s" % (url))
         req = urllib2.Request(url, None)
         opener = urllib2.build_opener()
@@ -556,21 +545,10 @@ def visualize(request, protocol, type="size"):
             json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
             json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
 
-            user_json_file = UserJSonFile.objects.filter(user_id=user_id, json_type="summary-size")
-            if len(user_json_file) > 0:
-                user_json_file[0].delete()
-                file_path = os.path.join(settings.PROJECT_ROOT, "json_files", user_json_file[0].json_file_name)
-                try:
-                    os.unlink(file_path)
-                except:
-                    pass
-
             file_name = os.path.basename(json_file.name)
             # save the json data to the temporary file
             json_file.write(json_data)
             json_file.close()
-            user_json_file = UserJSonFile(user_id=user_id, json_type="summary-size", json_file_name=file_name)
-            user_json_file.save()
             context['json_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
 
             return render_to_response("pcap/summary-size.html",
@@ -756,7 +734,7 @@ def flow_pcap_details(request, flow_pcap_md5):
     log = Logger("Pcap file details", "DEBUG")
     flow = Flow.objects.get(hash_value=flow_pcap_md5)
 
-    url = "".join([settings.BASE_URL, "/api/rest/all_protocols/?format=json"])
+    url = "".join([settings.BASE_URL, "/api/rest/all_protocols_by_hash/?format=json", "&parent_hash_value=", flow_pcap_md5])
     log.message("URL: %s" % (url))
     req = urllib2.Request(url, None)
     opener = urllib2.build_opener()
@@ -777,7 +755,8 @@ def flow_pcap_details(request, flow_pcap_md5):
         'pcap_operation': "file_details",
         'json_file_url': os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name),
         'json_response': json_response,
-        'hash_value': flow_pcap_md5
+        'hash_value': flow_pcap_md5,
+        'select_update_li': ["file_details", "file_summary"]
     }
     return render_to_response("pcap/file_details.html",
         context_instance=RequestContext(request, context))
@@ -814,7 +793,8 @@ def file_protocol_summary(request, hash_value, protocol, date):
         'page_title': 'Protocol Summary',
         'page_summary': page_summary,
         'summary_type': summary_type,
-        'summary_protocol': summary_protocol
+        'summary_protocol': summary_protocol,
+        'hash_value': hash_value
 
     }
     return render_to_response("main/flow_summary.html", context,
@@ -822,4 +802,143 @@ def file_protocol_summary(request, hash_value, protocol, date):
 
 
 def file_pcap_summary(request, hash_value):
-    pass
+    # to get this work, runserver should be run as bin/django runserver 127.0.0.0:8001 and another instance should be run as
+    # bin/django runserver
+    log = Logger("Summary:", "DEBUG")
+    context = {
+        'page_title': 'Timeline view for the pcap',
+        'hash_value': hash_value
+        }
+
+    url = "".join([settings.BASE_URL, "/api/rest/protocols_by_hash/?format=json", "&parent_hash_value=", hash_value])
+    log.message("URL: %s" % (url))
+    req = urllib2.Request(url, None)
+    opener = urllib2.build_opener()
+    f = None
+    try:
+        f = opener.open(req)
+        json_response = json.load(f)
+
+        result = []
+        response_dict = dict()
+        legend = []
+        protocols_found = []
+
+        for response in json_response:
+            # indeed i have only one response for now, i decided to put all responses in one timeline instead of multiple timelines
+            id = os.urandom(4)
+            response_dict["id"] = id.encode('hex')
+            response_dict['title'] = "Summary For the Uploaded PCAP"
+            response_dict['focus_date'] = None # will be fixed
+            response_dict['initial_zoom'] = "38"
+
+            time_keeper = {'start': None, 'end': None}
+            importance_keeper = []
+
+            # events creation starts here
+            events = []
+            for protocol, values in response.iteritems():
+                count = 0
+                for value in values:
+                    event_dict = dict()
+                    event_dict['id'] = "-".join([response_dict["id"], protocol, str(count)])
+                    event_dict['link'] = reverse('flow_details', args=(value['flow_id'],))
+                    if value.has_key("type") and value['type']:
+                        event_dict['title'] = value['type']
+                    else:
+                        event_dict['title'] = protocol
+                    if value.has_key('description') and value['description']:
+                        event_dict['description'] = cgi.escape(value['description'])
+                    else:
+                        event_dict['description'] = "No description is set"
+                    event_dict['startdate'] = value['start']
+                    event_dict['enddate'] = value['end']
+
+                    dt_start = datetime.datetime.strptime(value['start'], "%Y-%m-%d %H:%M:%S")
+                    dt_end = datetime.datetime.strptime(value['end'], "%Y-%m-%d %H:%M:%S")
+                    if not time_keeper['start']:
+                        time_keeper['start'] = dt_start
+                    if dt_start <= time_keeper['start']:
+                        time_keeper['start'] = dt_start
+                    if not time_keeper['end']:
+                        time_keeper['end'] = dt_end
+                    if dt_end >= time_keeper['end']:
+                        time_keeper['end'] = dt_end
+
+                    event_dict['date_display'] = 'day'
+                    ts = int(datetime.datetime.strptime(value['start'], "%Y-%m-%d %H:%M:%S").strftime("%s"))
+                    importance = translate_time(ts)
+                    #importance = random.randrange(1, 100)
+                    event_dict['importance'] = importance
+                    event_dict['high_threshold'] = int(importance) + 5
+                    importance_keeper.append(int(importance))
+                    if protocol not in protocols_found:
+                        protocols_found.append(protocol)
+                    event_dict['icon'] = ICONS[protocol]
+                    events.append(event_dict)
+                    count += 1
+            response_dict['events'] = events
+            # calculate the middle of the time
+            mid_point = time_keeper['start'] + ((time_keeper['end'] - time_keeper['start']) / 2)
+            response_dict['focus_date'] = mid_point.isoformat(sep=" ")
+
+            # calculate initial zoom
+            response_dict['initial_zoom'] = repr(int((importance_keeper[0]+importance_keeper[-1])/2))
+
+            for proto in protocols_found:
+                tmp = dict()
+                tmp['title'] = repr(proto)
+                tmp['icon'] = ICONS[proto]
+                legend.append(tmp)
+
+            response_dict['legend'] = legend
+            result.append(response_dict)
+
+        json_data = json.dumps(result)
+        json_dir = os.path.join(settings.PROJECT_ROOT, "json_files")
+        json_file = tempfile.NamedTemporaryFile(mode="w", dir=json_dir, delete=False)
+
+        file_name = os.path.basename(json_file.name)
+        # save the json data to the temporary file
+        json_file.write(json_data)
+        json_file.close()
+        context['json_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "json_media", file_name)
+        context['icon_folder']  = os.path.join(settings.ALTERNATE_BASE_URL, "/site_media/jquery_widget/js/timeglider/icons/")
+        context['pcap_operation'] = "file_summary"
+        context['summary_li'] = ["summary", "file_summary"]
+
+        # get the summary query infos
+        flow = Flow.objects.get(hash_value=hash_value)
+        context['flow'] = flow
+
+        flow_details = FlowDetails.objects.filter(parent_hash_value=hash_value)
+        flow_details_dict = dict()
+
+        f_d = dict()
+        for flow_detail in flow_details:
+            if not flow_details_dict.has_key(flow_detail.protocol):
+                flow_details_dict[flow_detail.protocol] = dict()
+                f_d = flow_details_dict[flow_detail.protocol]
+                f_d['count'] = 1
+                f_d['timestamps'] = [flow_detail.timestamp]
+            else:
+                f_d['count'] += 1
+                f_d['timestamps'].append(flow_detail.timestamp)
+
+        for key, value in flow_details_dict.items():
+            ts = flow_details_dict[key]['timestamps']
+            ts.sort()
+            flow_details_dict[key]['start'] = ts[0]
+            flow_details_dict[key]['end'] = ts[-1]
+
+        context['flow_details'] = flow_details_dict
+        context['ALTERNATE_BASE_URL'] = settings.ALTERNATE_BASE_URL
+        context['select_update_li'] =  ["file_details", "file_summary"]
+
+
+        return render_to_response("pcap/file_summary.html",
+            context_instance=RequestContext(request, context))
+
+    except Exception, ex:
+        log.message(ex)
+        raise Http404

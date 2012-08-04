@@ -2,13 +2,22 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 from tastypie.api import Api
-from openwitness.api.api import AppProtocolResource, AppProtocolVisualizePacketSizeResource, AppProtocolVisualizePacketCountResource, AllProtocolsResource
+from openwitness.api.api import AppProtocolResource, AppProtocolVisualizePacketSizeResource, \
+                                AppProtocolVisualizePacketCountResource, AllProtocolsResource, \
+                                AllProtocolsByHashResource, AppProtocolResourceByHash, \
+                                AppProtocolVisualizePacketSizeByHashResource, \
+                                AppProtocolVisualizePacketCountByHashResource
+
 
 rest_api = Api(api_name='rest')
 rest_api.register(AppProtocolResource())
 rest_api.register(AppProtocolVisualizePacketSizeResource())
 rest_api.register(AppProtocolVisualizePacketCountResource())
 rest_api.register(AllProtocolsResource())
+rest_api.register(AllProtocolsByHashResource())
+rest_api.register(AppProtocolResourceByHash())
+rest_api.register(AppProtocolVisualizePacketSizeByHashResource())
+rest_api.register(AppProtocolVisualizePacketCountByHashResource())
 
 #app_protocol_resource = AppProtocolResource()
 #app_protocol_size_resource = AppProtocolVisualizePacketSizeResource()

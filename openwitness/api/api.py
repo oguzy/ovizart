@@ -16,6 +16,18 @@ class AppProtocolResource(ModelResource):
         }
         serializer = CustomJSONSerializer()
 
+class AppProtocolResourceByHash(ModelResource):
+    class Meta:
+        queryset = FlowDetails.objects.all()
+        resource_name = 'protocols_by_hash'
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
+        limit = 0 # unlimited
+        filtering = {
+            'parent_hash_value': ALL,
+            }
+        serializer = CustomJSONSerializer()
+
 class AppProtocolVisualizePacketSizeResource(ModelResource):
     class Meta:
         queryset = FlowDetails.objects.all()
@@ -27,6 +39,19 @@ class AppProtocolVisualizePacketSizeResource(ModelResource):
             'user_id': ALL,
             'protocol': ALL,
         }
+        serializer = AppProtocolPacketSizeCustomJSONSerializer()
+
+class AppProtocolVisualizePacketSizeByHashResource(ModelResource):
+    class Meta:
+        queryset = FlowDetails.objects.all()
+        resource_name = 'protocol_size_by_hash'
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
+        limit = 0 # unlimited
+        filtering = {
+            'parent_hash_value': ALL,
+            'protocol': ALL,
+            }
         serializer = AppProtocolPacketSizeCustomJSONSerializer()
 
 class AppProtocolVisualizePacketCountResource(ModelResource):
@@ -42,6 +67,19 @@ class AppProtocolVisualizePacketCountResource(ModelResource):
             }
         serializer = AppProtocolPacketCountCustomJSONSerializer()
 
+class AppProtocolVisualizePacketCountByHashResource(ModelResource):
+    class Meta:
+        queryset = FlowDetails.objects.all()
+        resource_name = 'protocol_count_by_hash'
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
+        limit = 0 # unlimited
+        filtering = {
+            'parent_hash_value': ALL,
+            'protocol': ALL,
+            }
+        serializer = AppProtocolPacketCountCustomJSONSerializer()
+
 class AllProtocolsResource(ModelResource):
     class Meta:
         queryset = FlowDetails.objects.all()
@@ -51,3 +89,15 @@ class AllProtocolsResource(ModelResource):
         limit = 0 # unlimited
         serializer = AllProtocolsJSONSerializer()
 
+
+class AllProtocolsByHashResource(ModelResource):
+    class Meta:
+        queryset = FlowDetails.objects.all()
+        resource_name = 'all_protocols_by_hash'
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
+        limit = 0 # unlimited
+        serializer = AllProtocolsJSONSerializer()
+        filtering = {
+            'parent_hash_value': ALL,
+            }
