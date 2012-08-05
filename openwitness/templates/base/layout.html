@@ -23,6 +23,7 @@
                 </ul>
 
                 <ul class="nav pull-right">
+                    <li><a href="{% url about_page %}">About</a></li>
                     <li><a href="{% url logout_page %}">Logout</a></li>
                 </ul>
             </div>
@@ -30,6 +31,7 @@
             {%else %}
 
                 <ul class="nav pull-right">
+                    <li><a href="{% url about_page %}">About</a></li>
                     <li><a href="{% url login_page %}">Login</a></li>
                 </ul>
 

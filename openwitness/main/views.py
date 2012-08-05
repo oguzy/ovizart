@@ -194,3 +194,12 @@ def main(request):
     }
     return render_to_response("main/main.html", context,
             context_instance=RequestContext(request))
+
+
+def about(request):
+    context = {
+        'page_title': 'General information about %s' % settings.PROJECT_NAME
+    }
+    return render_to_response("main/about.html", context,
+        context_instance=RequestContext(request))
+
