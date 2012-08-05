@@ -54,6 +54,8 @@ if settings.DEBUG:
              {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
         (r'^json_media/(?P<path>.*)$', 'django.views.static.serve',
              {'document_root': settings.JSON_ROOT, 'show_indexes': True}),
+        (r'^csv_media/(?P<path>.*)$', 'django.views.static.serve',
+             {'document_root': settings.CSV_ROOT, 'show_indexes': True}),
         (r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
              {'document_root': settings.UPLOAD_ROOT, 'show_indexes': True}),
     )

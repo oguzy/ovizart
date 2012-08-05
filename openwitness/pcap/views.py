@@ -6,7 +6,7 @@ import tempfile
 import os
 import datetime
 import cgi
-#import random
+import random
 from django.http import Http404, HttpResponse
 from django.utils import simplejson as json
 from django.shortcuts import render_to_response
@@ -942,3 +942,47 @@ def file_pcap_summary(request, hash_value):
     except Exception, ex:
         log.message(ex)
         raise Http404
+
+def create_parallel_coordinates(request, flow_pcap_md5):
+    parent_flow = Flow.objects.get(hash_value=flow_pcap_md5)
+    flows = FlowDetails.objects.filter(parent_hash_value=flow_pcap_md5)
+    # name group source_port destination_port protocol
+    # 192.168.1.1:80-192.168.1.2:81,http,80,81
+    result = []
+    color_label = dict()
+    for flow in flows:
+        src_id = ":".join([flow.src_ip, str(flow.sport)])
+        dst_id = ":".join([flow.dst_ip, str(flow.dport)])
+        id = "-".join([src_id, dst_id])
+        value = ",".join([id, flow.protocol, str(flow.sport), str(flow.dport)])
+        result.append(value)
+
+        #create the colors
+        if not color_label.has_key(flow.protocol):
+            color_value = [random.randrange(255), random.randrange(255), random.randrange(255)]
+            color_label[flow.protocol] = color_value
+
+    color_dict = json.dumps(color_label)
+    csv_dir = os.path.join(settings.PROJECT_ROOT, "csv_files")
+    csv_file = tempfile.NamedTemporaryFile(mode="w", dir=csv_dir, delete=False)
+    csv_file.write("\"name\",\"group\",\"src_port\",\"dst_port\"")
+    csv_file.write("\n")
+
+    file_name = os.path.basename(csv_file.name)
+    content = "\n".join(result)
+    csv_file.write(content)
+    csv_file.close()
+    context = dict()
+    context['flow'] = parent_flow
+    context['hash_value'] = flow_pcap_md5
+    context['csv_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "csv_media", file_name)
+    context['pcap_operation'] = "parallel_coordinates"
+    context['colors'] = color_dict
+
+    return render_to_response("pcap/file_parallel_coordinates.html",
+            context_instance=RequestContext(request, context))
+
+
+
+
+
