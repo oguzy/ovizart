@@ -76,6 +76,8 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
 
 #json_file directory path
 JSON_ROOT = os.path.join(PROJECT_ROOT, "json_files")
+#csv_file directory path
+CSV_ROOT = os.path.join(PROJECT_ROOT, "csv_files")
 #json_file directory path
 UPLOAD_ROOT = os.path.join(PROJECT_ROOT, "uploads")
 
