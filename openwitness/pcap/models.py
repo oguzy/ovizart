@@ -62,6 +62,8 @@ class PacketDetails(models.Model):
     def __unicode__(self):
         return u'(%s, %s, %s, %s, %s)' % (self.protocol, self.src_ip, self.sport, self.dst_ip, self.dport)
 
+    objects = MongoDBManager()
+
 # save the ips at the applayerproto.log (http.log for ex)
 class FlowDetails(models.Model):
     parent_hash_value = models.CharField(max_length=50)
@@ -72,6 +74,8 @@ class FlowDetails(models.Model):
     dport = models.IntegerField()
     protocol = models.CharField(max_length=10)
     timestamp = models.DateTimeField()
+
+    objects = MongoDBManager()
 
 
 class HTTPDetails(models.Model):

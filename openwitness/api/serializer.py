@@ -237,8 +237,10 @@ class AllProtocolsJSONSerializer(Serializer):
 
         result = []
         protocol_dict = dict()
+        flow_hash_value = None
         if not data.has_key('objects'): return {}
         for flow in data['objects']:
+            flow_hash_value = flow['parent_hash_value']
             protocol = flow['protocol']
             dt = flow['timestamp'].split(".")[0]
             dt_object = datetime.datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S')
@@ -285,7 +287,7 @@ class AllProtocolsJSONSerializer(Serializer):
 
         # lets also check TCP and UPD statistics
         protocol_dict = dict()
-        packets = PacketDetails.objects.all()
+        packets = PacketDetails.objects.filter(flow_hash=flow_hash_value)
         protocol_no = {6: 'TCP', 17: 'UDP'}
         for packet in packets:
             ts = int(packet.timestamp.year)
