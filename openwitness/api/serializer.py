@@ -322,7 +322,7 @@ class AllProtocolsJSONSerializer(Serializer):
                     left_min = min_max_count[0]
                     left_max = min_max_count[-1]
                 values['size'] = translate_value(count, left_min, left_max, 1, 100) # lets map the size between 1 and 50 by taking into consideration the count
-                values['shape'] = 'triangle-up'
+                values['shape'] = 'circle'
                 d['values'].append(values)
 
                 result.append(d)
