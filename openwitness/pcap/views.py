@@ -972,6 +972,7 @@ def create_parallel_coordinates(request, flow_pcap_md5):
     csv_file.write(content)
     csv_file.close()
     context = dict()
+    context['page_title'] = "Parallel Coordinates View"
     context['flow'] = parent_flow
     context['hash_value'] = flow_pcap_md5
     context['csv_file_url'] = os.path.join(settings.ALTERNATE_BASE_URL, "csv_media", file_name)
