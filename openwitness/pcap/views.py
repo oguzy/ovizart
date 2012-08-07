@@ -554,9 +554,8 @@ def visualize(request, flow_pcap_md5, protocol, type="size"):
             return render_to_response("pcap/summary-size.html",
                 context_instance=RequestContext(request, context))
 
-        except:
-            # return html template
-            pass
+        except Exception, ex:
+            raise Http404
 
 def flow_details(request, flow_id):
     flow_details = FlowDetails.objects.get(id=flow_id)
