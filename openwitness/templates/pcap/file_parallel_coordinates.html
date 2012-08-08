@@ -24,32 +24,32 @@
 
     <div class="row">
         <div class="span12">
-        <div id="header">
-            <h1>Parallel Coordinates View</h1>
-            <button title="Zoom in on selected data" id="keep-data" disabled="disabled">Keep</button>
-            <button title="Remove selected data" id="exclude-data" disabled="disabled">Exclude</button>
-            <button title="Export data as CSV" id="export-data">Export</button>
-            <div class="controls">
-                <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
-                <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
-                Lines at <strong id="opacity"></strong> opacity.
-                <button id="hide-ticks">Hide Ticks</button>
-                <button id="show-ticks" disabled="disabled">Show Ticks</button>
-                <button id="dark-theme">Dark</button>
-                <button id="light-theme" disabled="disabled">Light</button>
+            <div id="header">
+                <h1>Parallel Coordinates View</h1>
+                <button title="Zoom in on selected data" id="keep-data" disabled="disabled">Keep</button>
+                <button title="Remove selected data" id="exclude-data" disabled="disabled">Exclude</button>
+                <button title="Export data as CSV" id="export-data">Export</button>
+                <div class="controls">
+                    <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
+                    <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
+                    Lines at <strong id="opacity"></strong> opacity.
+                    <button id="hide-ticks">Hide Ticks</button>
+                    <button id="show-ticks" disabled="disabled">Show Ticks</button>
+                    <button id="dark-theme">Dark</button>
+                    <button id="light-theme" disabled="disabled">Light</button>
+                </div>
+                <div style="clear:both;"></div>
             </div>
-            <div style="clear:both;"></div>
+            <div id="chart">
+                <canvas id="background"></canvas>
+                <canvas id="foreground"></canvas>
+                <canvas id="highlight"></canvas>
+                <svg></svg>
+            </div>
         </div>
-        <div id="chart">
-            <canvas id="background"></canvas>
-            <canvas id="foreground"></canvas>
-            <canvas id="highlight"></canvas>
-            <svg></svg>
-        </div>
-    </div>
     </div>
 
-</div>
+
 
     <div id="wrap">
         <div class="third">
@@ -68,6 +68,6 @@
     </div>
 
 
-
+</div>
 
 {% endblock %}
