@@ -68,11 +68,13 @@ Django related issues
 
 * make a directory named *uploads* where the setting.py file is.
 
-upload directory is used to keep the uploded pcaps, and json\_files are for created json responses and save them as files.
+upload directory is used to keep the uploded pcaps, and json\_files are for created json responses and save them as files. csv\_files dşrectory is for the created csv files during parallel coordinates view
 
 	$ mkdir uploads  
 	$ chmod a+w uploads  
-	$ chmod a+w json_files  
+	$ chmod a+w json_files
+    $ mkdir csv_files
+    $ chmod a+w csv_files	
 
 * If you got backend errors like *django.core.exceptions.ImproperlyConfigured: 'django_mongodb_engine' isn't an available database backend.*
 install the django-mongodb backend manually
