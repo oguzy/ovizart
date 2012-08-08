@@ -14,10 +14,14 @@ class LoginForm(ModelForm):
     def clean(self):
         data = self.cleaned_data
         email = data.get('user_email')
+        if not email:
+            raise forms.ValidationError(u'Email can not be empty!')
         hash = hashlib.sha1()
         hash.update(email)
         email_hash = hash.hexdigest()
         username = self.cleaned_data.get('username')
+        if not username:
+            raise forms.ValidationError(u'Username can not be empty!')
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:

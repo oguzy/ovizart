@@ -1,0 +1,61 @@
+{% extends "base/layout-summary.html" %}
+
+
+{% block content %}
+<div class="container">
+
+    {% include "pcap/__file_details_prefix.html" %}
+
+    <div class="row">
+        <div class="span12">
+            <ul class="nav nav-tabs">
+                <li>
+                    <a href="{% url flow_pcap_details hash_value %}">Overview</a>
+                </li>
+                <li class="active">
+                    <a href="{% url file_pcap_summary hash_value %}">Summary</a>
+                </li>
+                <li>
+                    <a href="{% url parallel_coordinates hash_value %}">Visualize</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="span12">
+            <h2>Summary for the uploaded pcaps</h2>
+            <div id='summary_info'></div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="span12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Protocol</th>
+                    <th>Number of unique connections</th>
+                    <th>Start time of the flow</th>
+                    <th>End time of the flow</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for protocol, details in flow_details.items %}
+                <tr>
+                    <td> {{ protocol }} <a href="{% url visualize_app_layer hash_value protocol "size" %}"> size </a> <a href="{% url visualize_app_layer hash_value protocol "count" %}"> count </a> </td>
+                    <td> {{ details.count }} </td>
+                    <td> {{details.start }} </td>
+                    <td> {{details.end }} </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -174,7 +174,7 @@ class AppProtocolPacketSizeCustomJSONSerializer(Serializer):
                 result['children'] = []
             flow_dict['name'] = "-".join([s_combined, d_combined])
             flow_dict['flow_id'] = flow_id
-            packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
+            packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport, flow_hash=hash_value)
             flow_dict['children'] = []
             for p in packets:
                 #src_id = ":".join([p.src_ip, str(p.sport)])
@@ -216,9 +216,10 @@ class AppProtocolPacketCountCustomJSONSerializer(Serializer):
                 result['children'] = []
             flow_dict['name'] = "-".join([s_combined, d_combined])
             flow_dict['flow_id'] = flow_id
-            packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport)
+            packets = PacketDetails.objects.filter(src_ip=src_ip, sport=sport, dst_ip=dst_ip, dport=dport, flow_hash=hash_value)
             flow_dict['children'] = []
-            flow_dict['children'].append({'name': str(packets[0].ident), 'size':len(packets)})
+            for i in range(len(packets)):
+                flow_dict['children'].append({'name': str(packets[i].ident), 'size':len(packets)})
             result['children'].append(flow_dict)
 
         data = result
@@ -237,8 +238,10 @@ class AllProtocolsJSONSerializer(Serializer):
 
         result = []
         protocol_dict = dict()
+        flow_hash_value = None
         if not data.has_key('objects'): return {}
         for flow in data['objects']:
+            flow_hash_value = flow['parent_hash_value']
             protocol = flow['protocol']
             dt = flow['timestamp'].split(".")[0]
             dt_object = datetime.datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S')
@@ -285,7 +288,7 @@ class AllProtocolsJSONSerializer(Serializer):
 
         # lets also check TCP and UPD statistics
         protocol_dict = dict()
-        packets = PacketDetails.objects.all()
+        packets = PacketDetails.objects.filter(flow_hash=flow_hash_value)
         protocol_no = {6: 'TCP', 17: 'UDP'}
         for packet in packets:
             ts = int(packet.timestamp.year)
@@ -322,7 +325,7 @@ class AllProtocolsJSONSerializer(Serializer):
                     left_min = min_max_count[0]
                     left_max = min_max_count[-1]
                 values['size'] = translate_value(count, left_min, left_max, 1, 100) # lets map the size between 1 and 50 by taking into consideration the count
-                values['shape'] = 'triangle-up'
+                values['shape'] = 'circle'
                 d['values'].append(values)
 
                 result.append(d)
@@ -334,3 +337,6 @@ class AllProtocolsJSONSerializer(Serializer):
         data = simplejson.loads(content)
 
         return data
+
+
+

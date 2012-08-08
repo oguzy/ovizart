@@ -21,10 +21,8 @@
         <tbody>
         {% for f in children %}
         <tr>
-
             <td><a href="{% url flow_details f.flow_id %}">{{ f.name }}</a></td>
             <td>
-
                 <table class="table">
                     <thead>
                     <tr>
@@ -36,7 +34,7 @@
                     {% for pcap in f.children %}
                     <tr>
                         <td><a name="{{ pcap.name }}"></a><a href="{% url packet_info pcap.name %}">{{ pcap.name }}</a></td>
-                        <td>{{ pcap.size }}</td>
+                        <td>{% ifequal measure "size" %}{{ pcap.size|filesizeformat }}{% else %}{{ pcap.size }}{% endifequal %}</td>
                     </tr>
                     {% endfor %}
                     </tbody>

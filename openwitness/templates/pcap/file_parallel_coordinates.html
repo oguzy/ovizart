@@ -1,0 +1,70 @@
+{% extends "base/layout-summary.html" %}
+
+
+{% block content %}
+<div class="container">
+
+    {% include "pcap/__file_details_prefix.html" %}
+
+    <div class="row">
+        <div class="span12">
+            <ul class="nav nav-tabs">
+                <li>
+                    <a href="{% url flow_pcap_details hash_value %}">Overview</a>
+                </li>
+                <li>
+                    <a href="{% url file_pcap_summary hash_value %}">Summary</a>
+                </li>
+                <li class="active">
+                    <a href="{% url parallel_coordinates hash_value %}">Visualize</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <div id="header">
+                <h1>Parallel Coordinates View</h1>
+                <button title="Zoom in on selected data" id="keep-data" disabled="disabled">Keep</button>
+                <button title="Remove selected data" id="exclude-data" disabled="disabled">Exclude</button>
+                <button title="Export data as CSV" id="export-data">Export</button>
+                <div class="controls">
+                    <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
+                    <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
+                    Lines at <strong id="opacity"></strong> opacity.
+                    <button id="hide-ticks">Hide Ticks</button>
+                    <button id="show-ticks" disabled="disabled">Show Ticks</button>
+                    <button id="dark-theme">Dark</button>
+                    <button id="light-theme" disabled="disabled">Light</button>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+            <div id="chart">
+                <canvas id="background"></canvas>
+                <canvas id="foreground"></canvas>
+                <canvas id="highlight"></canvas>
+                <svg></svg>
+            </div>
+        </div>
+    </div>
+
+    <div id="wrap">
+        <div class="third">
+            <small>
+                <!--Last rendered <strong id="render-speed"></strong> lines-->
+            </small>
+            <h3>Protocol Groups</h3>
+            <p id="legend">
+            </p>
+        </div>
+        <div class="third">
+            <h3>Sample of 25 entries <input type="text" placeholder="Search Protocol..." id="search"></h3>
+            <p id="protocol-list">
+            </p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

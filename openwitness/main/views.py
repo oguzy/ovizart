@@ -14,7 +14,7 @@ from openwitness.pcap.models import UserJSonFile
 from django.utils import simplejson as json
 from openwitness.modules.traffic.log.logger import Logger
 
-from openwitness.pcap.models import FlowDetails, PacketDetails
+from openwitness.pcap.models import Flow, FlowDetails, PacketDetails
 
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
@@ -170,3 +170,36 @@ def flow_protocol_summary(request, protocol, date):
     }
     return render_to_response("main/flow_summary.html", context,
             context_instance=RequestContext(request))
+
+def main(request):
+    flows = Flow.objects.all().order_by("-upload_time")
+    paginator = Paginator(flows, 25)
+
+    # Make sure page request is an int. If not, deliver first page.
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+        page_summary = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        page_summary = paginator.page(paginator.num_pages)
+
+    context = {
+        'page_title': 'Latest uploads',
+        'flows': flows,
+        'page_summary': page_summary,
+    }
+    return render_to_response("main/main.html", context,
+            context_instance=RequestContext(request))
+
+
+def about(request):
+    context = {
+        'page_title': 'General information about %s' % settings.PROJECT_NAME
+    }
+    return render_to_response("main/about.html", context,
+        context_instance=RequestContext(request))
+

@@ -15,6 +15,9 @@ class Flow(models.Model):
     user_id = models.CharField(max_length=100)
     hash_value = models.CharField(max_length=50)
     file_name = models.CharField(max_length=50)
+    upload_time = models.DateTimeField()
+    file_type = models.CharField(max_length=150)
+    file_size = models.IntegerField()
     path = models.FilePathField()
     pcaps = ListField(EmbeddedModelField('Pcap', null=True, blank=True))
     details = ListField(EmbeddedModelField('FlowDetails', null=True, blank=True))
@@ -46,6 +49,7 @@ class Pcap(models.Model):
 class PacketDetails(models.Model):
     #datetime.datetime.fromtimestamp(float("1286715787.71")).strftime('%Y-%m-%d %H:%M:%S')
     ident = models.IntegerField()
+    flow_hash = models.CharField(max_length=50)
     timestamp = models.DateTimeField()
     length = models.IntegerField()
     protocol = models.IntegerField()
@@ -58,6 +62,8 @@ class PacketDetails(models.Model):
     def __unicode__(self):
         return u'(%s, %s, %s, %s, %s)' % (self.protocol, self.src_ip, self.sport, self.dst_ip, self.dport)
 
+    objects = MongoDBManager()
+
 # save the ips at the applayerproto.log (http.log for ex)
 class FlowDetails(models.Model):
     parent_hash_value = models.CharField(max_length=50)
@@ -68,6 +74,8 @@ class FlowDetails(models.Model):
     dport = models.IntegerField()
     protocol = models.CharField(max_length=10)
     timestamp = models.DateTimeField()
+
+    objects = MongoDBManager()
 
 
 class HTTPDetails(models.Model):

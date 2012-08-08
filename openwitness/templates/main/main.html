@@ -1,0 +1,35 @@
+{% extends "base/layout-summary.html" %}
+
+
+{% block up %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Upload time</th>
+                <th>MD5</th>
+                <th>File Name</th>
+                <th>File Type</th>
+                <th>File Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flow in page_summary.object_list %}
+            <tr>
+                <td>{{ flow.upload_time|date:"r" }}</td>
+                <td><a href="{% url flow_pcap_details flow.hash_value %}">{{ flow.hash_value }}</a></td>
+                <td>{{ flow.file_name }}</td>
+                <td>{{ flow.file_type }}</td>
+                <td>{{ flow.file_size|filesizeformat }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block down %}
+
+        {% include "base/pagination.html" %}
+
+{% endblock %}

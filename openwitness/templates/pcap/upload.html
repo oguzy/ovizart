@@ -9,6 +9,12 @@
 </div>
 {% endif %}
 
+{% if message %}
+<div class="alert alert-success">
+    {{ message }}
+</div>
+{% endif %}
+
 <form action="{% url upload_pcap %}" method="post" class="well" enctype="multipart/form-data">{% csrf_token %}
   <table>
     {{ form.as_table }}
