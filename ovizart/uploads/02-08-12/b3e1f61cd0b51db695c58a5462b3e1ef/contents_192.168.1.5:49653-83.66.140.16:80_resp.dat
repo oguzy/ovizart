@@ -1,7 +1,0 @@
-HTTP/1.1 302 Object Moved
-Location: http://www.milliyet.com.tr/
-Content-Type: text/html
-Cache-Control: private
-Connection: close
-
-<head><body> This object may be found <a HREF="http://www.milliyet.com.tr/">here</a> </body>

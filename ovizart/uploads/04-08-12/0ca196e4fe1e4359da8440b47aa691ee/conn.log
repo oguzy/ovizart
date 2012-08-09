@@ -1,8 +1,0 @@
-#separator \x09
-#set_separator	,
-#empty_field	(empty)
-#unset_field	-
-#path	conn
-#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	service	duration	orig_bytes	resp_bytes	conn_state	local_orig	missed_bytes	history	orig_pkts	orig_ip_bytes	resp_pkts	resp_ip_bytes
-#types	time	string	addr	port	addr	port	enum	string	interval	count	count	string	bool	count	string	count	count	count	count
-1184401897.521215	Ais1Bdhtya1	192.168.1.4	3326	217.12.11.66	587	tcp	smtp	3.360536	15292	285	SF	-	3116	ShAcDdaCFRfR	24	14736	16	765

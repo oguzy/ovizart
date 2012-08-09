@@ -1,9 +1,0 @@
-GET /IlanResmiBuyuk/2010/03/04/fft1_mf28450526.Jpeg HTTP/1.1
-Host: icdncube.milliyetemlak.com
-User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:12.0) Gecko/20100101 Firefox/12.0
-Accept: image/png,image/*;q=0.8,*/*;q=0.5
-Accept-Language: en-us,en;q=0.5
-Accept-Encoding: gzip, deflate
-Connection: keep-alive
-Referer: http://www.milliyet.com.tr/2012/05/16/index.html
-
