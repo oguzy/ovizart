@@ -2,6 +2,9 @@
 ###################
 *.pyc
 *.pcap
+uploads/*
+json_files/*
+csv_files/*
 tests/*
 summary.txt
 .name

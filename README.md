@@ -1,3 +1,6 @@
+OVIZART =  Open VİZual Analsis foR network Traffic
+==================================================
+
 Installation
 ============
 
@@ -6,7 +9,7 @@ Installation
 
 At Ubuntu this is done via the command below
 
-	$ sudo apt-get install python-zc.build, mercurial, python-pip, python-dpkt
+	$ sudo apt-get install python-zc.build, mercurial, python-pip, python-dpkt, python-magic
 
 * Run the buildout command to initialize and install the requirements
 

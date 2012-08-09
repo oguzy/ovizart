@@ -1,0 +1,2 @@
+
+from ovizart.settings import *

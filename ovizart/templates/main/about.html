@@ -1,0 +1,55 @@
+{% extends "base/layout-summary.html" %}
+
+
+{% block up %}
+
+        <h1> What is Network Analyzer </h1>
+
+        <p>
+            Network Analyzer is a web based raw traffic analyzer. The aim of the project is to supply
+            an open source visual network traffic analyzer to the community. It can handle uploaded
+            traffic data, analyze them and let the results be seen in a visual manner.
+        </p>
+
+        <h1> Architecture </h1>
+        <p>
+            Network Analyzer is mainly compound of a mixture of handlers. Handlers can be thought of plugins.
+            It lets additional plugin definitions and usages.
+        </p>
+        <p>
+            The process at the network analyzer starts with an upload of a raw traffic data. Protocol handlers
+            detect the type of it, either TCP or UDP, and process the related information. The information
+            includes IP numbers, payload data, port numbers, packet length, start and stop time. To process TCP
+            and UDP information <a href="http://code.google.com/p/dpkt/">dpkt</a> is used.
+        </p>
+        <p>
+            After the IP level information handling, application level handlers are run. <a href="http://bro-ids.org/">Bro</a> and <a href="http://www.wireshark.org/docs/man-pages/tshark.html">tshark</a> are used
+            to detect the application level protocol. Bro and <a href="https://github.com/simsong/tcpflow/wiki/tcpflow-%E2%80%94-A-tcp-ip-session-reassembler">tcpflow</a> are used to process the application level information.
+            This information include reassembling of flow data, mainly. The aim is to extract human readable information
+            from the traffic flow.
+        </p>
+        <p>
+            Current release of Network Analyzer support HTTP, DNS and SMTP traffic. For HTTP, request and response
+            headers, returned responses are displayed. For DNS, it is possible to display the DNS query sent.
+            For SMTP traffic, it is possible to see the mail sent, attached files, see the virus analyze results.
+        </p>
+        <p>
+            The results are seen in a   visual way. Each uploaded traffic is displayed in a separated way.
+            The unique pages display the scatter plot display, with the distribution of traffic at the raw traffic.
+            Summary page displays the timeline information about the traffic with application level data on it.
+            Clicking on the circles, let one sees the flow information.
+        </p>
+
+        <h1> Source Code </h1>
+        <p>
+            The development is going on <a href="https://github.com/oguzy/ovizart">Github</a>. The project name will change from openwitness to something else we like more and that won't cause tradae mark problems.
+            The demo site can be observed at <a href="http://ow.comu.edu.tr">http://ow.comu.edu.tr</a> address.
+        </p>
+
+        <h1>Contact</h1>
+        <p> Reach me from the email address <a href="mailto:oguzyarimtepe@gmail.com">oguzyarimtepe at gmail.com</a> </p>
+
+{% endblock %}
+
+{% block down %}
+{% endblock %}
