@@ -1,0 +1,13 @@
+220 smtp001.mail.xxx.xxxxx.com ESMTP
+250-smtp001.mail.xxx.xxxxx.com
+250-AUTH LOGIN PLAIN XYMCOOKIE
+250-PIPELINING
+250 8BITMIME
+334 VXNlcm5hbWU6
+334 UGFzc3dvcmQ6
+235 ok, go ahead (#2.0.0)
+250 ok
+250 ok
+354 go ahead
+250 ok 1184401929 qp 26211
+221 smtp001.mail.xxx.xxxxx.com

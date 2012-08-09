@@ -1,0 +1,20 @@
+GET /async/adv_async.asp?target=milliyetanasayfa&ks=3&PID=1&g=h&c=v&div2id=divKisisel&ks2=1&g2=v&c2=h&dvid=milliyetanasayfa_3_1_h_v HTTP/1.1
+Host: adonline.e-kolay.net
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:12.0) Gecko/20100101 Firefox/12.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Cookie: ADNETGEOTIME%5FV2=201205162010; ADNETGEOIPNUMBER=1491920426; ADNETGEO=X%231%7CY%232; ADtextTarget=hurriyet%5Fvideo=1; ASPSESSIONIDCADTATAS=JLFIMPOBCNAIALJFEPLHPNLJ
+
+GET /async/utils_async.js?v=4.2 HTTP/1.1
+Host: adonline.e-kolay.net
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:12.0) Gecko/20100101 Firefox/12.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Cookie: ADNETGEOTIME%5FV2=201205162010; ADNETGEOIPNUMBER=1491920426; ADNETGEO=X%231%7CY%232; ADtextTarget=milliyetanasayfa=1&hurriyet%5Fvideo=1; ASPSESSIONIDCADTATAS=JLFIMPOBCNAIALJFEPLHPNLJ; ASPSESSIONIDCSBCAARB=APGAMJPBOKFAHMPLNOPDJDFL
+If-Modified-Since: Mon, 26 Jul 2010 12:52:54 GMT
+If-None-Match: "0579576c12ccb1:0"
+

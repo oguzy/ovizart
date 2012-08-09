@@ -1,0 +1,9 @@
+GET /Ad_Images/3/20120319/693e31d13f9c4a46a6e62ecc4739dec6.jpg HTTP/1.1
+Host: img.adnet.com.tr
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:12.0) Gecko/20100101 Firefox/12.0
+Accept: image/png,image/*;q=0.8,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://www.milliyet.com.tr/2012/05/16/index.html
+

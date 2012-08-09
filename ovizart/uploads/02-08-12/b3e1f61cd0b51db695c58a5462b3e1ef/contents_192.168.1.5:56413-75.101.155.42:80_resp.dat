@@ -1,0 +1,15 @@
+HTTP/1.1 301 Moved Permanently
+Date: Wed, 16 May 2012 18:38:13 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.4-2ubuntu5.6
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Location: http://www.bahrainrights.org/en/node/5256
+X-Gridnum: 24
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Length: 20
+Connection: close
+Content-Type: text/html
+

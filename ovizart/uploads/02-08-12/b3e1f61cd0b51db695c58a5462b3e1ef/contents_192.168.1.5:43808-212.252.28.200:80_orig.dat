@@ -1,0 +1,10 @@
+GET /adx/get.ashx?pbk=86359-70701-12457&preredir={amClickThru} HTTP/1.1
+Host: run.admost.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:12.0) Gecko/20100101 Firefox/12.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://img.medyanet.cubecdn.net/200412_birebin_mil_anasyf_300x150.html?medyanetclickthru=http%3A//ad.e-kolay.net/redir.a2%3Fciid%3D181593%26tid%3D11074%26chksum=1f5aae6514f9fc773626f56f2477bf9f%26url%3D
+Cookie: tco=30.01.2012 14:51:25; uid=3968D751FBC; r-mrkt={"Target":{"65118-53089-54":"\/Date(1334568913528)\/"},"Untarget":null}; locc={"regionName":"Istanbul","region":"34","countryCode":"TR","city":"Istanbul","countryName":"Turkey"}
+

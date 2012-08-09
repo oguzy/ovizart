@@ -1,0 +1,8 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	smtp
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	trans_depth	helo	mailfrom	rcptto	date	from	to	reply_to	msg_id	in_reply_to	subject	x_originating_ip	first_received	second_received	last_reply	path	user_agent
+#types	time	string	addr	port	addr	port	count	string	string	table[string]	string	string	table[string]	string	string	string	string	addr	string	string	string	vector[addr]	string
+1184401897.598353	Ais1Bdhtya1	192.168.1.4	3326	217.12.11.66	587	1	-	-	-	-	-	-	-	-	-	-	-	-	-	250 ok 1184401929 qp 26211	217.12.11.66,192.168.1.4	-

@@ -1,0 +1,188 @@
+HTTP/1.1 200 OK
+Content-Type: text/css
+Last-Modified: Wed, 16 May 2012 09:16:51 GMT
+Accept-Ranges: bytes
+Server: Microsoft-IIS/7.5
+X-Powered-By: ASP.NET
+Date: Wed, 16 May 2012 18:38:05 GMT
+Connection: keep-alive
+Content-Length: 265
+
+@charset "utf-8";
+/* CSS Document */
+
+@import "reset.css?v=6"; 
+@import "headermain.css?v=9";
+@import "footer.css?v=7";
+@import "general.css?v=6";
+@import "layoutNew.css?v=6";
+@import "ilan.css?v=6";
+@import "mainBacks_.css?v=6";
+@import "main_.css?v=14";HTTP/1.1 200 OK
+Content-Type: application/x-javascript
+Last-Modified: Thu, 01 Jul 2010 14:10:00 GMT
+Accept-Ranges: bytes
+Server: Microsoft-IIS/7.5
+X-Powered-By: ASP.NET
+Date: Wed, 16 May 2012 18:38:05 GMT
+Connection: keep-alive
+Content-Length: 4872
+
+﻿      var arrayValues = "";
+      var Lig = new Array();
+      var hmt = new Array();
+      var awt = new Array();
+      var hms = new Array();
+      var aws = new Array();
+      var matchSt = new Array();
+      var matchCode = new Array();
+      var currentMatchIndex = -1;
+      var isthisfirst = true;
+      var parrefrehtime = 3000;
+
+      function getXmlInstance()
+      {
+        var retval=null;
+        try
+        {
+          retval=new ActiveXObject("Msxml2.XMLHTTP");
+        }
+        catch(e)
+        {
+          try
+          {
+            retval=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          catch(oc)
+          {
+            retval=null;
+          }
+        }
+        if(!retval && typeof XMLHttpRequest != "undefined")
+        {
+          retval=new XMLHttpRequest();
+        }
+        return retval;
+      }
+      function GetMatchScore(parUrl)
+      {
+        var the_object;
+        var UFOhttp_request = getXmlInstance();
+        UFOhttp_request.open( "GET", parUrl, true );
+        UFOhttp_request.onreadystatechange = function () {
+        if ( UFOhttp_request.readyState == 4 ) {
+
+        if ( UFOhttp_request.status == 200 )
+        {
+        
+          arrayValues = UFOhttp_request.responseText;
+
+          if(arrayValues != "")
+          {
+            SetArrays();
+          }
+        }
+        
+        UFOhttp_request = null;
+      }
+      };
+      UFOhttp_request.send(null);
+      }
+      function SetArrays()
+      {
+        for(i = 0 ; i <  arrayValues.split('||').length;i++)
+        {
+        if(i == 0)
+          addItemsToArray(Lig,arrayValues.split('||')[i]);
+        if(i == 1)
+          addItemsToArray(hmt,arrayValues.split('||')[i]);
+        if(i == 2)
+          addItemsToArray(awt,arrayValues.split('||')[i]);
+        if(i == 3)
+          addItemsToArray(hms,arrayValues.split('||')[i]);
+        if(i == 4)
+          addItemsToArray(aws,arrayValues.split('||')[i]);
+        if(i == 5)
+          addItemsToArray(matchSt,arrayValues.split('||')[i]);
+	if(i == 6)
+          addItemsToArray(matchCode,arrayValues.split('||')[i]);
+        }
+        if(Lig.length > 0)
+        {
+          document.getElementById("GreenBar").style.display= "block";
+          ChangeMatchScore();
+        }
+      
+      }
+
+      function ChangeMatchScore()
+      {
+        if(document.getElementById("sepLine"))
+        {
+            document.getElementById("sepLine").style.display = "none";
+        }
+        currentMatchIndex = currentMatchIndex +1;
+        if(currentMatchIndex == Lig.length)
+        {
+          currentMatchIndex = 0;
+        }
+        if(isthisfirst == true)
+        {
+          isthisfirst = false;
+          
+          document.getElementById("FLig").innerHTML = Lig[currentMatchIndex];
+          document.getElementById("FFTeam").innerHTML = hmt[currentMatchIndex];
+          document.getElementById("FFScore").innerHTML = hms[currentMatchIndex];
+          document.getElementById("FSScore").innerHTML = aws[currentMatchIndex];
+          document.getElementById("FSTeam").innerHTML = awt[currentMatchIndex];
+          document.getElementById("FStatu").innerHTML = matchSt[currentMatchIndex];
+	  document.getElementById("FSMatchCode").innerHTML = matchCode[currentMatchIndex];
+          
+          document.getElementById("SecondHolder").style.display = "none";
+              $('#FirstHolder').fadeIn('slow',function () {
+                setTimeout('ChangeMatchScore()',parrefrehtime);
+              });
+          
+          
+        }
+        else
+        {
+          isthisfirst = true;
+        
+          document.getElementById("SLig").innerHTML = Lig[currentMatchIndex];
+          document.getElementById("SFTeam").innerHTML = hmt[currentMatchIndex];
+          document.getElementById("SFScore").innerHTML = hms[currentMatchIndex];
+          document.getElementById("SSScore").innerHTML = aws[currentMatchIndex];
+          document.getElementById("SSTeam").innerHTML = awt[currentMatchIndex];
+          document.getElementById("SStatu").innerHTML = matchSt[currentMatchIndex];
+	  document.getElementById("SSMatchCode").innerHTML = matchCode[currentMatchIndex];          
+
+          document.getElementById("FirstHolder").style.display = "none";
+              $('#SecondHolder').fadeIn('slow',function () {
+                setTimeout('ChangeMatchScore()',parrefrehtime);
+              });
+          
+        }
+        
+      }
+      function addItemsToArray(parArray,parItems)
+      {
+        for(k = 0 ; k <  parItems.split('##').length;k++)
+        {
+          parArray.push(parItems.split('##')[k]);
+        }
+      }
+
+      var RND=String(Math.random()).substr(2,10);
+      GetMatchScore("http://www.milliyet.com.tr/d/MatchScore/MatchScore.html?"+RND);
+HTTP/1.1 200 OK
+Cache-Control: private
+Content-Type: text/html; charset=utf-8
+Server: Microsoft-IIS/7.5
+X-AspNet-Version: 2.0.50727
+X-Powered-By: ASP.NET
+Date: Wed, 16 May 2012 18:38:07 GMT
+Connection: keep-alive
+Content-Length: 62
+
+http://i.milliyet.com.tr/MilGraph/634727868498941311_GOLD.jpeg

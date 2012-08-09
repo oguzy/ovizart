@@ -1,0 +1,9 @@
+HTTP/1.1 301 Moved Permanently
+Date: Wed, 16 May 2012 18:38:13 GMT
+Server: hi
+Location: http://ow.ly/1jOvNJ
+Cache-Control: private,max-age=300
+Expires: Wed, 16 May 2012 18:43:13 GMT
+Connection: close
+Content-Type: text/html; charset=UTF-8
+

@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Server: CCAcc (0.3.3/istg-s7)
+Date: Wed, 16 May 2012 18:38:16 GMT
+Content-Type: text/html
+Content-Length: 251
+Connection: keep-alive
+Last-Modified: Mon, 05 Mar 2012 15:53:05 GMT
+Expires: Fri, 15 Jun 2012 18:38:16 GMT
+Cache-Control: max-age=2592000
+Accept-Ranges: bytes
+
+<script language="javascript">
+<!--
+document.write('<ifr'+'ame src="http://content.acc-hd.de/adserver/itag/itag.php?cb='+new Date().getTime()+'&bpid=14269" width="617px" height="150px" scrolling="no" frameborder="0"></ifr'+'ame>');
+//-->
+</script>

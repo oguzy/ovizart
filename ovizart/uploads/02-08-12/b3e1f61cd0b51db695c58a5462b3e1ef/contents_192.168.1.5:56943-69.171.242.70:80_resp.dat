@@ -1,0 +1,8 @@
+HTTP/1.1 302 Found
+Location: https://www.facebook.com/dialog/oauth?api_key=925ea20dcfe534e3444ac6753fbf3722&app_id=925ea20dcfe534e3444ac6753fbf3722&channel_url=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D6%23cb%3Df131492c0116434%26origin%3Dhttp%253A%252F%252Fwww.milliyet.com.tr%252Ff1ab3b4bd2e972a%26domain%3Dwww.milliyet.com.tr%26relation%3Dparent.parent&client_id=925ea20dcfe534e3444ac6753fbf3722&display=none&domain=www.milliyet.com.tr&locale=tr_TR&origin=1&redirect_uri=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D6%23cb%3Df27b3581293af1a%26origin%3Dhttp%253A%252F%252Fwww.milliyet.com.tr%252Ff1ab3b4bd2e972a%26domain%3Dwww.milliyet.com.tr%26relation%3Dparent%26frame%3Df3e8154ac7c33cc&response_type=token%2Csigned_request%2Ccode&sdk=joey
+Content-Type: text/html; charset=utf-8
+X-FB-Debug: /g2Ieun/v0G4Yr1i3ZO8OcESACY9udCGDE10nh54qXQ=
+Date: Wed, 16 May 2012 18:38:16 GMT
+Content-Length: 0
+Connection: keep-alive
+
