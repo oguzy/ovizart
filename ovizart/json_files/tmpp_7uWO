@@ -1,1 +1,0 @@
-[{"values": [{"y": 189, "x": 2011, "shape": "circle", "size": 50}], "key": "dns"}, {"values": [{"y": 44, "x": 2012, "shape": "circle", "size": 1}], "key": "http"}, {"values": [{"y": 189, "x": 2011, "shape": "circle", "size": 1}], "key": "UDP"}, {"values": [{"y": 3742, "x": 2012, "shape": "circle", "size": 50}], "key": "TCP"}]
