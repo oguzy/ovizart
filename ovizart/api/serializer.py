@@ -21,6 +21,8 @@ class CustomJSONSerializer(Serializer):
             if flow['protocol'] == "http":
                 # get the start and end time for this flow
                 start, end = self.get_start_end(flow)
+                if not start:
+                    continue
                 type, description = self.get_http_info(flow)
                 tmp = dict()
                 tmp['flow_id'] = flow['id']
@@ -36,6 +38,8 @@ class CustomJSONSerializer(Serializer):
 
             if flow['protocol'] == "dns":
                 start, end = self.get_start_end(flow)
+                if not start:
+                    continue
                 type, description = self.get_dns_info(flow)
                 tmp = dict()
                 tmp['flow_id'] = flow['id']
@@ -51,6 +55,8 @@ class CustomJSONSerializer(Serializer):
 
             if flow['protocol'] == "smtp":
                 start, end = self.get_start_end(flow)
+                if not start:
+                    continue
                 type, description = self.get_smtp_info(flow)
                 tmp = dict()
                 tmp['flow_id'] = flow['id']
@@ -66,6 +72,8 @@ class CustomJSONSerializer(Serializer):
 
             if flow['protocol'] == "unknown":
                 start, end = self.get_start_end(flow)
+                if not start:
+                    continue
                 type, description = "unknown", ""
                 tmp = dict()
                 tmp['flow_id'] = flow['id']
@@ -95,7 +103,10 @@ class CustomJSONSerializer(Serializer):
     # TODO: for udp, packet details are not saved
     def get_start_end(self, flow):
         packets = PacketDetails.objects.filter(src_ip=flow['src_ip'], sport=flow['sport'], dst_ip=flow['dst_ip'], dport=flow['dport']).order_by('timestamp')
-        return packets[0].timestamp, packets[len(packets)-1].timestamp
+        if packets:
+            return packets[0].timestamp, packets[len(packets)-1].timestamp
+        else:
+            return False, False
 
 
     def get_http_info(self, flow):
