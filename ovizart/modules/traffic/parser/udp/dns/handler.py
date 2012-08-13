@@ -39,8 +39,11 @@ class Handler():
         for ts, buf in p_read_handler.get_reader():
             udp = udp_handler.read_udp(ts, buf)
             if udp:
-                self.flow_li.append([udp_handler.src_ip, udp_handler.sport, udp_handler.dst_ip, udp_handler.dport, udp_handler.timestamp])
-                dns = dpkt.dns.DNS(udp.data)
+                try:
+                    dns = dpkt.dns.DNS(udp.data)
+                    self.flow_li.append([udp_handler.src_ip, udp_handler.sport, udp_handler.dst_ip, udp_handler.dport, udp_handler.timestamp])
+                except IndexError:
+                    continue  #dpkt is not properly handling
                 self.dns_li.append(dns)
         return self.flow_li
 
@@ -48,6 +51,10 @@ class Handler():
         index = 0
         for msg in self.dns_li:
             if msg.rcode == dpkt.dns.DNS_RCODE_NOERR:
+                try:
+                    msg.qd[0].type
+                except:
+                    continue
                 if msg.qd[0].type in REQUEST_FLAGS.keys():
                     detail = self.flow_li[index]
                     flow_detail = FlowDetails.objects.get(src_ip=detail[0], sport=int(detail[1]), dst_ip=detail[2], dport=int(detail[3]), protocol="dns", timestamp = detail[4])
