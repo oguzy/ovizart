@@ -29,13 +29,13 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'ovizart.settings'
 from django.contrib.auth.models import User
 from main.models import *
 
-u, created = User.objects.get_or_create(username='oguz')
+u, created = User.objects.get_or_create(username='demo')
 
 u.set_password("ozyy4r12")
 u.save()
 
 h = hashlib.sha1()
-h.update(u'oguzyarimtepe@gmail.com')
+h.update(u'demo@ovizart.foo.com')
 
 profile, create = UserProfile.objects.get_or_create(user=u, user_email=h.hexdigest())
 print "USerProfile create status: %s" % created
