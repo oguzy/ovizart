@@ -1,0 +1,34 @@
+<VirtualHost *:80 *:8000>
+	ServerAdmin oguzy@comu.edu.tr
+	ServerName ow.comu.edu.tr
+	ErrorLog ${APACHE_LOG_DIR}/django-error.log
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/django-access.log combined
+
+	DocumentRoot /home/oguz/git/ovizart/ovizart
+    	<Directory /home/oguz/git/ovizart/ovizart>
+        	Order allow,deny
+        	Allow from all
+    	</Directory>
+
+	Alias /site_media/ /home/oguz/git/ovizart/ovizart/media/
+	<Directory /home/oguz/git/ovizart/ovizart/media/>
+		Order deny,allow
+		Options Indexes
+		Allow from all
+		IndexOptions FancyIndexing
+	</Directory>
+
+	WSGIDaemonProcess ovizart display-name=%{GROUP} user=www-data group=www-data threads=25
+	WSGIProcessGroup ovizart
+	WSGIScriptAlias / /home/oguz/git/ovizart/ovizart/wsgi/django.wsgi
+
+	<Directory /home/oguz/git/ovizart/ovizart/wsgi/>
+		Order deny,allow
+		Options Indexes
+		Allow from all
+		IndexOptions FancyIndexing
+	</Directory>
+
+</VirtualHost>
