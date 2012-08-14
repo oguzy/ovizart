@@ -154,6 +154,7 @@ Although it is used for IDS, Bro is used for TCP reassembly issues at this proje
 * It is required two development server processes running.
 
     $ bin/django runserver
+
     $ bin/django runserver 127.0.0.1:8001
 
 After this step the application is ready to be used. Open the browser and go to the address http://127.0.0.1:8001. By using
@@ -161,3 +162,79 @@ login credentials, you may upload raw traffic files, mainly pcap formatted files
 
 Current beta version supports HTTP, DNS and SMTP traffic analyzing. Use login part only for uploads. After upload, logout and check the
 uploaded traffic details. The logins pages are not fixed yet.
+
+
+Using Web Server
+----------------
+
+* Install all required Python binding and third-party programs
+
+    $ sudo apt-get install mercurial python-pip python-dpkt python-magic, python-django
+    $ sudo apt-get install tshark tcpflow
+    $ sudo pip install hachoir-core==1.3.3
+    $ sudo pip install hachoir-parser==1.3.4
+    $ sudo pip install hachoir-regex==1.0.5
+    $ sudo pip install hachoir-subfile==0.5.3
+    $ sudo pip install django-tastypie==0.9.11
+    $ pip install hg+https://bitbucket.org/wkornewald/django-nonrel
+	$ pip install hg+https://bitbucket.org/wkornewald/djangotoolbox
+	$ pip install git+https://github.com/django-nonrel/mongodb-engine
+
+* Install mongodb server
+
+    $ sudo apt-get install mongodb-server
+
+* Create tables and create the test user
+
+Assuming you cloned the repo to ovizart directory
+
+    $ cd ovizart
+    $ buildout2.7
+    $ bin/django syncdb
+
+Say no for the admin table creation.
+
+    $ cd ovizart
+    $ python scripts/create_user.py
+
+
+* Install Bro as development server one.
+
+* Install web server
+
+    $ sudo apt-get install apache2
+
+* Apache requires wsgi module to handle Python files
+
+    $ sudo apt-get install libapache2-mod-wsgi
+
+ wsgi requires a virtual host definition. A sample virtual host definition is under wsgi directory. Copt it under apache
+ configuration directory and enable the site. Before compying, change the path names and server name. In my example
+ the cloned directory path is /home/oguz/git/ovizart and the server name is ow.comu.edu.tr which is defined also at
+ /etc/hosts files.
+
+    $ cp apache_django /etc/apache2/sites-available
+    $ a2ensite apache_django
+    $ /etc/init.d/apache2 reload
+
+The virtual host definition runs the wsgi script also. So make it executable
+
+    $ chmod a+x django.wsgi
+
+ Check its paths also before restarting the server.
+
+* Apache requires port configuration.
+
+Edit /etc/apache2/ports.conf and add two lines below the default port definitions as below
+
+    NameVirtualHost *:80
+    Listen 80
+
+    NameVirtualHost *:8000
+    Listen 8000
+
+This will require Apache restart and settings.py changes. A sample file is added with the name ow-settings.py. Make your
+changes according to it.
+
+After restarting Apache, http://ow.comu.edu.tr or what ever domain you defined should be working fine for you also.
+
