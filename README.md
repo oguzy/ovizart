@@ -132,11 +132,15 @@ directories require writable permission to let the server process create files i
 
 If these directories are not listed, then create them first.
 
-* Bro-ids is required for protocol detection. Download and extract the source first
+* Bro-ids is required for protocol detection. 
 
-    $ wget http://www.bro-ids.org/downloads/release/bro-2.0.tar.gz
-    $ tar xvzf bro-2.0.tar.gz
-    $ cd bro-2.0
+Download and extract the source first
+
+
+	$ wget http://www.bro-ids.org/downloads/release/bro-2.0.tar.gz
+	$ tar xvzf bro-2.0.tar.gz
+	$ cd bro-2.0
+
 
 Compiling the Bro source requires some additional libraries installed.
 
