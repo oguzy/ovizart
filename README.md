@@ -35,7 +35,7 @@ Mercurial is necessary to run "hg clone" command at the command line.
 
 	$ sudo apt-get install python-zc.build mercurial python-pip python-dpkt python-magic
 
-Like some third parth Python bindings it is required external programs also. They are tshark and tcpflow.
+Like some third party Python bindings it is required external programs also. They are tshark and tcpflow.
 
     $ sudo apt-get install tshark tcpflow
 
@@ -51,9 +51,18 @@ This will download the required thir party python bindings, put the eggs in the 
 
 	$ python bootstrap.py
 
-This command may give errors, which means some directories are already created. So running the buildout will solve the issue.
+This command may give errors, which means some directories are already created. Remove these directories. 
 
-	$ buildout2.7
+	$ rm -rf bin/ develop-eggs/ eggs/ parts/ src
+
+On upto date OS, runnint bootstrap.py mak ask you to update it
+
+	$ rm bootstrap.py
+	$ wget http://downloads.buildout.org/2/bootstrap.py 
+
+After running bootrap.py you will have your directory structre to keep Python bindings. Run the buildout command either buildout2.7 or for up-to-date ones the buildout one.
+
+	$ buildout
 
 
 If the command runs succesfully new directories should be seen at the ovizart directory.They are *bin*, *develop-eggs*,
@@ -106,9 +115,13 @@ available database backend.* then install the django-mongodb backend manually.
 Buildout should be handling them and there shouldn't be a requirement for installing them manually if you are not
 planning to use development server.
 
-	$ pip install hg+https://bitbucket.org/wkornewald/django-nonrel
-	$ pip install hg+https://bitbucket.org/wkornewald/djangotoolbox
-	$ pip install git+https://github.com/django-nonrel/mongodb-engine
+	$ sudo pip install pymongo
+	$ git clone https://github.com/django-nonrel/django.git django-nonrel
+	$ cd django-nonrel; git checkout nonrel-1.3; git pull; sudo python setup.py install; cd ..
+	$ git clone https://github.com/django-nonrel/djangotoolbox.git
+	$ cd djangotoolbox; git checkout toolbox-1.3; git pull; sudo python setup.py install; cd ..
+	$ git https://github.com/django-nonrel/mongodb-engine.git
+	$ cd mongodb-engine; git checkout mongodb-engine-1.3; git pull; sudo python setup.py install; cd ..
 
 * Django application requires some directories with writable permission. At the directory where settings.py is, three
 directories require writable permission to let the server process create files inside them.
@@ -169,16 +182,23 @@ Using Web Server
 
 * Install all required Python binding and third-party programs
 
-    $ sudo apt-get install mercurial python-pip python-dpkt python-magic, python-django
-    $ sudo apt-get install tshark tcpflow
-    $ sudo pip install hachoir-core==1.3.3
-    $ sudo pip install hachoir-parser==1.3.4
-    $ sudo pip install hachoir-regex==1.0.5
-    $ sudo pip install hachoir-subfile==0.5.3
-    $ sudo pip install django-tastypie==0.9.11
-    $ pip install hg+https://bitbucket.org/wkornewald/django-nonrel
-	$ pip install hg+https://bitbucket.org/wkornewald/djangotoolbox
-	$ pip install git+https://github.com/django-nonrel/mongodb-engine
+You need to install every required binding.
+
+	$ sudo apt-get install mercurial python-pip python-dpkt python-magic, python-django
+	$ sudo apt-get install tshark tcpflow
+	$ sudo pip install hachoir-core==1.3.3
+	$ sudo pip install hachoir-parser==1.3.4
+	$ sudo pip install hachoir-regex==1.0.5
+	$ sudo pip install hachoir-subfile==0.5.3
+	$ sudo pip install django-tastypie==0.9.11
+	$ sudo pip install pymongo
+	$ git clone https://github.com/django-nonrel/django.git django-nonrel
+	$ cd django-nonrel; git checkout nonrel-1.3; git pull; sudo python setup.py install; cd ..
+	$ git clone https://github.com/django-nonrel/djangotoolbox.git
+	$ cd djangotoolbox; git checkout toolbox-1.3; git pull; sudo python setup.py install; cd ..
+	$ git https://github.com/django-nonrel/mongodb-engine.git
+	$ cd mongodb-engine; git checkout mongodb-engine-1.3; git pull; sudo python setup.py install; cd ..
+
 
 * Install mongodb server
 
@@ -189,7 +209,7 @@ Using Web Server
 Assuming you cloned the repo to ovizart directory
 
     $ cd ovizart
-    $ buildout2.7
+    $ buildout
     $ bin/django syncdb
 
 Say no for the admin table creation.
@@ -197,6 +217,7 @@ Say no for the admin table creation.
     $ cd ovizart
     $ python scripts/create_user.py
 
+create_user script should be including same paths like the one at bin/django file.
 
 * Install Bro as development server one.
 
