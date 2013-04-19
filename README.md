@@ -10,7 +10,7 @@ development server or by installing a web server and setting the wsgi type handl
 Using Development Server
 ------------------------
 
-The explanations will be covered according to a Debain based system.
+The explanations will be covered according to a Debian based system.
 
 * Clone the source code from Github
 
@@ -24,7 +24,7 @@ After the installation is finished, git command is available for usage
 
 * Install zc.buildout and some other Python bindings that are used at the application
 
-python-dpkt is used to handle protocol based information. It is both used for getting TCP/UDP pached headers, payloads,
+python-dpkt is used to handle protocol based information. It is both used for getting TCP/UDP packed headers, payloads,
 sized and application level data.
 
 python-magic is used to get file MIME types.
@@ -35,11 +35,11 @@ Mercurial is necessary to run "hg clone" command at the command line.
 
 	$ sudo apt-get install python-zc.build mercurial python-pip python-dpkt python-magic
 
-Like some third party Python bindings it is required external programs also. They are tshark and tcpflow.
+Like some third party Python bindings it is also required to install external programs. They are tshark and tcpflow.
 
     $ sudo apt-get install tshark tcpflow
 
-*tshark* is required for an alternative method to detect application layer protocols where bro fails
+*tshark* is required for an alternative method to detect application layer protocols where Bro fails
 At some level, Bro is not able to detect missing handshaked application level protocols, though tshark does.
 
 *tcpflow* is used to get reassembled TCP information whenever Bro's handler is not good enough. It is seen that tcpflow works
@@ -47,7 +47,7 @@ much better for SMTP traffic, for ex.
 
 * Run the buildout command to initialize and install the requirements
 
-This will download the required thir party python bindings, put the eggs in the directories.
+This will download the required third party python bindings, put the eggs in the directories.
 
 	$ python bootstrap.py
 
@@ -55,17 +55,17 @@ This command may give errors, which means some directories are already created. 
 
 	$ rm -rf bin/ develop-eggs/ eggs/ parts/ src
 
-On upto date OS, runnint bootstrap.py mak ask you to update it
+On up to date OS, running bootstrap.py may ask you to update it
 
 	$ rm bootstrap.py
 	$ wget http://downloads.buildout.org/2/bootstrap.py 
 
-After running bootrap.py you will have your directory structre to keep Python bindings. Run the buildout command either buildout2.7 or for up-to-date ones the buildout one.
+After running bootstrap.py you will have your directory structure to keep Python bindings. Run the buildout command either buildout2.7 or for up-to-date ones the buildout one.
 
 	$ buildout
 
 
-If the command runs succesfully new directories should be seen at the ovizart directory.They are *bin*, *develop-eggs*,
+If the command runs successfully new directories should be seen at the ovizart directory.They are *bin*, *develop-eggs*,
 *eggs*, *parts* and *requirements* directories. Except from *bin* directory, others keep the required third-party bindings that are
 defined at the buildout.cfg file. *bin* directory is the one that will help us use Django commands like "runserver* or *shell*.
 
@@ -77,14 +77,14 @@ It is a NoSQL server.
 
 	$ sudo apt-get install mongodb-server
 
-You may test the mongodb running by writing mongo to he command line
-it you see an shell like below then you may continue to create the tables at the database
+You may test the mongodb running by writing mongo to the command line
+if you see a shell like below then you may continue to create the tables at the database
 
 	$ mongo
 	MongoDB shell version: 2.0.4
 	connecting to: test
 
-* To create tables requires using *django* command usage.
+* Creating tables requires using *django* command usage.
 
 Assuming that the cloned directory name is ovizart, first enter the directory where *bin* directory is.
 
@@ -95,7 +95,7 @@ Then run the django command
     $ bin/django syncdb
 
 If there is no error saying that there is no mongo db backend, then the Django API will start creating tables. It will ask
-to create admin realted tables, say no to that.
+to create admin related tables, say **no** to that.
 
 If the table creation finishes successfully, a demo user is required to be defined. Running the user create script will
 do it for you.
@@ -128,7 +128,7 @@ directories require writable permission to let the server process create files i
 
 	$ chmod a+w uploads
 	$ chmod a+w json_files
-    $ chmod a+w csv_files
+  $ chmod a+w csv_files
 
 If these directories are not listed, then create them first.
 
@@ -142,7 +142,7 @@ Download and extract the source first
 	$ cd bro-2.0
 
 
-Compiling the Bro source requires some additional libraries installed.
+Compiling the Bro source requires some additional libraries to be installed.
 
 The commands are tested under Kubuntu 12.04. At Debian Squeeze, swig2.0 should be removed from the command line.
 
@@ -233,8 +233,8 @@ create_user script should be including same paths like the one at bin/django fil
 
     $ sudo apt-get install libapache2-mod-wsgi
 
- wsgi requires a virtual host definition. A sample virtual host definition is under wsgi directory. Copt it under apache
- configuration directory and enable the site. Before compying, change the path names and server name. In my example
+ wsgi requires a virtual host definition. A sample virtual host definition is under wsgi directory. Copy it under apache
+ configuration directory and enable the site. Before copying, change the path names and server name. In my example
  the cloned directory path is /home/oguz/git/ovizart and the server name is ow.comu.edu.tr which is defined also at
  /etc/hosts files.
 
@@ -261,5 +261,4 @@ Edit /etc/apache2/ports.conf and add two lines below the default port definition
 This will require Apache restart and settings.py changes. A sample file is added with the name ow-settings.py. Make your
 changes according to it.
 
-After restarting Apache, http://ow.comu.edu.tr or what ever domain you defined should be working fine for you also.
-
+After restarting Apache, http://ow.comu.edu.tr or whatever domain you defined should be working fine for you, too.
